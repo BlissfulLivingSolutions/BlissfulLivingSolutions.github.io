@@ -1,22 +1,579 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
     <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Blissful Living Solutions — Coming Soon</title>
-        <link rel="icon" href="favicon.ico" />
-        <link rel="stylesheet" href="styles.css" />
-        <script src="script.js" defer></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blissful Living Solutions | Non-Medical Home Care in Lemont, IL</title>
+        <!-- <meta name="description" content="Compassionate non-medical home care in Lemont, IL and serving Cook, Will, Kane, Lake, and DuPage counties. Personal care, companionship, and support for independence at home. Licensed IDPH Agency."> -->
+        <meta name="description" content="Compassionate non-medical home care in Lemont, IL and serving Cook, Will, Kane, Lake, and DuPage counties. Personal care, companionship, and support for independence at home. IDPH Licensing Pending.">
+        <link rel="stylesheet" href="styles.css">
+
+        <!-- Structured Data for Local Business -->
+        <!--Add       "telephone": "+1-777-777-7777", With actual number After IDPH Licensing-->
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HomeAndConstructionBusiness",
+      "name": "Blissful Living Solutions LLC",
+      "image": "", 
+      "@id": "https://blissfullivingsolutions.com",
+      "url": "https://blissfullivingsolutions.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "16753 Brighton Drive",
+        "addressLocality": "Lemont",
+        "addressRegion": "IL",
+        "postalCode": "60439",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 41.6736,
+        "longitude": -88.0017
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "17:00"
+      },
+      "areaServed": ["Cook County", "Will County", "Kane County", "Lake County", "DuPage County"],
+      "priceRange": "$$"
+    }
+    </script>
     </head>
 
     <body>
-        <main class="site-main" role="main">
-            <figure class="logo">
-                <img src="img/logo.png" alt="Blissful Living Solutions logo" class="logo__img" />
-            </figure>
-            <h1 class="headline">Coming Soon</h1>
+
+        <!-- Licensing Banner -->
+        <div id="licensing-banner" class="licensing-banner">
+            <div class="banner-content">
+                <p><strong>Notice:</strong> Blissful Living Solutions LLC is currently undergoing the Illinois Department of Public Health Home Services Agency licensing process and is not yet accepting clients. Services will begin upon issuance of
+                    our official IDPH license.</p>
+                <button id="close-banner" aria-label="Close notification">×</button>
+            </div>
+        </div>
+
+        <!-- Sticky Header & Nav -->
+        <header class="site-header">
+            <div class="container header-container">
+                <div class="logo">
+                    <a href="#home" class="logo-text">
+                        Blissful Living Solutions
+                        <span class="tagline">Compassionate Home Services</span>
+                    </a>
+                </div>
+                <button class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                    <span class="hamburger"></span>
+                </button>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#who-we-help">Who We Help</a></li>
+                        <li><a href="#quality">Quality</a></li>
+                        <li><a href="#service-area">Service Area</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#contact" class="nav-cta">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section id="home" class="hero-section">
+                <div class="container hero-content">
+                    <h1>Non-Medical Home Care in Lemont & Surrounding Communities</h1>
+                    <p class="hero-sub">Supporting independence, dignity, and peace of mind in the comfort of your own home.</p>
+                    <ul class="hero-bullets">
+                        <li>Help with daily tasks & personal care</li>
+                        <li>Companionship & safety supervision</li>
+                        <li>Respite for family caregivers</li>
+                    </ul>
+                    <div class="hero-ctas">
+                        <!-- <a href="tel:7777777777" class="btn btn-primary">Call Now: 777-777-7777</a> -->
+                        <a href="#contact" class="btn btn-primary">Contact Us</a>
+                        <a href="#contact" class="btn btn-secondary">Schedule a Free Care Conversation</a>
+                    </div>
+                    <div class="trust-signals">
+                        <!-- <span><span class="icon">✓</span> IDPH-Licensed Home Services Agency (Non-Medical)</span> -->
+                        <span><span class="icon">ℹ️</span> IDPH Licensing in Progress (Not Yet Accepting Clients)</span>
+                        <span><span class="icon">✓</span> Serving Cook, Will, Kane, Lake, and DuPage Counties</span>
+                        <span><span class="icon">✓</span> Caregivers screened, trained, & supervised</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Home Care Overview -->
+            <section id="why-us" class="section-padding bg-cream">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2>Why Choose Blissful Living?</h2>
+                        <p>A gentle path to staying at home safely.</p>
+                    </div>
+                    <div class="grid-3">
+                        <div class="card feature-card">
+                            <h3>Stay in Your Own Home</h3>
+                            <p>Maintain your routines and comfort in familiar surroundings with just the right amount of help.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <h3>Support for Families</h3>
+                            <p>We provide respite and peace of mind for spouses and adult children, so you can be family again, not just caregivers.</p>
+                        </div>
+                        <div class="card feature-card">
+                            <h3>Flexible & Local</h3>
+                            <p>From a few hours a week to 24/7 support. We are a local, owner-operated agency based right here in Lemont.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="section-padding">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2>Our Services</h2>
+                        <p>Comprehensive non-medical support tailored to your needs.</p>
+                    </div>
+                    <div class="services-grid">
+                        <div class="service-category">
+                            <h3>Personal Care & Daily Activities</h3>
+                            <ul>
+                                <li>Bathing, dressing, and grooming assistance</li>
+                                <li>Toileting and incontinence care</li>
+                                <li>Mobility assistance and safe transfers</li>
+                                <li>Feeding assistance (non-medical)</li>
+                            </ul>
+                        </div>
+                        <div class="service-category">
+                            <h3>Homemaker & Household</h3>
+                            <ul>
+                                <li>Light housekeeping and laundry</li>
+                                <li>Bed-making and linen changes</li>
+                                <li>Meal planning and preparation</li>
+                                <li>Home organization and tidying</li>
+                            </ul>
+                        </div>
+                        <div class="service-category">
+                            <h3>Companionship & Respite</h3>
+                            <ul>
+                                <li>Friendly conversation and activities</li>
+                                <li>Emotional support and supervision</li>
+                                <li>Respite care to give family caregivers a break</li>
+                                <li>Medication reminders (cueing only)</li>
+                            </ul>
+                        </div>
+                        <div class="service-category">
+                            <h3>Errands & Transportation</h3>
+                            <ul>
+                                <li>Grocery shopping and pharmacy runs</li>
+                                <li>Escort to non-emergency appointments</li>
+                                <li>Assistance with errands</li>
+                            </ul>
+                        </div>
+                        <div class="service-category full-width">
+                            <h3>Hospice Support</h3>
+                            <p>We provide compassionate non-medical support for clients on hospice, coordinating seamlessly with your hospice provider to offer extra comfort, presence, and practical help at home.</p>
+                        </div>
+                    </div>
+                    <div class="medical-disclaimer">
+                        <p><strong>Please Note:</strong> We are a non-medical agency. We do <em>not</em> provide medical or nursing services such as wound care, injections, medication administration, or tube feeding. We refer to appropriate medical
+                            providers when skilled care is needed.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Who We Help (Personas) -->
+            <section id="who-we-help" class="section-padding bg-cream">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2>Who We Help</h2>
+                    </div>
+                    <div class="grid-2">
+                        <div class="card persona-card">
+                            <h3>Living Alone but Needs a Hand</h3>
+                            <p>For the senior who values independence but struggles with daily tasks like cooking or bathing. We provide the safety net that allows them to stay put.</p>
+                        </div>
+                        <div class="card persona-card">
+                            <h3>The Spouse Caregiver</h3>
+                            <p>Caring for a partner can be exhausting. We step in to handle the physical tasks or sit with your loved one so you can rest, run errands, or sleep.</p>
+                        </div>
+                        <div class="card persona-card">
+                            <h3>The Worried Family Member</h3>
+                            <p>You live miles away or work full time. We are your eyes and ears, providing professional care and regular updates so you stop worrying.</p>
+                        </div>
+                        <div class="card persona-card">
+                            <h3>Hospice Support at Home</h3>
+                            <p>When medical hospice care isn't enough coverage, we fill the gaps with presence, comfort measures, and personal care.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quality & Safety Scorecard -->
+            <section id="quality" class="section-padding">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2>Safety & Quality You Can Trust</h2>
+                        <p>We take the worry out of bringing someone into your home.</p>
+                    </div>
+                    <div class="quality-scorecard">
+                        <div class="score-item">
+                            <div class="score-icon">🛡️</div>
+                            <div class="score-text">
+                                <h4>Background Checked</h4>
+                                <p>Fingerprint-based criminal background checks & IDPH Registry clearance for every single caregiver.</p>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-icon">⚕️</div>
+                            <div class="score-text">
+                                <h4>Health Screened</h4>
+                                <p>Pre-employment TB screening and ongoing infection control monitoring.</p>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-icon">🎓</div>
+                            <div class="score-text">
+                                <h4>Thoroughly Trained</h4>
+                                <p>10+ hours initial training + 10+ hours annual training on safety, dementia, and care skills.</p>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-icon">👁️</div>
+                            <div class="score-text">
+                                <h4>Supervised</h4>
+                                <p>On-site supervisory visits at least every 90 days to ensure quality and satisfaction.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <!-- <p class="license-text">Licensed by the Illinois Department of Public Health as a Home Services Agency (License No. ______)</p> -->
+                        <p class="license-text"><em>Licensure Pending. We are currently undergoing the IDPH licensing process and are not yet accepting clients.</em></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Area -->
+            <section id="service-area" class="section-padding bg-cream">
+                <div class="container">
+                    <div class="grid-2 align-center">
+                        <div class="area-text">
+                            <h2>Serving Our Community</h2>
+                            <p>We are proudly based in Lemont, IL, and serve clients throughout <strong>Cook, Will, Kane, Lake, and DuPage counties</strong>.</p>
+                            <ul class="area-list">
+                                <li>Lemont</li>
+                                <li>Lockport</li>
+                                <li>Homer Glen</li>
+                                <li>Orland Park</li>
+                                <li>Downers Grove</li>
+                                <li>Naperville</li>
+                                <li>And surrounding areas</li>
+                            </ul>
+                        </div>
+                        <div class="area-map">
+                            <!-- Simple privacy-friendly map placeholder -->
+                            <iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                                src="https://www.openstreetmap.org/export/embed.html?bbox=-88.05%2C41.60%2C-87.90%2C41.75&amp;layer=mapnik&amp;marker=41.6736%2C-88.0017" style="border: 1px solid #ccc; border-radius: 8px;"
+                                title="Map of Lemont Service Area">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section id="how-it-works" class="section-padding">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2>How It Works</h2>
+                        <p>Getting help is simple.</p>
+                    </div>
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <h3>Call or Message</h3>
+                            <p>We listen to your needs and answer your questions.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <h3>Personalized Plan</h3>
+                            <p>We design a non-medical service plan together with you.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <h3>Meet Your Caregiver</h3>
+                            <p>Start care with ongoing support and 90-day check-ins.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Unique Features Section -->
+            <section id="features" class="section-padding bg-cream">
+                <div class="container">
+
+                    <!-- Pathway Explorer -->
+                    <div class="feature-block">
+                        <div class="section-header text-center">
+                            <h2>Find Your Path to Support</h2>
+                            <p>Select your main concern to see how we can help.</p>
+                        </div>
+                        <div class="pathway-explorer" id="pathway-explorer">
+                            <div class="pathway-buttons">
+                                <button class="pathway-btn active" data-target="safety">Falls & Safety</button>
+                                <button class="pathway-btn" data-target="loneliness">Loneliness</button>
+                                <button class="pathway-btn" data-target="burnout">Caregiver Burnout</button>
+                                <button class="pathway-btn" data-target="hospice">Hospice Support</button>
+                            </div>
+                            <div class="pathway-content active" id="safety">
+                                <h3>Safety First</h3>
+                                <p>Falls are a major risk. Our caregivers assist with transfers, walking, and keeping walkways clear.</p>
+                                <div class="recommendation">
+                                    <strong>Sample Plan:</strong> 3 days/week, 4 hours/day during peak activity times.
+                                </div>
+                            </div>
+                            <div class="pathway-content" id="loneliness">
+                                <h3>Connection & Joy</h3>
+                                <p>Isolation impacts health. We provide friendly conversation, games, and accompaniment on walks.</p>
+                                <div class="recommendation">
+                                    <strong>Sample Plan:</strong> 2 days/week, 3 hours/day for visits and activities.
+                                </div>
+                            </div>
+                            <div class="pathway-content" id="burnout">
+                                <h3>Rest for You</h3>
+                                <p>You can't pour from an empty cup. Let us take over so you can recharge guilt-free.</p>
+                                <div class="recommendation">
+                                    <strong>Sample Plan:</strong> 1-2 days/week, 6-8 hours/day for respite.
+                                </div>
+                            </div>
+                            <div class="pathway-content" id="hospice">
+                                <h3>Comfort & Presence</h3>
+                                <p>We supplement medical hospice with continuous bedside presence and comfort care.</p>
+                                <div class="recommendation">
+                                    <strong>Sample Plan:</strong> Overnight shifts or daily 4-hour comfort visits.
+                                </div>
+                            </div>
+                            <p class="text-small text-center mt-2"><em>Note: All plans are fully personalized to your specific needs.</em></p>
+                        </div>
+                    </div>
+
+                    <!-- Cost Estimator -->
+                    <div class="feature-block mt-5">
+                        <div class="section-header text-center">
+                            <h2>Transparent Cost Estimator</h2>
+                            <p>No hidden fees. Know what to expect.</p>
+                        </div>
+                        <div class="cost-estimator card">
+                            <label for="hours-range">Estimated Hours Per Week: <span id="hours-display">10</span></label>
+                            <input type="range" id="hours-range" min="0" max="60" value="10" step="1">
+                            <div class="cost-results">
+                                <div class="cost-item">
+                                    <span class="cost-label">Weekly Estimate:</span>
+                                    <span class="cost-value" id="weekly-cost">$320</span>
+                                </div>
+                                <div class="cost-item">
+                                    <span class="cost-label">Monthly Estimate:</span>
+                                    <span class="cost-value" id="monthly-cost">$1,280</span>
+                                </div>
+                            </div>
+                            <p class="disclaimer text-small">*Estimates based on standard rates. Detailed Rate Sheet provided before start of care. 4-hour minimum per visit applies.</p>
+                        </div>
+                    </div>
+
+                    <!-- First Visit Checklist -->
+                    <div class="feature-block mt-5" id="checklist-section">
+                        <div class="section-header text-center">
+                            <h2>First Visit Readiness Checklist</h2>
+                            <p>Prepare for a smooth start to care.</p>
+                        </div>
+                        <div class="checklist card">
+                            <ul class="check-list">
+                                <li><input type="checkbox" id="c1"> <label for="c1">Emergency contact information handy</label></li>
+                                <li><input type="checkbox" id="c2"> <label for="c2">List of medications (for reference only)</label></li>
+                                <li><input type="checkbox" id="c3"> <label for="c3">Preferred meals and snacks available</label></li>
+                                <li><input type="checkbox" id="c4"> <label for="c4">Household routine notes (pets, trash day, etc.)</label></li>
+                                <li><input type="checkbox" id="c5"> <label for="c5">Clear path for walking/mobility</label></li>
+                            </ul>
+                            <button class="btn btn-secondary mt-3" onclick="window.print()">Print Checklist</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Resources & FAQs -->
+            <section id="resources" class="section-padding">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <h2>Resources & FAQs</h2>
+                    </div>
+
+                    <!-- What to Ask Accordion -->
+                    <div class="accordion" id="faq-accordion">
+                        <h3>What to Ask Any Home Care Agency</h3>
+
+                        <div class="accordion-item">
+                            <button class="accordion-header" aria-expanded="false">
+                                Do you perform background checks?
+                                <span class="icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p><strong>Ask them:</strong> Do you check fingerprints and the Health Care Worker Registry?</p>
+                                <p class="bls-answer"><strong>Blissful Living:</strong> Yes. We perform fingerprint-based checks and clear every worker through the IDPH Registry.</p>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <button class="accordion-header" aria-expanded="false">
+                                How much training do caregivers get?
+                                <span class="icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p><strong>Ask them:</strong> Is it just a video, or real training?</p>
+                                <p class="bls-answer"><strong>Blissful Living:</strong> 10+ hours initial training before/during the first 30 days, plus 10+ hours annually.</p>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <button class="accordion-header" aria-expanded="false">
+                                Is there supervision?
+                                <span class="icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p><strong>Ask them:</strong> How often does a supervisor visit?</p>
+                                <p class="bls-answer"><strong>Blissful Living:</strong> We conduct on-site supervisory visits at least every 90 days.</p>
+                            </div>
+                        </div>
+
+                        <h3 class="mt-4">Common Questions</h3>
+
+                        <div class="accordion-item">
+                            <button class="accordion-header" aria-expanded="false">
+                                Do you accept insurance?
+                                <span class="icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>We accept private pay and many Long Term Care (LTC) insurance policies. We do not bill Medicare/Medicaid directly for non-medical services.</p>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <button class="accordion-header" aria-expanded="false">
+                                Do you provide live-in care?
+                                <span class="icon">+</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p>Yes, we can arrange for continuous non-medical support or live-in arrangements depending on your needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Careers -->
+            <section id="careers" class="section-padding bg-cream">
+                <div class="container text-center">
+                    <h2>Join Our Team</h2>
+                    <p>Are you a compassionate caregiver? We value our staff with paid training, respect, and support.</p>
+                    <p><strong>Requirements:</strong> 18+, background check clearance, reliable transportation, and a heart for service.</p>
+                    <a href="mailto:contact@blissfullivingsolutions.com?subject=Caregiver%20Application%20-%20Blissful%20Living%20Solutions" class="btn btn-secondary mt-3">Apply Now</a>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="section-padding">
+                <div class="container">
+                    <div class="grid-2">
+                        <div class="contact-info">
+                            <h2>Contact Us</h2>
+                            <p>We are here to help. Call us anytime for urgent issues.</p>
+
+                            <div class="contact-detail">
+                                <strong>Phone:</strong><br>
+                                <!-- <a href="tel:7777777777">777-777-7777</a><br> -->
+                                <a>Coming Soon</a><br>
+                            </div>
+
+                            <div class="contact-detail">
+                                <strong>Email:</strong><br>
+                                <a href="mailto:contact@blissfullivingsolutions.com">contact@blissfullivingsolutions.com</a><br>
+                            </div>
+
+                            <div class="contact-detail">
+                                <strong>Office:</strong><br>
+                                16753 Brighton Drive<br>
+                                Lemont, IL 60439
+                            </div>
+
+                            <div class="contact-detail">
+                                <strong>Hours:</strong><br>
+                                Mon-Fri: 9:00am - 5:00pm<br>
+                                24/7 Phone Coverage for Urgent Issues
+                            </div>
+                        </div>
+
+                        <div class="contact-form-wrapper">
+                            <h3>Send a Message</h3>
+                            <form id="contact-form" class="contact-form">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="tel" id="phone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea id="message" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                                <div id="form-feedback" class="form-feedback" aria-live="polite"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h4>Blissful Living Solutions LLC</h4>
+                        <p>16753 Brighton Drive, Lemont, IL 60439</p>
+                        <!-- <p><a href="tel:7777777777">777-777-7777</a></p> -->
+                        <p><a>Phone:Coming Soon</a></p>
+                    </div>
+                    <div class="footer-legal">
+                        <!-- <p>Licensed by the Illinois Department of Public Health as a Home Services Agency.</p> -->
+                        <p><em>Licensure Pending. Not yet accepting clients.</em></p>
+                        <p>We provide non-medical services only.</p>
+                        <p>IDPH Home Services Complaint Hotline: <a href="tel:18002524343">1-800-252-4343</a></p>
+                        <p>&copy;
+                            <script>document.write(new Date().getFullYear())</script> Blissful Living Solutions LLC. All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="script.js"></script>
     </body>
 
 </html>
