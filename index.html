@@ -668,7 +668,20 @@
 
         <!-- First Visit Checklist -->
         <div class="feature-block" id="checklist-section">
-          <div class="section-heading">
+
+          <!-- Shown only when printing -->
+          <div class="print-only print-doc-header" aria-hidden="true">
+            <div class="print-brand-bar">
+              <span class="print-brand-name">Blissful Living Solutions LLC</span>
+              <span class="print-brand-sub">Compassionate Non-Medical Home Care &nbsp;·&nbsp; Lemont, IL 60439</span>
+            </div>
+            <div class="print-doc-title">
+              <h1>First Visit Readiness Checklist</h1>
+              <p>Use this checklist to prepare for your caregiver's first visit. Questions? Email us at contact@blissfullivingsolutions.com</p>
+            </div>
+          </div>
+
+          <div class="section-heading screen-only">
             <h2>First Visit Readiness Checklist</h2>
             <p class="section-sub">A few simple steps to prepare for a smooth start to care.</p>
           </div>
@@ -697,6 +710,16 @@
             </ul>
             <button class="btn btn-outline" onclick="window.print()">Print Checklist</button>
           </div>
+
+          <!-- Shown only when printing -->
+          <div class="print-only print-notes-block" aria-hidden="true">
+            <p class="print-notes-label">Notes</p>
+            <div class="print-ruled-lines"></div>
+          </div>
+          <div class="print-only print-doc-footer" aria-hidden="true">
+            <p>Non-medical services only. All care plans are personalized to your needs. &nbsp;·&nbsp; contact@blissfullivingsolutions.com &nbsp;·&nbsp; Lemont, IL 60439</p>
+          </div>
+
         </div>
 
       </div>

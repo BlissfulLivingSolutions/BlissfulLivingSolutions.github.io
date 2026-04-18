@@ -213,14 +213,196 @@ strong {
   top: var(--space-4);
 }
 
-/* Print: isolate checklist only */
+/* Screen-only / print-only utility classes */
+.print-only { display: none; }
+
+/* ── Print Styles: First Visit Checklist ── */
 @media print {
-  body * { visibility: hidden; }
-  #checklist-section, #checklist-section * { visibility: visible; }
-  #checklist-section {
-    position: absolute;
-    inset: 0;
-    width: 100%;
+  @page {
+    size: letter portrait;
+    margin: 1.4cm 2cm 1.6cm;
   }
-  .btn { display: none; }
+
+  /* Remove all page chrome from layout (display:none eliminates space, visibility:hidden doesn't) */
+  .skip-link,
+  .mobile-nav-overlay,
+  #site-header,
+  #licensing-banner,
+  footer { display: none !important; }
+
+  /* Hide every section except the features section that contains the checklist */
+  main > section:not(#features) { display: none !important; }
+
+  /* Inside features, hide the pathway and cost estimator blocks */
+  #features .feature-block:not(#checklist-section) { display: none !important; }
+
+  /* Strip spacing from wrapper elements so checklist starts at the top */
+  body, main, #features, #features > .container {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  #checklist-section {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Show print-only elements */
+  .print-only { display: block !important; }
+
+  /* Hide screen-only elements and the print button */
+  .screen-only,
+  .btn { display: none !important; }
+
+  /* ── Branded header ── */
+  .print-doc-header {
+    margin-bottom: 20pt;
+  }
+
+  .print-brand-bar {
+    display: flex;
+    align-items: baseline;
+    gap: 10pt;
+    padding: 10pt 14pt;
+    background-color: #2D6A6A;
+    border-radius: 4pt 4pt 0 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-brand-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13pt;
+    font-weight: 700;
+    color: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-brand-sub {
+    font-size: 8.5pt;
+    color: rgba(255, 255, 255, 0.82);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-doc-title {
+    padding: 14pt 14pt 0;
+    border: 1pt solid #2D6A6A;
+    border-top: none;
+    border-radius: 0 0 4pt 4pt;
+  }
+
+  .print-doc-title h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16pt;
+    font-weight: 700;
+    color: #1E2B3A;
+    margin: 0 0 5pt;
+    padding: 0;
+    line-height: 1.2;
+  }
+
+  .print-doc-title p {
+    font-size: 8.5pt;
+    color: #6B7E8F;
+    margin: 0 0 12pt;
+    line-height: 1.4;
+  }
+
+  /* ── Checklist card ── */
+  .checklist-card {
+    background: #fff !important;
+    border: 1pt solid #E2DDD5 !important;
+    border-radius: 4pt !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .check-list {
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .check-list li {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10pt !important;
+    padding: 10pt 14pt !important;
+    border-bottom: 0.75pt solid #E2DDD5 !important;
+  }
+
+  .check-list li:last-child {
+    border-bottom: none !important;
+  }
+
+  .check-list input[type="checkbox"] {
+    width: 14pt !important;
+    height: 14pt !important;
+    min-width: 14pt !important;
+    border: 1.5pt solid #2D6A6A !important;
+    border-radius: 2pt !important;
+    accent-color: #2D6A6A;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    flex-shrink: 0;
+  }
+
+  .check-list label {
+    font-size: 11pt !important;
+    color: #1E2B3A !important;
+    font-weight: 500 !important;
+    cursor: default !important;
+    line-height: 1.4 !important;
+  }
+
+  /* ── Notes section ── */
+  .print-notes-block {
+    margin-top: 16pt;
+    padding: 12pt 14pt;
+    border: 1pt solid #E2DDD5;
+    border-radius: 4pt;
+  }
+
+  .print-notes-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #2D6A6A;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 8pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-ruled-lines {
+    height: 88pt;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 21pt,
+      #D8D3CB 21pt,
+      #D8D3CB 22pt
+    );
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Document footer ── */
+  .print-doc-footer {
+    margin-top: 12pt;
+    padding-top: 8pt;
+    border-top: 0.75pt solid #E2DDD5;
+    text-align: center;
+  }
+
+  .print-doc-footer p {
+    font-size: 7.5pt;
+    color: #6B7E8F;
+    margin: 0;
+  }
 }
