@@ -16,12 +16,12 @@ bun run preview  # Preview the production build locally
 
 ## Build System
 
-**Bun + Vite 5** — `package.json` defines the scripts; `vite.config.js` sets `base: '/'` (correct for a user/org GitHub Pages site).
+**Bun + Vite 5** — `package.json` defines the scripts; `vite.config.js` sets `base: '/'`, which is correct for this site because it is served from the domain root (custom domain on the GitHub Pages site), not from a repository subpath.
 
 GitHub Actions (`.github/workflows/deploy.yml`) handles CI/CD:
 - Trigger: push to `main` or manual dispatch
-- Steps: `bun install` → `bun run build` → deploy `dist/` to GitHub Pages
-- Uses `oven-sh/setup-bun@v2`, `actions/upload-pages-artifact@v3`, `actions/deploy-pages@v3`
+- Build flow: checkout → configure Pages → setup Bun → `bun install` → `bun run build` → verify `dist/` → upload Pages artifact → deploy to GitHub Pages
+- Uses `actions/checkout@v5`, `actions/configure-pages@v5`, `oven-sh/setup-bun@v2`, `actions/upload-pages-artifact@v4`, `actions/deploy-pages@v4`
 
 **⚠️ One-time manual step**: GitHub repo Settings → Pages → Source must be set to **"GitHub Actions"** (not "Deploy from a branch") for the workflow to succeed.
 
@@ -72,6 +72,17 @@ See `.claude/rules/brand.md` for the full brand identity. Key tokens:
 - Accent: `#D4923A` (Warm Amber)
 - Background: `#FAF7F0` (Warm Ivory)
 - All defined as CSS custom properties in `src/styles/base.css`
+
+## Deployment Notes / Troubleshooting
+
+- GitHub Pages must remain configured as **Settings → Pages → Source → GitHub Actions**
+- `public/CNAME` must remain present so the custom domain persists after deploys
+- The production build must output a valid `dist/index.html`
+- If Pages deploy fails with a misleading `404`, verify the workflow still includes:
+  - `actions/configure-pages`
+  - `actions/upload-pages-artifact`
+  - `actions/deploy-pages`
+  - top-level permissions for `contents: read`, `pages: write`, and `id-token: write`
 
 ## Pending Items (commented out in code)
 
