@@ -1,0 +1,226 @@
+/* ============================================================
+   BASE — Design Tokens, Reset, Typography
+   Blissful Living Solutions | Theme: Compassionate Warmth + Professional Authority
+   ============================================================ */
+
+:root {
+  /* === Brand Colors === */
+  --color-primary:       #2D6A6A;
+  --color-primary-dark:  #1F4D4D;
+  --color-primary-light: #E8F4F4;
+  --color-secondary:     #FAF7F0;
+  --color-accent:        #D4923A;
+  --color-accent-dark:   #B87730;
+  --color-accent-light:  #FDF3E3;
+  --color-dark:          #1E2B3A;
+  --color-mid:           #6B7E8F;
+  --color-green:         #7DB87D;
+  --color-card-bg:       #F0EDE6;
+  --color-white:         #FFFFFF;
+  --color-border:        #E2DDD5;
+  --color-error:         #C0392B;
+  --color-success:       #27AE60;
+
+  /* === Typography === */
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  2.25rem;
+  --text-3xl:  3rem;
+  --text-4xl:  3.75rem;
+
+  /* === Spacing === */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* === Border Radius === */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   32px;
+  --radius-full: 9999px;
+
+  /* === Shadows === */
+  --shadow-sm: 0 1px 3px rgba(30,43,58,0.06), 0 1px 2px rgba(30,43,58,0.04);
+  --shadow-md: 0 4px 12px rgba(30,43,58,0.08), 0 2px 4px rgba(30,43,58,0.05);
+  --shadow-lg: 0 12px 32px rgba(30,43,58,0.10), 0 4px 8px rgba(30,43,58,0.06);
+
+  /* === Transitions === */
+  --transition:      0.2s ease;
+  --transition-slow: 0.35s ease;
+
+  /* === Layout === */
+  --container-max: 1200px;
+  --header-height: 72px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Base Typography ── */
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--color-dark);
+  background-color: var(--color-secondary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.25;
+  color: var(--color-dark);
+}
+
+h1 { font-size: clamp(1.875rem, 5vw, var(--text-3xl)); font-weight: 700; }
+h2 { font-size: clamp(1.5rem, 4vw, var(--text-2xl));   font-weight: 700; }
+h3 { font-size: var(--text-xl);  font-weight: 600; }
+h4 { font-size: var(--text-lg);  font-weight: 600; }
+
+p {
+  margin-bottom: var(--space-4);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+strong {
+  font-weight: 600;
+}
+
+/* ── Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Scroll Reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger siblings inside a grid */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: none; }
+.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: none; }
+.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: none; }
+.reveal-stagger.revealed > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 9999;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--transition);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* Print: isolate checklist only */
+@media print {
+  body * { visibility: hidden; }
+  #checklist-section, #checklist-section * { visibility: visible; }
+  #checklist-section {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+  }
+  .btn { display: none; }
+}
