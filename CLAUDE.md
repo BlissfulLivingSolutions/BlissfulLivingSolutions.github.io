@@ -61,7 +61,12 @@ All content is in `index.html` as a single scrollable page with anchor-linked se
 **Image layout patterns** (in `sections.css`):
 - `.hero-layout` — 2-col grid on ≥900px (text | photo); image hidden on mobile
 - `.section-photo` — full-width banner photo with `object-fit: cover`; used in Who We Help
-- `.careers-layout` — 2-col grid on ≥768px (photo | card); stacks on mobile
+- `.careers-layout` — 2-col grid on ≥768px (photo | card); stacks on mobile. The card uses `.careers-card-header` (teal background, icon + heading + tagline) and `.careers-card-body` (white, requirements grid + offer callout + CTA).
+
+**CSS design conventions:**
+- Icons use `--color-primary-light` background / `--color-primary` stroke — never `--color-accent`. Amber (`--color-accent`) is reserved for secondary CTA buttons (`btn-accent`) and footer headings only.
+- Accordion open/close is animated via `max-height: 0 → 1000px` + `padding-bottom` transition (not `display: none/block`, which cannot be transitioned).
+- Scroll reveal: `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` class via IntersectionObserver at 8% threshold; CSS handles the staggered delays.
 
 **`public/CNAME`** — Must contain `www.blissfullivingsolutions.com`. If this file disappears from `dist/`, the custom domain breaks on the next deploy.
 
