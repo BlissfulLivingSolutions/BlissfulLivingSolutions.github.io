@@ -235,15 +235,17 @@
 }
 
 .accordion-content {
-  display: none;
-  padding-bottom: var(--space-5);
+  overflow: hidden;
+  max-height: 0;
+  padding-bottom: 0;
   color: var(--color-dark);
   line-height: 1.7;
+  transition: max-height 0.35s ease, padding-bottom 0.35s ease;
 }
 
 .accordion-content.active {
-  display: block;
-  animation: fadeSlideIn 0.2s ease;
+  max-height: 1000px;
+  padding-bottom: var(--space-5);
 }
 
 .accordion-content p + p {
