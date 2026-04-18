@@ -380,12 +380,14 @@
 
 .pathway-content {
   display: none;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   animation: fadeSlideIn 0.25s ease;
 }
 
 .pathway-content.active {
-  display: block;
+  display: flex;
 }
 
 .pathway-content h3 {
