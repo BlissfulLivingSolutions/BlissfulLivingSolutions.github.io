@@ -1,0 +1,90 @@
+/* ============================================================
+   CONSENT BANNER — Cookie consent UI
+   z-index 150: above sticky header (100), below mobile nav (200)
+   ============================================================ */
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background-color: var(--color-white);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -4px 20px rgba(30, 43, 58, 0.10);
+  padding: var(--space-5) var(--space-5);
+}
+
+.cookie-banner[hidden] {
+  display: none !important;
+}
+
+.cookie-banner-inner {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+@media (min-width: 640px) {
+  .cookie-banner-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-8);
+  }
+}
+
+.cookie-banner-text {
+  font-size: var(--text-sm);
+  color: var(--color-dark);
+  margin: 0;
+  flex: 1;
+  line-height: 1.6;
+}
+
+.cookie-banner-link {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.cookie-banner-link:hover {
+  color: var(--color-primary-dark);
+}
+
+.cookie-banner-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.cookie-banner-actions .btn {
+  padding: 0.625rem 1.25rem;
+  font-size: var(--text-sm);
+}
+
+/* ── Footer cookie preferences button ── */
+.footer-cookie-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: underline;
+  cursor: pointer;
+  line-height: inherit;
+  vertical-align: baseline;
+}
+
+.footer-cookie-btn:hover {
+  color: var(--color-white);
+}
+
+.footer-cookie-btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

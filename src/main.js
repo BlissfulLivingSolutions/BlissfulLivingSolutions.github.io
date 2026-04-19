@@ -3,6 +3,8 @@
  */
 
 import './styles/main.css'
+import { initConsentBanner, showCookiePreferences } from './consent-banner.js'
+import { trackLeadFormSubmit } from './analytics.js'
 
 document.addEventListener('DOMContentLoaded', () => {
   initBanner()
@@ -15,7 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initCostEstimator()
   initAccordion()
   initContactForm()
+  initConsentBanner()
+  initCookiePrefsButtons()
 })
+
+function initCookiePrefsButtons() {
+  document.querySelectorAll('[data-cookie-prefs]').forEach(el => {
+    el.addEventListener('click', showCookiePreferences)
+  })
+}
 
 /* ── Licensing Banner ─────────────────────────────────────── */
 function initBanner() {
@@ -217,6 +227,8 @@ function initContactForm() {
       `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`
     )
 
+    // Fire event before redirect — sendBeacon guarantees delivery
+    trackLeadFormSubmit()
     window.location.href =
       `mailto:contact@blissfullivingsolutions.com?subject=${subject}&body=${body}`
 
