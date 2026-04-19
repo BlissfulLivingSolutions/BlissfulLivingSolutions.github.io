@@ -14,6 +14,8 @@ bun run build    # Production build → dist/
 bun run preview  # Preview the production build locally
 ```
 
+There is no linting or test runner configured — do not attempt `bun run lint` or `bun run test`.
+
 ## Build System
 
 **Bun + Vite 5** — `package.json` defines the scripts; `vite.config.js` sets `base: '/'`, which is correct for this site because it is served from the domain root (custom domain on the GitHub Pages site), not from a repository subpath.
@@ -56,7 +58,7 @@ GitHub Actions (`.github/workflows/deploy.yml`) handles CI/CD:
 
 All content is in `index.html` as a single scrollable page with anchor-linked sections: `#home`, `#why-us`, `#services`, `#who-we-help`, `#quality`, `#service-area`, `#how-it-works`, `#features`, `#resources`, `#careers`, `#contact`.
 
-**`src/main.js`** — Ten `init*` functions called on `DOMContentLoaded`: `initBanner` (licensing notice dismiss), `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var), `initAccordion`, `initContactForm` (`mailto:` — no backend).
+**`src/main.js`** — Ten `init*` functions called on `DOMContentLoaded`: `initBanner` (licensing notice dismiss — adds `.hidden` in-memory only, not persisted; banner reappears on every page reload), `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var via `slider.style.setProperty`), `initAccordion` (uses `aria-expanded` attribute for state + `.active` class on content), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; success depends on user having an email client configured).
 
 **Image layout patterns** (in `sections.css`):
 - `.hero-layout` — 2-col grid on ≥900px (text | photo); image hidden on mobile
