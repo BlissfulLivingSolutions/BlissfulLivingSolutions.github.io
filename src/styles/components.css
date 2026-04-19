@@ -506,41 +506,6 @@ input[type="range"]::-moz-range-thumb {
   font-style: italic;
 }
 
-/* ── Checklist ── */
-.checklist-card {
-  max-width: 620px;
-  margin-inline: auto;
-}
-
-.check-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
-}
-
-.check-list li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-}
-
-.check-list input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  flex-shrink: 0;
-  accent-color: var(--color-primary);
-}
-
-.check-list label {
-  cursor: pointer;
-  font-size: var(--text-base);
-  color: var(--color-dark);
-  line-height: 1.4;
-}
 
 /* ── Animations ── */
 @keyframes fadeSlideIn {

@@ -651,58 +651,466 @@
                         </div>
                     </div>
 
-                    <!-- First Visit Checklist -->
-                    <div class="feature-block" id="checklist-section">
+                    <!-- Care Planning Worksheet -->
+                    <div class="feature-block" id="service-plan-section">
 
-                        <!-- Shown only when printing -->
+                        <!-- Print-only: document header -->
                         <div class="print-only print-doc-header" aria-hidden="true">
                             <div class="print-brand-bar">
                                 <span class="print-brand-name">Blissful Living Solutions LLC</span>
                                 <span class="print-brand-sub">Compassionate Non-Medical Home Care &nbsp;·&nbsp; Lemont, IL 60439</span>
                             </div>
                             <div class="print-doc-title">
-                                <h1>First Visit Readiness Checklist</h1>
-                                <p>Use this checklist to prepare for your caregiver's first visit. Questions? Email us at contact@blissfullivingsolutions.com</p>
+                                <h1>Care Planning Worksheet</h1>
+                                <p>Complete this worksheet before your first consultation to help organize the care details that matter most. Questions? Email contact@blissfullivingsolutions.com</p>
                             </div>
                         </div>
 
+                        <!-- Screen-only: section heading -->
                         <div class="section-heading screen-only">
-                            <h2>First Visit Readiness Checklist</h2>
-                            <p class="section-sub">A few simple steps to prepare for a smooth start to care.</p>
-                        </div>
-                        <div class="card checklist-card">
-                            <ul class="check-list">
-                                <li>
-                                    <input type="checkbox" id="c1">
-                                    <label for="c1">Emergency contact information handy</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="c2">
-                                    <label for="c2">List of medications (for reference only)</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="c3">
-                                    <label for="c3">Preferred meals and snacks available</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="c4">
-                                    <label for="c4">Household routine notes (pets, trash day, etc.)</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" id="c5">
-                                    <label for="c5">Clear path for walking and mobility</label>
-                                </li>
-                            </ul>
-                            <button class="btn btn-outline" onclick="window.print()">Print Checklist</button>
+                            <h2>Ready to Plan Together?</h2>
+                            <p class="section-sub">Every client relationship begins with a personal conversation about your loved one's needs and priorities.</p>
                         </div>
 
-                        <!-- Shown only when printing -->
-                        <div class="print-only print-notes-block" aria-hidden="true">
-                            <p class="print-notes-label">Notes</p>
-                            <div class="print-ruled-lines"></div>
+                        <!-- Screen-only: client callout card (same visual pattern as careers callout) -->
+                        <div class="careers-callout reveal screen-only">
+                            <div class="careers-callout-icon" aria-hidden="true">
+                                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                            </div>
+                            <div class="careers-callout-text">
+                                <h3>Prepare for Your First Conversation</h3>
+                                <p>We begin every care arrangement with a personal discussion about your loved one's daily routines, preferences, and what matters most to your family. Our Care Planning Worksheet helps you organize those details in advance — so our first call can focus on what really counts.</p>
+                                <button class="btn btn-outline" style="margin-top: 1.25rem;" onclick="window.print()">
+                                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                    </svg>
+                                    Print the Care Planning Worksheet
+                                </button>
+                            </div>
                         </div>
+
+                        <!-- Print-only: full service plan template body -->
+                        <div class="print-only spt-body" aria-hidden="true">
+
+                            <!-- A. Client Information -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Client Information</h2>
+                                <div class="spt-grid-2">
+                                    <div class="spt-field">
+                                        <span class="spt-label">Client Name</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Date of Birth</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Home Address</span>
+                                    <div class="spt-line"></div>
+                                </div>
+                                <div class="spt-grid-2">
+                                    <div class="spt-field">
+                                        <span class="spt-label">Phone Number</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Email Address (if applicable)</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- B. Emergency Contacts -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Emergency Contacts</h2>
+                                <div class="spt-grid-2">
+                                    <div class="spt-contact-block">
+                                        <p class="spt-sub-label">Contact 1</p>
+                                        <div class="spt-field">
+                                            <span class="spt-label">Name</span>
+                                            <div class="spt-line"></div>
+                                        </div>
+                                        <div class="spt-field">
+                                            <span class="spt-label">Relationship</span>
+                                            <div class="spt-line"></div>
+                                        </div>
+                                        <div class="spt-field">
+                                            <span class="spt-label">Phone Number</span>
+                                            <div class="spt-line"></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-contact-block">
+                                        <p class="spt-sub-label">Contact 2</p>
+                                        <div class="spt-field">
+                                            <span class="spt-label">Name</span>
+                                            <div class="spt-line"></div>
+                                        </div>
+                                        <div class="spt-field">
+                                            <span class="spt-label">Relationship</span>
+                                            <div class="spt-line"></div>
+                                        </div>
+                                        <div class="spt-field">
+                                            <span class="spt-label">Phone Number</span>
+                                            <div class="spt-line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="spt-note">Add additional emergency contacts on a separate sheet if needed.</p>
+                            </div>
+
+                            <!-- C. Authorized Representative -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Authorized Representative <span class="spt-optional">(if applicable)</span></h2>
+                                <div class="spt-grid-2">
+                                    <div class="spt-field">
+                                        <span class="spt-label">Name</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Relationship / Role</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Phone Number</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Email</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                </div>
+                                <p class="spt-note">e.g., legal guardian, power of attorney, or other person authorized to make care decisions.</p>
+                            </div>
+
+                            <!-- D. Care Needs & Goals -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Care Needs &amp; Goals</h2>
+                                <div class="spt-field">
+                                    <span class="spt-label">Summary of Care Needs</span>
+                                    <p class="spt-hint">Describe the client's current situation, daily challenges, and what prompted the need for home care.</p>
+                                    <div class="spt-line-tall"></div>
+                                </div>
+                                <div class="spt-field spt-field--spaced">
+                                    <span class="spt-label">Client Goals</span>
+                                    <p class="spt-hint">What does the client hope to maintain or achieve through home care?</p>
+                                    <div class="spt-line-tall"></div>
+                                </div>
+                            </div>
+
+                            <!-- E. Services Requested -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Services Requested</h2>
+                                <p class="spt-hint">Check all that apply.</p>
+                                <div class="spt-checkbox-group">
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text"><strong>Personal Care</strong> — bathing, dressing, toileting, mobility assistance, and eating</span>
+                                    </div>
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text"><strong>Homemaker Services</strong> — light housekeeping, laundry, meal preparation, and errands</span>
+                                    </div>
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text"><strong>Companionship</strong> — supervision, social activities, and accompaniment on outings</span>
+                                    </div>
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text"><strong>Other:</strong> &nbsp;<span class="spt-inline-line spt-inline-line--long"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- F. Specific Caregiver Tasks -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Specific Caregiver Tasks</h2>
+                                <p class="spt-hint">Check each task the caregiver should perform and note how often. All tasks are non-medical.</p>
+                                <div class="spt-task-grid">
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Bathing / showering assistance</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Grooming &amp; personal hygiene</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Dressing assistance</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Toileting &amp; incontinence care</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Mobility &amp; transfer support</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Medication reminders (non-medical only)</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                            <div class="spt-task-freq">Time(s) of Day:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Meal preparation &amp; feeding assistance</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Light housekeeping &amp; laundry</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Pet care (feeding, letting out)</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Grocery shopping &amp; errands</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Transportation to appointments</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                    <div class="spt-task-item">
+                                        <input type="checkbox">
+                                        <div class="spt-task-detail">
+                                            <span class="spt-check-text">Companionship activities</span>
+                                            <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="spt-task-item spt-task-other">
+                                    <input type="checkbox">
+                                    <div class="spt-task-detail">
+                                        <span class="spt-check-text">Other:&nbsp;<span class="spt-inline-line spt-inline-line--long"></span></span>
+                                        <div class="spt-task-freq">Frequency:&nbsp;<span class="spt-inline-line"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- G. Preferred Schedule -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Preferred Schedule</h2>
+                                <div class="spt-grid-2">
+                                    <div class="spt-field">
+                                        <span class="spt-label">Preferred Days</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Preferred Time(s)</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Approximate Hours Per Visit</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Desired Start Date</span>
+                                        <div class="spt-line"></div>
+                                    </div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Overall Visit Frequency</span>
+                                    <div class="spt-line"></div>
+                                </div>
+                                <p class="spt-note">Example: 3 visits per week, Mon / Wed / Fri, 9:00 am – 1:00 pm, approx. 4 hours per visit.</p>
+                            </div>
+
+                            <!-- H. Special Instructions & Precautions -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Special Instructions &amp; Precautions</h2>
+                                <div class="spt-grid-2">
+                                    <div class="spt-field">
+                                        <span class="spt-label">Allergies (food, medication, etc.)</span>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Dietary Needs / Restrictions</span>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Activity / Functional Limitations</span>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Cognitive / Behavioral Considerations</span>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Mental Health &amp; Emotional Status</span>
+                                    <div class="spt-line-2"></div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Safety Procedures Essential for This Client</span>
+                                    <div class="spt-line-2"></div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Primary Physician (Name &amp; Practice)</span>
+                                    <div class="spt-line"></div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Current Medications <span class="spt-optional">(for caregiver awareness only)</span></span>
+                                    <div class="spt-line-2"></div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Treatments Being Received <span class="spt-optional">(for caregiver awareness)</span></span>
+                                    <div class="spt-line-2"></div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Other Precautions or Important Information</span>
+                                    <p class="spt-hint">e.g., fall risk, hearing/vision impairment, communication needs</p>
+                                    <div class="spt-line-2"></div>
+                                </div>
+                                <p class="spt-note">Caregivers provide non-medical support only and will not perform nursing or clinical tasks.</p>
+                            </div>
+
+                            <!-- I. Home Environment & Safety -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Home Environment &amp; Safety</h2>
+                                <div class="spt-grid-2">
+                                    <div class="spt-field">
+                                        <span class="spt-label">Home Safety Risks</span>
+                                        <p class="spt-hint">e.g., loose rugs, poor lighting, stairs</p>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Pets in Home</span>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Equipment &amp; Assistive Devices</span>
+                                        <p class="spt-hint">e.g., cane, walker, wheelchair, oxygen</p>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                    <div class="spt-field">
+                                        <span class="spt-label">Emergency Plan</span>
+                                        <p class="spt-hint">e.g., medical alert system, 911 instructions</p>
+                                        <div class="spt-line-2"></div>
+                                    </div>
+                                </div>
+                                <div class="spt-field">
+                                    <span class="spt-label">Other Environment Notes</span>
+                                    <div class="spt-line-2"></div>
+                                </div>
+                            </div>
+
+                            <!-- J. Visit Documentation -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Visit Documentation</h2>
+                                <p class="spt-hint">Select the preferred method for documenting caregiver visits.</p>
+                                <div class="spt-checkbox-group spt-checkbox-group--inline">
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text">Caregiver daily notes / log</span>
+                                    </div>
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text">Task checklist &amp; client initials</span>
+                                    </div>
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text">Electronic Visit Verification (EVV)</span>
+                                    </div>
+                                    <div class="spt-check-row">
+                                        <input type="checkbox">
+                                        <span class="spt-check-text">Other:&nbsp;<span class="spt-inline-line"></span></span>
+                                    </div>
+                                </div>
+                                <div class="spt-field spt-field--spaced">
+                                    <span class="spt-label">Record Location</span>
+                                    <p class="spt-hint">Where documentation is kept (e.g., binder in home, electronic portal)</p>
+                                    <div class="spt-line"></div>
+                                </div>
+                            </div>
+
+                            <!-- K. Plan Review Log -->
+                            <div class="spt-section">
+                                <h2 class="spt-section-title">Plan Review Log</h2>
+                                <p class="spt-hint">Review and update this plan at least annually or when the client's needs change.</p>
+                                <table class="spt-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 18%;">Review Date</th>
+                                            <th style="width: 28%;">Reviewed By</th>
+                                            <th>Summary of Changes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td></td><td></td><td></td></tr>
+                                        <tr><td></td><td></td><td></td></tr>
+                                        <tr><td></td><td></td><td></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- L. Signatures -->
+                            <div class="spt-section spt-signatures">
+                                <h2 class="spt-section-title">Signatures</h2>
+                                <p class="spt-hint">By signing below, the client (or representative) and Blissful Living Solutions LLC confirm that this Care Planning Worksheet was reviewed together and reflects the agreed-upon plan for non-medical care services.</p>
+                                <div class="spt-sig-row">
+                                    <div class="spt-sig-block">
+                                        <div class="spt-sig-line"></div>
+                                        <p class="spt-sig-caption">Client / Representative Signature</p>
+                                    </div>
+                                    <div class="spt-sig-date">
+                                        <div class="spt-sig-line"></div>
+                                        <p class="spt-sig-caption">Date</p>
+                                    </div>
+                                </div>
+                                <div class="spt-sig-row">
+                                    <div class="spt-sig-block">
+                                        <div class="spt-sig-line"></div>
+                                        <p class="spt-sig-caption">Agency Representative Signature</p>
+                                    </div>
+                                    <div class="spt-sig-date">
+                                        <div class="spt-sig-line"></div>
+                                        <p class="spt-sig-caption">Date</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- end .spt-body -->
+
+                        <!-- Print-only: document footer -->
                         <div class="print-only print-doc-footer" aria-hidden="true">
-                            <p>Non-medical services only. All care plans are personalized to your needs. &nbsp;·&nbsp; contact@blissfullivingsolutions.com &nbsp;·&nbsp; Lemont, IL 60439</p>
+                            <p>Non-medical services only. All care plans are personalized to client needs. &nbsp;·&nbsp; contact@blissfullivingsolutions.com &nbsp;·&nbsp; Lemont, IL 60439</p>
                         </div>
 
                     </div>

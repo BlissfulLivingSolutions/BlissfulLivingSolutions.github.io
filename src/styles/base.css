@@ -216,7 +216,7 @@ strong {
 /* Screen-only / print-only utility classes */
 .print-only { display: none; }
 
-/* ── Print Styles: First Visit Checklist ── */
+/* ── Print Styles: Care Planning Worksheet ── */
 @media print {
   @page {
     size: letter portrait;
@@ -230,20 +230,20 @@ strong {
   #licensing-banner,
   footer { display: none !important; }
 
-  /* Hide every section except the features section that contains the checklist */
+  /* Hide every section except the features section that contains the worksheet */
   main > section:not(#features) { display: none !important; }
 
   /* Inside features, hide the pathway and cost estimator blocks */
-  #features .feature-block:not(#checklist-section) { display: none !important; }
+  #features .feature-block:not(#service-plan-section) { display: none !important; }
 
-  /* Strip spacing from wrapper elements so checklist starts at the top */
+  /* Strip spacing from wrapper elements so worksheet starts at the top */
   body, main, #features, #features > .container {
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
   }
 
-  #checklist-section {
+  #service-plan-section {
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
@@ -312,86 +312,6 @@ strong {
     line-height: 1.4;
   }
 
-  /* ── Checklist card ── */
-  .checklist-card {
-    background: #fff !important;
-    border: 1pt solid #E2DDD5 !important;
-    border-radius: 4pt !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
-
-  .check-list {
-    gap: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .check-list li {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10pt !important;
-    padding: 10pt 14pt !important;
-    border-bottom: 0.75pt solid #E2DDD5 !important;
-  }
-
-  .check-list li:last-child {
-    border-bottom: none !important;
-  }
-
-  .check-list input[type="checkbox"] {
-    width: 14pt !important;
-    height: 14pt !important;
-    min-width: 14pt !important;
-    border: 1.5pt solid #2D6A6A !important;
-    border-radius: 2pt !important;
-    accent-color: #2D6A6A;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    flex-shrink: 0;
-  }
-
-  .check-list label {
-    font-size: 11pt !important;
-    color: #1E2B3A !important;
-    font-weight: 500 !important;
-    cursor: default !important;
-    line-height: 1.4 !important;
-  }
-
-  /* ── Notes section ── */
-  .print-notes-block {
-    margin-top: 16pt;
-    padding: 12pt 14pt;
-    border: 1pt solid #E2DDD5;
-    border-radius: 4pt;
-  }
-
-  .print-notes-label {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 7.5pt;
-    font-weight: 700;
-    color: #2D6A6A;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin: 0 0 8pt;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .print-ruled-lines {
-    height: 88pt;
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 21pt,
-      #D8D3CB 21pt,
-      #D8D3CB 22pt
-    );
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
   /* ── Document footer ── */
   .print-doc-footer {
     margin-top: 12pt;
@@ -404,5 +324,336 @@ strong {
     font-size: 7.5pt;
     color: #6B7E8F;
     margin: 0;
+  }
+
+  /* ── Service Plan Template Body ── */
+  .spt-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    color: #1E2B3A;
+    line-height: 1.4;
+  }
+
+  .spt-section {
+    margin-bottom: 14pt;
+    padding: 10pt 12pt;
+    border: 1pt solid #E2DDD5;
+    border-radius: 4pt;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Section title bleeds to edges, creating a full-width teal header bar */
+  .spt-section-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10pt;
+    font-weight: 700;
+    color: #1E2B3A;
+    display: block;
+    margin: -10pt -12pt 8pt;
+    padding: 6pt 12pt;
+    background-color: #E8F4F4;
+    border-bottom: 1pt solid #E2DDD5;
+    border-radius: 3pt 3pt 0 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spt-optional {
+    font-weight: 400;
+    font-size: 8.5pt;
+    color: #6B7E8F;
+  }
+
+  /* ── Field layouts ── */
+  .spt-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8pt 16pt;
+  }
+
+  .spt-field {
+    margin-bottom: 8pt;
+  }
+
+  .spt-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .spt-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #2D6A6A;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 3pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Short single-line write-in */
+  .spt-line {
+    border-bottom: 0.75pt solid #6B7E8F;
+    min-height: 16pt;
+    width: 100%;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Two ruled lines for slightly longer fields */
+  .spt-line-2 {
+    height: 32pt;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 15pt,
+      #D8D3CB 15pt,
+      #D8D3CB 15.75pt
+    );
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Tall ruled area for narrative fields */
+  .spt-line-tall {
+    height: 56pt;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 15pt,
+      #D8D3CB 15pt,
+      #D8D3CB 15.75pt
+    );
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Contact block (emergency contacts side-by-side) ── */
+  .spt-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8pt 16pt;
+  }
+
+  .spt-contact-block {
+    border: 0.75pt solid #E2DDD5;
+    border-radius: 3pt;
+    padding: 8pt 10pt;
+  }
+
+  .spt-contact-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #6B7E8F;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6pt;
+    display: block;
+  }
+
+  /* ── Checkbox rows (services, task grid, visit doc) ── */
+  .spt-check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 7pt;
+    margin-bottom: 5pt;
+  }
+
+  .spt-check-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .spt-checkbox-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spt-body input[type="checkbox"] {
+    width: 10pt;
+    height: 10pt;
+    min-width: 10pt;
+    border: 1.25pt solid #2D6A6A;
+    border-radius: 2pt;
+    margin-top: 1.5pt;
+    flex-shrink: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spt-check-text {
+    font-size: 9.5pt;
+    color: #1E2B3A;
+    line-height: 1.35;
+  }
+
+  /* ── Task grid (caregiver tasks with frequency) ── */
+  .spt-task-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .spt-task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7pt;
+    padding: 5pt 0;
+    border-bottom: 0.5pt solid #E2DDD5;
+  }
+
+  .spt-task-grid .spt-task-item:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  .spt-task-other {
+    border-top: 0.5pt solid #E2DDD5;
+    padding-top: 5pt;
+    margin-top: 2pt;
+  }
+
+  .spt-task-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3pt;
+  }
+
+  .spt-task-freq {
+    font-size: 7.5pt;
+    color: #6B7E8F;
+    display: flex;
+    align-items: center;
+    gap: 3pt;
+  }
+
+  /* ── Schedule row ── */
+  .spt-schedule-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8pt 12pt;
+    margin-bottom: 8pt;
+  }
+
+  /* ── Signature rows ── */
+  .spt-sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 80pt;
+    gap: 0 20pt;
+    margin-bottom: 10pt;
+    align-items: end;
+  }
+
+  .spt-sig-grid:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── Review log table ── */
+  .spt-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .spt-table th {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #2D6A6A;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;
+    padding: 5pt 8pt;
+    background-color: #E8F4F4;
+    border: 0.75pt solid #E2DDD5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spt-table td {
+    padding: 5pt 8pt;
+    border: 0.75pt solid #E2DDD5;
+    height: 22pt;
+    font-size: 9pt;
+  }
+
+  /* ── Field modifiers ── */
+  .spt-field--spaced {
+    margin-top: 8pt;
+  }
+
+  /* ── Hint / note / sub-label text ── */
+  .spt-hint {
+    font-size: 7.5pt;
+    color: #6B7E8F;
+    margin: 0 0 4pt;
+    line-height: 1.35;
+  }
+
+  .spt-note {
+    font-size: 7.5pt;
+    color: #6B7E8F;
+    font-style: italic;
+    margin: 6pt 0 0;
+    line-height: 1.35;
+  }
+
+  .spt-sub-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #6B7E8F;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 6pt;
+  }
+
+  /* ── Inline write-in lines (within text spans) ── */
+  .spt-inline-line {
+    display: inline-block;
+    border-bottom: 0.75pt solid #6B7E8F;
+    min-width: 48pt;
+    min-height: 11pt;
+    vertical-align: bottom;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spt-inline-line--long {
+    min-width: 120pt;
+  }
+
+  /* ── Signature section ── */
+  .spt-sig-row {
+    display: grid;
+    grid-template-columns: 1fr 80pt;
+    gap: 0 20pt;
+    margin-bottom: 10pt;
+    align-items: end;
+  }
+
+  .spt-sig-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .spt-sig-line {
+    border-bottom: 1pt solid #1E2B3A;
+    min-height: 22pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .spt-sig-caption {
+    font-size: 7.5pt;
+    color: #6B7E8F;
+    margin: 3pt 0 0;
+    line-height: 1.2;
+  }
+
+  /* ── Visit Documentation inline checkbox layout ── */
+  .spt-checkbox-group--inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5pt 16pt;
   }
 }
