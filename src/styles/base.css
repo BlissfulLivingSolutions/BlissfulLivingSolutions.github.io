@@ -214,7 +214,20 @@ strong {
 }
 
 /* Screen-only / print-only utility classes */
-.print-only { display: none; }
+/* position:fixed off-screen instead of display:none so the browser always
+   has a complete layout for this content — prevents the first-print
+   missing-page bug on mobile where display:none elements are laid out
+   from scratch when print triggers, which can finish too late. */
+@media screen {
+  .print-only {
+    position: fixed;
+    top: 0;
+    left: -9999px;
+    width: 816px; /* 8.5in at 96 ppi — letter width */
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
 
 /* ── Print Styles: Care Planning Worksheet ── */
 @media print {
@@ -249,8 +262,14 @@ strong {
     background: #fff !important;
   }
 
-  /* Show print-only elements */
-  .print-only { display: block !important; }
+  /* Restore print-only elements to normal flow */
+  .print-only {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    width: auto !important;
+    visibility: visible !important;
+  }
 
   /* Hide screen-only elements and the print button */
   .screen-only,
