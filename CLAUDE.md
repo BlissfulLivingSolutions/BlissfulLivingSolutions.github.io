@@ -23,7 +23,6 @@ There is no linting or test runner configured — do not attempt `bun run lint` 
 GitHub Actions (`.github/workflows/deploy.yml`) handles CI/CD:
 - Trigger: push to `main` or manual dispatch
 - Build flow: checkout → configure Pages → setup Bun → `bun install` → `bun run build` → verify `dist/` → upload Pages artifact → deploy to GitHub Pages
-- Uses `actions/checkout@v5`, `actions/configure-pages@v5`, `oven-sh/setup-bun@v2`, `actions/upload-pages-artifact@v4`, `actions/deploy-pages@v4`
 
 **⚠️ One-time manual step**: GitHub repo Settings → Pages → Source must be set to **"GitHub Actions"** (not "Deploy from a branch") for the workflow to succeed.
 
@@ -44,11 +43,9 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 ├── index.html             # Main single-page entry (Vite reads this)
 ├── privacy-policy.html    # Second Vite entry point — imports src/main.js for CSS
 ├── vite.config.js
-├── package.json
 ├── .env.example           # Copy to .env; only VITE_GA_MEASUREMENT_ID needed
 ├── public/                # Copied verbatim to dist/ — do NOT put src assets here
 │   ├── CNAME              # Custom domain — critical, must stay here
-│   ├── favicon.ico
 │   └── img/
 ├── src/
 │   ├── main.js            # JS entry; imports CSS and initialises all features
@@ -56,9 +53,9 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 │   ├── consent-banner.js  # Cookie banner UI and localStorage persistence
 │   └── styles/
 │       ├── main.css       # Imports only (no styles here)
-│       ├── base.css       # CSS custom properties (tokens), reset, typography
+│       ├── base.css       # Design tokens, reset, typography, print styles
 │       ├── layout.css     # Header, footer, nav, grids, containers
-│       ├── components.css # Buttons, cards, forms, accordion, pathway/estimator/checklist
+│       ├── components.css # Buttons, cards, forms, accordion, pathway explorer, cost estimator
 │       ├── sections.css   # Section-specific styles (hero, services, quality, etc.)
 │       └── consent.css    # Cookie banner styles (z-index 150)
 └── .claude/rules/
@@ -88,6 +85,27 @@ All content is in `index.html` as a single scrollable page with anchor-linked se
 
 **`public/CNAME`** — Must contain `www.blissfullivingsolutions.com`. If this file disappears from `dist/`, the custom domain breaks on the next deploy.
 
+## Care Planning Worksheet (Print Feature)
+
+The `#features` section (`#service-plan-section` feature-block) contains a printable Care Planning Worksheet triggered by `onclick="window.print()"`.
+
+**Screen/print separation pattern:**
+- `.screen-only` — visible on screen, hidden in print (`display: none !important` in `@media print`)
+- `.print-only` — the entire worksheet body. **Not** `display: none` on screen; instead rendered off-screen via `@media screen { position: fixed; left: -9999px; visibility: hidden; width: 816px; }`. This keeps the element in the browser's layout tree at all times so the first print never has a missing-last-page bug from a cold layout pass.
+- In `@media print`, `.print-only` is reset to `position: static; visibility: visible`.
+
+**Print CSS lives in `src/styles/base.css`** inside `@media print`. All print-specific classes use the `.spt-` namespace (service plan template):
+- `.spt-section` — bordered card with teal header; `page-break-inside: avoid`
+- `.spt-section-title` — uses negative margin bleed (`margin: -10pt -12pt 8pt`) to span full card width with teal background
+- `.spt-grid-2` — 2-column field grid
+- `.spt-line` / `.spt-line-2` / `.spt-line-tall` — write-in lines (use explicit `#ffffff` not `transparent` in gradients — mobile browsers render `transparent` as black when printing)
+- `.spt-task-grid` — 2-column task list with checkbox + frequency rows
+- `.spt-check-row` — flex row for `<input type="checkbox">` + label text
+- `.spt-sig-row` — signature grid (1fr + 80pt date column)
+- `.spt-table` — plan review log table
+
+The worksheet has 12 sections (A–L): Client Information, Emergency Contacts, Authorized Representative, Care Needs & Goals, Services Requested, Specific Caregiver Tasks, Preferred Schedule, Special Instructions & Precautions, Home Environment & Safety, Visit Documentation, Plan Review Log, Signatures.
+
 ## Brand
 
 See `.claude/rules/brand.md` for the full brand identity. Key tokens:
@@ -101,16 +119,11 @@ See `.claude/rules/brand.md` for the full brand identity. Key tokens:
 - GitHub Pages must remain configured as **Settings → Pages → Source → GitHub Actions**
 - `public/CNAME` must remain present so the custom domain persists after deploys
 - `VITE_GA_MEASUREMENT_ID` must be set as a GitHub Actions secret or GA will be silently disabled in production
-- The production build must output a valid `dist/index.html`
-- If Pages deploy fails with a misleading `404`, verify the workflow still includes:
-  - `actions/configure-pages`
-  - `actions/upload-pages-artifact`
-  - `actions/deploy-pages`
-  - top-level permissions for `contents: read`, `pages: write`, and `id-token: write`
+- If Pages deploy fails with a misleading `404`, verify the workflow still includes `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`, and top-level permissions for `contents: read`, `pages: write`, and `id-token: write`
 
 ## Pending Items (commented out in code)
 
-Several blocks are commented out awaiting the IDPH license **number** (approval received, number in mail):
+Several blocks are commented out awaiting the IDPH license **number** (approval received, number pending):
 - Phone number in hero, contact section, footer, and schema.org structured data
 - Physical street address (city/ZIP shown only)
 - IDPH license number in quality section and footer
