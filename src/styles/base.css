@@ -405,10 +405,11 @@ strong {
   /* Two ruled lines for slightly longer fields */
   .spt-line-2 {
     height: 32pt;
+    background-color: #ffffff;
     background-image: repeating-linear-gradient(
       to bottom,
-      transparent,
-      transparent 15pt,
+      #ffffff,
+      #ffffff 15pt,
       #D8D3CB 15pt,
       #D8D3CB 15.75pt
     );
@@ -419,10 +420,11 @@ strong {
   /* Tall ruled area for narrative fields */
   .spt-line-tall {
     height: 56pt;
+    background-color: #ffffff;
     background-image: repeating-linear-gradient(
       to bottom,
-      transparent,
-      transparent 15pt,
+      #ffffff,
+      #ffffff 15pt,
       #D8D3CB 15pt,
       #D8D3CB 15.75pt
     );
