@@ -12,33 +12,11 @@ export function sanitizeUrl() {
 }
 
 export function initGA() {
-  if (!MEASUREMENT_ID) return
+  if (!MEASUREMENT_ID || typeof window.gtag !== 'function') return
 
-  window.dataLayer = window.dataLayer || []
-  window.gtag = function () { window.dataLayer.push(arguments) }
-
-  // BASIC consent mode: establish denied defaults before the script loads
-  window.gtag('consent', 'default', {
-    analytics_storage: 'denied',
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-  })
-
-  const script = document.createElement('script')
-  script.async = true
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`
-  document.head.appendChild(script)
-
+  window.gtag('consent', 'update', { analytics_storage: 'granted' })
   window.gtag('js', new Date())
-  window.gtag('config', MEASUREMENT_ID, {
-    send_page_view: false,
-  })
-
-  // User accepted — grant analytics storage; ad-related remain denied
-  window.gtag('consent', 'update', {
-    analytics_storage: 'granted',
-  })
+  window.gtag('config', MEASUREMENT_ID, { send_page_view: false })
 
   ready = true
 
