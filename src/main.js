@@ -4,7 +4,7 @@
 
 import './styles/main.css'
 import { initConsentBanner, showCookiePreferences } from './consent-banner.js'
-import { trackLeadFormSubmit } from './analytics.js'
+import { trackLeadFormSubmit, trackPathwaySelect, trackEstimatorInteraction, trackAccordionOpen } from './analytics.js'
 
 document.addEventListener('DOMContentLoaded', () => {
   initBanner()
@@ -148,6 +148,8 @@ function initPathwayExplorer() {
       btn.classList.add('active')
       const target = document.getElementById(btn.dataset.target)
       if (target) target.classList.add('active')
+
+      trackPathwaySelect(btn.dataset.target || btn.textContent.trim())
     })
   })
 }
@@ -176,7 +178,14 @@ function initCostEstimator() {
     slider.style.setProperty('--range-pct', `${pct}%`)
   }
 
-  slider.addEventListener('input', update)
+  let estimatorTimer
+  slider.addEventListener('input', () => {
+    update()
+    clearTimeout(estimatorTimer)
+    estimatorTimer = setTimeout(() => {
+      trackEstimatorInteraction(parseInt(slider.value, 10))
+    }, 1500)
+  })
   update()
 }
 
@@ -191,6 +200,15 @@ function initAccordion() {
       header.setAttribute('aria-expanded', String(!isExpanded))
       content.classList.toggle('active', !isExpanded)
       if (iconEl) iconEl.textContent = !isExpanded ? '−' : '+'
+
+      if (!isExpanded) {
+        const questionText = Array.from(header.childNodes)
+          .filter(n => n.nodeType === Node.TEXT_NODE)
+          .map(n => n.textContent.trim())
+          .join(' ')
+          .trim()
+        trackAccordionOpen(questionText)
+      }
     })
   })
 }

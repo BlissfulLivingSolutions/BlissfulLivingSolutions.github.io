@@ -1,5 +1,5 @@
 /**
- * GA4 analytics module — loads only after explicit user consent.
+ * GA4 analytics module — activates only after explicit user consent.
  * All events sanitize URLs (origin + pathname only) before sending.
  */
 
@@ -22,8 +22,12 @@ export function initGA() {
 
   trackPageView()
   initScrollDepth()
-  initOutboundClicks()
+  initSectionReach()
+  initLinkTracking()
+  initCtaTracking()
 }
+
+// ── Page view ────────────────────────────────────────────────
 
 export function trackPageView() {
   if (!ready || typeof window.gtag !== 'function') return
@@ -33,6 +37,8 @@ export function trackPageView() {
   })
 }
 
+// ── Contact form ─────────────────────────────────────────────
+
 export function trackLeadFormSubmit() {
   if (!ready || typeof window.gtag !== 'function') return
   window.gtag('event', 'lead_form_submit', {
@@ -40,6 +46,51 @@ export function trackLeadFormSubmit() {
     page_path: window.location.pathname,
   })
 }
+
+// ── CTA clicks ───────────────────────────────────────────────
+// Wire by adding data-cta-label (and optionally data-cta-section) to any element.
+
+export function trackCtaClick(label, section = '') {
+  if (!ready || typeof window.gtag !== 'function') return
+  window.gtag('event', 'cta_click', {
+    cta_label: label,
+    page_section: section,
+    page_path: window.location.pathname,
+  })
+}
+
+// ── Care pathway tab ─────────────────────────────────────────
+
+export function trackPathwaySelect(pathway_name) {
+  if (!ready || typeof window.gtag !== 'function') return
+  window.gtag('event', 'pathway_select', {
+    pathway_name,
+    page_path: window.location.pathname,
+  })
+}
+
+// ── Cost estimator ───────────────────────────────────────────
+
+export function trackEstimatorInteraction(hours_per_week) {
+  if (!ready || typeof window.gtag !== 'function') return
+  window.gtag('event', 'estimator_interaction', {
+    hours_per_week,
+    estimated_weekly_cost: hours_per_week * 32,
+    page_path: window.location.pathname,
+  })
+}
+
+// ── Accordion FAQ ────────────────────────────────────────────
+
+export function trackAccordionOpen(question) {
+  if (!ready || typeof window.gtag !== 'function') return
+  window.gtag('event', 'faq_open', {
+    question: question.slice(0, 100),
+    page_path: window.location.pathname,
+  })
+}
+
+// ── Internal: scroll depth ───────────────────────────────────
 
 function initScrollDepth() {
   const milestones = [50, 90]
@@ -68,22 +119,83 @@ function initScrollDepth() {
   window.addEventListener('scroll', check, { passive: true })
 }
 
-function initOutboundClicks() {
+// ── Internal: key section reach ──────────────────────────────
+// Fires once per section when 25% of it enters the viewport.
+
+function initSectionReach() {
+  const KEY_SECTIONS = ['services', 'contact', 'how-it-works', 'careers', 'why-us']
+  const fired = new Set()
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !fired.has(entry.target.id)) {
+        fired.add(entry.target.id)
+        window.gtag('event', 'section_reach', {
+          section_id: entry.target.id,
+          page_path: window.location.pathname,
+        })
+        observer.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.25 })
+
+  KEY_SECTIONS.forEach(id => {
+    const el = document.getElementById(id)
+    if (el) observer.observe(el)
+  })
+}
+
+// ── Internal: outbound, email, and phone link clicks ─────────
+
+function initLinkTracking() {
   document.addEventListener('click', e => {
-    const link = e.target.closest('a[href^="http"]')
+    const link = e.target.closest('a[href]')
     if (!link) return
 
-    try {
-      const parsed = new URL(link.href)
-      if (parsed.hostname === location.hostname) return
+    const href = link.getAttribute('href') || ''
 
-      window.gtag('event', 'outbound_click', {
-        link_url: parsed.origin + parsed.pathname,
-        link_domain: parsed.hostname,
+    if (href.startsWith('mailto:')) {
+      window.gtag('event', 'email_click', {
         link_text: (link.textContent || '').trim().slice(0, 80),
+        page_path: window.location.pathname,
       })
-    } catch {
-      // unparseable URL — skip
+      return
     }
+
+    if (href.startsWith('tel:')) {
+      window.gtag('event', 'phone_click', {
+        page_path: window.location.pathname,
+      })
+      return
+    }
+
+    // Outbound HTTP links
+    if (href.startsWith('http')) {
+      try {
+        const parsed = new URL(link.href)
+        if (parsed.hostname === location.hostname) return
+        window.gtag('event', 'outbound_click', {
+          link_url: parsed.origin + parsed.pathname,
+          link_domain: parsed.hostname,
+          link_text: (link.textContent || '').trim().slice(0, 80),
+        })
+      } catch {
+        // unparseable URL — skip
+      }
+    }
+  })
+}
+
+// ── Internal: CTA delegated listener ────────────────────────
+// Picks up any element with [data-cta-label] in the DOM.
+
+function initCtaTracking() {
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-cta-label]')
+    if (!el) return
+    trackCtaClick(
+      el.dataset.ctaLabel,
+      el.dataset.ctaSection || '',
+    )
   })
 }
