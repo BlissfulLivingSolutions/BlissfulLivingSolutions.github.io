@@ -6,11 +6,11 @@ description: Brand identity, color palette, typography, and tone of voice for Bl
 
 ## Business
 - **Name**: Blissful Living Solutions LLC
-- **Type**: Non-medical home care agency
+- **Type**: Non-medical home service agency
 - **Location**: Lemont, IL 60439
 - **Service area**: Cook, Will, Kane, Lake, and DuPage counties
 - **Email**: contact@blissfullivingsolutions.com
-- **IDPH status**: License approved, number pending in mail. NOT yet accepting clients until number received.
+- **IDPH status**: License approved.
 
 ## Primary Audiences
 1. **Adult children (40–65)** — anxious, time-pressed, researching care for an aging parent; often on mobile; guilt-prone; need reassurance and professionalism
