@@ -46,6 +46,8 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 ├── .env.example           # Copy to .env; only VITE_GA_MEASUREMENT_ID needed
 ├── public/                # Copied verbatim to dist/ — do NOT put src assets here
 │   ├── CNAME              # Custom domain — critical, must stay here
+│   ├── robots.txt         # Allows all crawlers; references sitemap URL
+│   ├── sitemap.xml        # All indexable pages; update <lastmod> on content changes
 │   └── img/
 ├── src/
 │   ├── main.js            # JS entry; imports CSS and initialises all features
@@ -67,7 +69,7 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 
 All content is in `index.html` as a single scrollable page with anchor-linked sections: `#home`, `#why-us`, `#services`, `#who-we-help`, `#quality`, `#service-area`, `#how-it-works`, `#features`, `#resources`, `#careers`, `#contact`.
 
-**`src/main.js`** — `init*` functions called on `DOMContentLoaded`: `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher — calls `trackPathwaySelect` on click), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
+**`src/main.js`** — `init*` functions called on `DOMContentLoaded`: `initBanner` (dismisses the `#licensing-banner` top-of-page notice via a close button), `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher — calls `trackPathwaySelect` on click), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
 
 **Analytics** (Advanced Consent Mode) — see `.claude/rules/analytics.md` for full detail. The static gtag.js `<script>` block lives at the top of `<head>` in both HTML files so GA's validator can detect it. `analytics_storage` is denied by default; `src/analytics.js:initGA()` upgrades consent and activates event tracking only after the user accepts.
 
@@ -81,9 +83,13 @@ All content is in `index.html` as a single scrollable page with anchor-linked se
 - Accordion open/close is animated via `max-height: 0 → 1000px` + `padding-bottom` transition (not `display: none/block`, which cannot be transitioned).
 - Scroll reveal: `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` class via IntersectionObserver at 8% threshold; CSS handles the staggered delays.
 
-**Adding a new page** — register it in `vite.config.js` `rollupOptions.input`, add the gtag consent block to its `<head>` (copy from `index.html`), and import `src/main.js` so it gets the bundled CSS and consent banner wiring.
+**Adding a new page** — register it in `vite.config.js` `rollupOptions.input`, add the gtag consent block to its `<head>` (copy from `index.html`), and import `src/main.js` so it gets the bundled CSS and consent banner wiring. Then add a `<url>` entry to `public/sitemap.xml` with the canonical production URL and today's date as `<lastmod>`.
+
+**Updating page content** — whenever substantive content changes are made to any existing page, update the corresponding `<lastmod>` date in `public/sitemap.xml` to today's date (ISO 8601 format: `YYYY-MM-DD`). This keeps Google's crawl scheduling accurate.
 
 **`public/CNAME`** — Must contain `www.blissfullivingsolutions.com`. If this file disappears from `dist/`, the custom domain breaks on the next deploy.
+
+**Footer social links** — Facebook, Instagram, and X icons live in `.footer-social` inside `.footer-inner`. Each is a `.social-link` anchor (inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`). Styles are in `src/styles/layout.css` under `.footer-social` / `.social-links` / `.social-link`.
 
 ## Care Planning Worksheet (Print Feature)
 
