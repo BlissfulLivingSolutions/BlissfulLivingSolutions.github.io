@@ -517,6 +517,21 @@
   background-color: var(--color-white);
 }
 
+/* ── Dark theme overrides (hard-coded rgba values) ── */
+:root[data-theme="dark"] .hero-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% -10%, rgba(95, 179, 179, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 70% at -5% 90%,  rgba(229, 166, 89, 0.08) 0%, transparent 60%);
+}
+
+:root[data-theme="dark"] .service-card--hospice {
+  border-color: rgba(229, 166, 89, 0.20);
+}
+
+:root[data-theme="dark"] .step-number {
+  box-shadow: 0 4px 12px rgba(95, 179, 179, 0.35);
+}
+
 .feature-block {
   margin-bottom: var(--space-16);
 }

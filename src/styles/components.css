@@ -507,6 +507,40 @@ input[type="range"]::-moz-range-thumb {
 }
 
 
+/* ── Dark theme overrides (hard-coded rgba values) ── */
+:root[data-theme="dark"] .btn-primary {
+  box-shadow: 0 4px 14px rgba(95, 179, 179, 0.30);
+}
+:root[data-theme="dark"] .btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(95, 179, 179, 0.42);
+}
+:root[data-theme="dark"] .btn-accent {
+  box-shadow: 0 4px 14px rgba(229, 166, 89, 0.28);
+}
+:root[data-theme="dark"] .btn-accent:hover {
+  box-shadow: 0 6px 20px rgba(229, 166, 89, 0.38);
+}
+:root[data-theme="dark"] .form-group input:focus,
+:root[data-theme="dark"] .form-group textarea:focus {
+  box-shadow: 0 0 0 3px rgba(95, 179, 179, 0.20);
+}
+:root[data-theme="dark"] .cost-results {
+  border-color: rgba(95, 179, 179, 0.18);
+}
+:root[data-theme="dark"] .form-feedback.success {
+  background-color: #1A3A25;
+  border-color: #2A5C3A;
+  color: #4FD187;
+}
+:root[data-theme="dark"] .form-feedback.error {
+  background-color: #3A1A1A;
+  border-color: #5C2A2A;
+  color: #E8624E;
+}
+:root[data-theme="dark"] .licensing-banner {
+  box-shadow: 0 -2px 16px rgba(0,0,0,0.40);
+}
+
 /* ── Animations ── */
 @keyframes fadeSlideIn {
   from {

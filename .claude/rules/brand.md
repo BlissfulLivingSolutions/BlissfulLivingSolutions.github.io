@@ -30,6 +30,8 @@ description: Brand identity, color palette, typography, and tone of voice for Bl
 - Use "seniors" or "older adults" — never "elderly"
 
 ## Color Palette
+
+### Light Theme (default)
 | CSS Token | Hex | Usage |
 |---|---|---|
 | `--color-primary` | `#2D6A6A` | Deep Slate Teal — primary brand, CTAs, nav active |
@@ -47,6 +49,29 @@ description: Brand identity, color palette, typography, and tone of voice for Bl
 | `--color-border` | `#E2DDD5` | Borders, dividers |
 | `--color-error` | `#C0392B` | Form validation errors |
 | `--color-success` | `#27AE60` | Form success, positive feedback |
+
+### Dark / Night Theme (`data-theme="dark"` on `<html>`)
+Warm charcoal base with a faint teal undertone — preserves "compassionate warmth + professional authority" on dark backgrounds. Teal and amber are brightened for WCAG AA contrast. Text uses warm off-white (not pure white) to stay brand-warm.
+
+| CSS Token | Dark Hex | Role |
+|---|---|---|
+| `--color-secondary` | `#141C1F` | Page background — deep warm charcoal |
+| `--color-white` | `#1E2A2D` | Elevated surface (header, cards) |
+| `--color-card-bg` | `#22302F` | Secondary card surface |
+| `--color-dark` | `#ECE4D4` | Primary text — warm ivory-white |
+| `--color-mid` | `#9BAAB8` | Secondary text, captions |
+| `--color-border` | `#2F3B3D` | Dividers, input borders |
+| `--color-primary` | `#5FB3B3` | Brand teal — brightened for AA contrast (~7.4:1) |
+| `--color-primary-dark` | `#7FC9C9` | Hover — inverts lighter on dark |
+| `--color-primary-light` | `#1A3A3A` | Teal-tinted fill — dark inversion |
+| `--color-accent` | `#E5A659` | Warm amber — softened (~8.9:1) |
+| `--color-accent-dark` | `#F0BB78` | Amber hover — inverts lighter |
+| `--color-accent-light` | `#3A2D1B` | Amber-tinted fill — dark inversion |
+| `--color-green` | `#9BD09B` | Checkmarks, trust signals |
+| `--color-error` | `#E8624E` | Form validation |
+| `--color-success` | `#4FD187` | Success feedback |
+
+**Footer exception**: `--color-dark` is repurposed as body text in dark mode, so the footer hard-codes `background-color: #0D1517` (near-black teal-charcoal) rather than using the token. Do not change this to a token reference.
 
 ## Typography
 - **Heading font**: `Plus Jakarta Sans` (Google Fonts, weight 600/700)
@@ -73,3 +98,5 @@ description: Brand identity, color palette, typography, and tone of voice for Bl
 - Add phone number to live site until IDPH license NUMBER is received (approval is done; number pending)
 - Use emoji as UI/design elements (only in prose if absolutely needed)
 - Use the old color palette (navy #1A3A5A, gold #E6B800, sky #87CEEB)
+- Use pure black (`#000000`) or pure white (`#FFFFFF`) as dark-mode backgrounds or text — the palette uses warm near-blacks and warm off-whites to stay on-brand
+- Introduce new hard-coded hex/rgba values in screen CSS without adding a matching `:root[data-theme="dark"]` override

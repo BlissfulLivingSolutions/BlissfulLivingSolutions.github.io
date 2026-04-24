@@ -3,10 +3,12 @@
  */
 
 import './styles/main.css'
+import { initThemeToggle } from './theme.js'
 import { initConsentBanner, showCookiePreferences } from './consent-banner.js'
 import { trackLeadFormSubmit, trackPathwaySelect, trackEstimatorInteraction, trackAccordionOpen } from './analytics.js'
 
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeToggle()
   initBanner()
   initMobileNav()
   initScrollHeader()
