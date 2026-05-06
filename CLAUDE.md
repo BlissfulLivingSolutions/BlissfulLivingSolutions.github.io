@@ -95,7 +95,11 @@ Import `src/main.js` so it gets the bundled CSS, theme toggle, and consent banne
 
 **`public/CNAME`** — Must contain `www.blissfullivingsolutions.com`. If this file disappears from `dist/`, the custom domain breaks on the next deploy.
 
-**Footer social links** — Facebook, Instagram, and X icons live in `.footer-social` inside `.footer-inner`. Each is a `.social-link` anchor (inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`). Styles are in `src/styles/layout.css` under `.footer-social` / `.social-links` / `.social-link`.
+**Footer social links** — Facebook, Instagram, X, and LinkedIn icons live in `.footer-social` inside `.footer-inner`. Each is a `.social-link` anchor (inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`). Styles are in `src/styles/layout.css` under `.footer-social` / `.social-links` / `.social-link`.
+
+## Orphaned Root Files
+
+`script.js` and `styles.css` in the project root are pre-Vite legacy files — they are **not** imported or referenced anywhere and have no effect on the build or the live site. Do not edit them; use `src/main.js` and `src/styles/` instead.
 
 ## Care Planning Worksheet (Print Feature)
 
