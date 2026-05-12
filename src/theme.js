@@ -19,21 +19,21 @@ function resolveTheme() {
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme)
-  const btn = document.querySelector('[data-theme-toggle]')
-  if (!btn) return
-  btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode')
+  const label = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    btn.setAttribute('aria-label', label)
+  })
 }
 
 export function initThemeToggle() {
   applyTheme(resolveTheme())
 
-  const btn = document.querySelector('[data-theme-toggle]')
-  if (!btn) return
-
-  btn.addEventListener('click', () => {
-    const next = resolveTheme() === 'dark' ? 'light' : 'dark'
-    setStoredTheme(next)
-    applyTheme(next)
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = resolveTheme() === 'dark' ? 'light' : 'dark'
+      setStoredTheme(next)
+      applyTheme(next)
+    })
   })
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {

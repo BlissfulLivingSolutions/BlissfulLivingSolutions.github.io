@@ -294,6 +294,12 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
+@media (max-width: 899px) {
+  .theme-toggle {
+    display: none;
+  }
+}
+
 @media (min-width: 900px) {
   .nav-toggle {
     display: none;
@@ -381,6 +387,44 @@
 .mobile-nav-list .mobile-cta:hover {
   background-color: var(--color-primary-dark) !important;
 }
+
+.mobile-nav-footer {
+  margin-top: auto;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.mobile-theme-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-mid);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.mobile-theme-btn:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.mobile-theme-btn .theme-toggle-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.mobile-theme-label-light,
+.mobile-theme-label-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .mobile-theme-label-light { display: inline; }
+:root[data-theme="light"] .mobile-theme-label-dark  { display: inline; }
 
 /* ── Footer ── */
 .site-footer {

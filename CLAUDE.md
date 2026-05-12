@@ -70,7 +70,7 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 
 All content is in `index.html` as a single scrollable page with anchor-linked sections: `#home`, `#why-us`, `#services`, `#who-we-help`, `#quality`, `#service-area`, `#how-it-works`, `#features`, `#resources`, `#careers`, `#contact`.
 
-**`src/main.js`** — `init*` functions called on `DOMContentLoaded` (in order): `initThemeToggle` (wires the `[data-theme-toggle]` header button; see Dark Mode below), `initBanner` (dismisses the `#licensing-banner` top-of-page notice via a close button), `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher — calls `trackPathwaySelect` on click), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
+**`src/main.js`** — `init*` functions called on `DOMContentLoaded` (in order): `initThemeToggle` (wires all `[data-theme-toggle]` elements via `querySelectorAll` — header button on desktop, `.mobile-theme-btn` in the mobile nav overlay footer on mobile; see Dark Mode below), `initBanner` (dismisses the `#licensing-banner` top-of-page notice via a close button), `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher — calls `trackPathwaySelect` on click), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
 
 **Analytics** (Advanced Consent Mode) — see `.claude/rules/analytics.md` for full detail. The static gtag.js `<script>` block lives at the top of `<head>` in both HTML files so GA's validator can detect it. `analytics_storage` is denied by default; `src/analytics.js:initGA()` upgrades consent and activates event tracking only after the user accepts.
 
@@ -89,7 +89,7 @@ All content is in `index.html` as a single scrollable page with anchor-linked se
 2. The `theme-color` meta pair
 3. The pre-paint theme detection `<script>` (synchronous; prevents flash of wrong theme)
 
-Import `src/main.js` so it gets the bundled CSS, theme toggle, and consent banner wiring. Add a `[data-theme-toggle]` button to the page's header (copy from `index.html`). Then add a `<url>` entry to `public/sitemap.xml` with the canonical production URL and today's date as `<lastmod>`.
+Import `src/main.js` so it gets the bundled CSS, theme toggle, and consent banner wiring. Copy the full header and mobile nav overlay from `index.html` — both the `.theme-toggle` header button (desktop) and the `.mobile-nav-footer` with `.mobile-theme-btn` (mobile) carry `[data-theme-toggle]` and must both be present for the toggle to work on all screen sizes. Then add a `<url>` entry to `public/sitemap.xml` with the canonical production URL and today's date as `<lastmod>`.
 
 **Updating page content** — whenever substantive content changes are made to any existing page, update the corresponding `<lastmod>` date in `public/sitemap.xml` to today's date (ISO 8601 format: `YYYY-MM-DD`). This keeps Google's crawl scheduling accurate.
 
@@ -122,7 +122,7 @@ The worksheet has 12 sections (A–L): Client Information, Emergency Contacts, A
 
 Theme is applied via `data-theme="light|dark"` on `<html>`. A synchronous inline `<script>` in `<head>` sets this attribute before paint (no FOUC). Resolution order: `localStorage.bls_theme` (`'light'`|`'dark'`) → OS `prefers-color-scheme: dark` → local clock (night = hour ≥ 19 or < 7).
 
-**`src/theme.js`** — exports `initThemeToggle()`. Wires the `[data-theme-toggle]` header button (click toggles opposite of current resolved theme, saves to `localStorage.bls_theme`). Also listens to `matchMedia('(prefers-color-scheme: dark)')` change events to repaint when the user has no stored preference.
+**`src/theme.js`** — exports `initThemeToggle()`. Uses `querySelectorAll('[data-theme-toggle]')` to wire **all** toggle buttons — the `.theme-toggle` in the header (visible on desktop ≥900px only; hidden on mobile via CSS) and the `.mobile-theme-btn` inside `.mobile-nav-footer` at the bottom of the mobile nav overlay (visible on mobile only). Both call `applyTheme()`, which updates `data-theme` on `<html>` and syncs the `aria-label` on every `[data-theme-toggle]` element. Also listens to `matchMedia('(prefers-color-scheme: dark)')` change events to repaint when the user has no stored preference.
 
 **CSS token overrides** live in `src/styles/base.css` under `:root[data-theme="dark"]`. All `--color-*` and `--shadow-*` tokens are redefined there. Hard-coded `rgba(...)` values in other CSS files get companion overrides at the bottom of their respective files under the same selector.
 
@@ -134,7 +134,7 @@ Do not convert this to a token — it would create the same inversion problem.
 
 **Print styles are immune**: `@media print` in `base.css` hard-codes hex values and is unaffected by `data-theme`, so the Care Planning Worksheet always prints on white paper regardless of screen theme.
 
-**Toggle icon convention**: sun icon = shown in dark mode (click → go light); moon icon = shown in light mode (click → go dark). CSS controls visibility via `:root[data-theme="dark"] .theme-toggle-sun { display: block }` etc. in `src/styles/layout.css`.
+**Toggle icon convention**: sun icon = shown in dark mode (click → go light); moon icon = shown in light mode (click → go dark). CSS controls visibility via `:root[data-theme="dark"] .theme-toggle-sun { display: block }` etc. in `src/styles/layout.css`. The `.mobile-theme-btn` reuses these same icon classes, and adds `.mobile-theme-label-light` / `.mobile-theme-label-dark` text labels that flip with the same `data-theme` selectors.
 
 ## Brand
 
