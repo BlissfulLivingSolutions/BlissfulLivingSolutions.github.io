@@ -89,11 +89,12 @@
   flex-direction: column;
 }
 
+/* Icon tiles carry the arch motif (doorway = threshold of home) */
 .feature-icon-wrap {
   width: 52px;
-  height: 52px;
+  height: 56px;
   background-color: var(--color-primary-light);
-  border-radius: var(--radius-md);
+  border-radius: 999px 999px var(--radius-sm) var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
