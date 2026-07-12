@@ -107,66 +107,6 @@
   font-size: var(--text-xl);
 }
 
-/* Licensing Banner ── */
-.licensing-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: var(--color-primary-dark);
-  color: rgba(255,255,255,0.95);
-  padding: var(--space-3) var(--space-4);
-  z-index: 300;
-  box-shadow: 0 -2px 16px rgba(30,43,58,0.15);
-  transform: translateY(0);
-  transition: transform var(--transition-slow);
-}
-
-.licensing-banner.hidden {
-  transform: translateY(110%);
-}
-
-.banner-inner {
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--space-5);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-}
-
-.banner-icon {
-  flex-shrink: 0;
-  margin-top: 3px;
-  color: var(--color-accent);
-  width: 18px;
-  height: 18px;
-}
-
-.banner-inner p {
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  flex: 1;
-}
-
-.banner-close {
-  flex-shrink: 0;
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-full);
-  color: rgba(255,255,255,0.7);
-  transition: background-color var(--transition), color var(--transition);
-}
-
-.banner-close:hover {
-  background-color: rgba(255,255,255,0.1);
-  color: var(--color-white);
-}
-
 /* ── Accordion ── */
 .accordion {
   max-width: 800px;
@@ -537,10 +477,6 @@ input[type="range"]::-moz-range-thumb {
   border-color: #5C2A2A;
   color: #E8624E;
 }
-:root[data-theme="dark"] .licensing-banner {
-  box-shadow: 0 -2px 16px rgba(0,0,0,0.40);
-}
-
 /* ── Animations ── */
 @keyframes fadeSlideIn {
   from {

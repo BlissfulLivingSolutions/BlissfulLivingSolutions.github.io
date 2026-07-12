@@ -74,13 +74,15 @@ Warm charcoal base with a faint teal undertone — preserves "compassionate warm
 **Footer exception**: `--color-dark` is repurposed as body text in dark mode, so the footer hard-codes `background-color: #0D1517` (near-black teal-charcoal) rather than using the token. Do not change this to a token reference.
 
 ## Typography
-- **Heading font**: `Plus Jakarta Sans` (Google Fonts, weight 600/700)
+- **Display font**: `Fraunces` (Google Fonts, variable — `opsz` 9–144, weight 400–700). Used for **h1/h2 and pull-quotes only** (`--font-display`), weight ~540, letter-spacing -0.015em. Its soft terminals carry "compassionate warmth"; never use it for UI controls or small text.
+- **Heading/UI sans**: `Inter` (`--font-heading`) — h3/h4, buttons, labels, numbers.
 - **Body font**: `Inter` (Google Fonts, weight 400/500/600)
-- H1: `clamp(2rem, 5vw, 3rem)`, weight 700
-- H2: `2.25rem`, weight 700
-- H3: `1.5rem`, weight 600
+- H1: `clamp(2.125rem, 5.5vw, 3.5rem)`, Fraunces 540
+- H2: `clamp(1.625rem, 4vw, 2.375rem)`, Fraunces 540
+- H3: `1.5rem`, Inter 600
 - Body: `1.0625rem` (17px), line-height 1.7
 - Small/caption: `0.875rem`
+- Eyebrows/section labels: `0.8125rem` Inter 600, letter-spacing 0.08em, teal
 
 ## Visual Style
 - **Corners**: sm=6px, md=12px, lg=20px, xl=32px, full=9999px

@@ -9,7 +9,6 @@ import { trackLeadFormSubmit, trackPathwaySelect, trackEstimatorInteraction, tra
 
 document.addEventListener('DOMContentLoaded', () => {
   initThemeToggle()
-  initBanner()
   initMobileNav()
   initScrollHeader()
   initSmoothScroll()
@@ -26,17 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function initCookiePrefsButtons() {
   document.querySelectorAll('[data-cookie-prefs]').forEach(el => {
     el.addEventListener('click', showCookiePreferences)
-  })
-}
-
-/* ── Licensing Banner ─────────────────────────────────────── */
-function initBanner() {
-  const banner  = document.getElementById('licensing-banner')
-  const closeBtn = document.getElementById('close-banner')
-  if (!banner || !closeBtn) return
-
-  closeBtn.addEventListener('click', () => {
-    banner.classList.add('hidden')
   })
 }
 
