@@ -112,6 +112,12 @@ function initScrollReveal() {
   const targets = document.querySelectorAll('.reveal, .reveal-stagger')
   if (!targets.length) return
 
+  // Reduced motion (or no IO support): show everything immediately, no observer
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    targets.forEach(el => el.classList.add('revealed'))
+    return
+  }
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {

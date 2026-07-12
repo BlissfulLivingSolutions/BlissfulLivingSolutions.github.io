@@ -36,6 +36,12 @@
   outline-offset: 2px;
 }
 
+/* Press feedback — the interface confirms it heard you */
+.btn:active {
+  transform: scale(0.97);
+  transition-duration: var(--dur-fast);
+}
+
 .btn-primary {
   background-color: var(--color-primary);
   color: var(--color-white);
@@ -190,18 +196,34 @@
   transform: rotate(45deg);
 }
 
+/* Open/close animates grid-template-rows (0fr→1fr) — smooth at any content
+   height, unlike the old max-height hack. Content sits in .accordion-content-inner. */
 .accordion-content {
-  overflow: hidden;
-  max-height: 0;
-  padding-bottom: 0;
+  display: grid;
+  grid-template-rows: 0fr;
   color: var(--color-dark);
   line-height: 1.7;
-  transition: max-height 0.35s ease, padding-bottom 0.35s ease;
+  transition: grid-template-rows var(--dur-slow) var(--ease-out);
+}
+
+.accordion-content-inner {
+  overflow: hidden;
+  min-height: 0;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 
 .accordion-content.active {
-  max-height: 1000px;
-  padding-bottom: var(--space-5);
+  grid-template-rows: 1fr;
+}
+
+.accordion-content.active .accordion-content-inner {
+  opacity: 1;
+  transition-delay: 100ms;
+}
+
+.accordion-content-inner > :last-child {
+  margin-bottom: var(--space-5);
 }
 
 .accordion-content p + p {
@@ -362,7 +384,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  animation: fadeSlideIn 0.25s ease;
+  animation: fadeSlideIn var(--dur-base) var(--ease-out);
 }
 
 .pathway-content.active {
