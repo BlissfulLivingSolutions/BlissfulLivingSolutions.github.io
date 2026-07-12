@@ -314,10 +314,10 @@
 }
 
 
-/* ── Section Photo Banner ── */
+/* ── Section Photo Banner — soft arched shoulders echo the hero ── */
 .section-photo {
-  margin-bottom: var(--space-10);
-  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-12);
+  border-radius: 96px 96px var(--radius-lg) var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
 }
@@ -342,38 +342,71 @@
   }
 }
 
-/* ── Who We Help ── */
+/* ── Who We Help — uncarded persona entries ── */
 .persona-card {
-  border-top: 3px solid var(--color-primary-light);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-5);
+  align-items: start;
+}
+
+.persona-card > h3,
+.persona-card > p {
+  grid-column: 2;
 }
 
 .persona-icon {
+  grid-row: 1 / span 2;
   width: 44px;
-  height: 44px;
+  height: 48px;
   background-color: var(--color-primary-light);
-  border-radius: var(--radius-md);
+  border-radius: 999px 999px var(--radius-sm) var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-primary);
-  margin-bottom: var(--space-4);
+  flex-shrink: 0;
 }
 
 .persona-icon--accent {
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+  background-color: var(--color-accent-light);
+  color: var(--color-accent-dark);
 }
 
 .persona-card h3 {
   color: var(--color-dark);
   font-size: var(--text-lg);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
 }
 
 .persona-card p {
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--color-mid);
   line-height: 1.65;
+}
+
+/* Persona grid rhythm (uncarded entries need more air than cards did) */
+#who-we-help .card-grid-2 {
+  gap: var(--space-10) var(--space-12);
+  max-width: 1060px;
+  margin-inline: auto;
+}
+
+/* Pathway intro — bridge between personas and the explorer */
+.pathway-intro {
+  margin-top: var(--space-16);
+  margin-bottom: var(--space-8);
+  text-align: center;
+}
+
+.pathway-intro h3 {
+  font-family: var(--font-display);
+  font-weight: 540;
+  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+  letter-spacing: -0.01em;
+  color: var(--color-dark);
+  max-width: 34ch;
+  margin-inline: auto;
 }
 
 /* ── Quality & Safety — vetting timeline ── */
@@ -544,16 +577,16 @@
 
 .step-number {
   width: 52px;
-  height: 52px;
+  height: 56px;
   background-color: var(--color-primary);
   color: var(--color-white);
-  border-radius: 50%;
+  border-radius: 999px 999px var(--radius-sm) var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 700;
+  font-weight: 560;
   margin-bottom: var(--space-5);
   position: relative;
   z-index: 1;
