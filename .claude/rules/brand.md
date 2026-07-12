@@ -85,6 +85,7 @@ Warm charcoal base with a faint teal undertone — preserves "compassionate warm
 - Eyebrows/section labels: `0.8125rem` Inter 600, letter-spacing 0.08em, teal
 
 ## Visual Style
+- **Signature motif — the arch**: a doorway shape (`border-radius: 999px 999px <base> <base>`) symbolizing the threshold of home. Used on the hero photo, icon tiles, step numbers, and (softened to 96px shoulders) section photo banners. Use it consistently but sparingly — it is the one memorable element; everything around it stays quiet.
 - **Corners**: sm=6px, md=12px, lg=20px, xl=32px, full=9999px
 - **Shadows**: Soft, `rgba(30,43,58,...)` based — never harsh drop shadows
 - **Icons**: Inline SVG only (Heroicons stroke style, 1.5–2px stroke-width) — no emoji in UI elements

@@ -75,14 +75,23 @@ All content is in `index.html` as a single scrollable page with anchor-linked se
 **Analytics** (Advanced Consent Mode) — see `.claude/rules/analytics.md` for full detail. The static gtag.js `<script>` block lives at the top of `<head>` in both HTML files so GA's validator can detect it. `analytics_storage` is denied by default; `src/analytics.js:initGA()` upgrades consent and activates event tracking only after the user accepts.
 
 **Image layout patterns** (in `sections.css`):
-- `.hero-layout` — 2-col grid on ≥900px (text | photo); image hidden on mobile
-- `.section-photo` — full-width banner photo with `object-fit: cover`; used in Who We Help
-- `.careers-layout` — 2-col grid on ≥768px (photo | card); stacks on mobile
+- `.hero-layout` — 2-col grid on ≥900px (text | arch-masked photo); the photo is also shown on mobile below the text
+- `.section-photo` — full-width banner photo with `object-fit: cover` and arched shoulders; used in Who We Help and How It Works
+- The pathway explorer lives inside `#who-we-help` (moved out of `#features`); `#features` holds the cost estimator and the Care Planning Worksheet
+
+**Image pipeline** — photos are served as pre-committed WebP via `<picture>` with the original PNG as fallback; headers use `/img/logo-96.png` while OG/schema keep `/img/logo.png`. Regenerate variants with:
+```bash
+cwebp -q 80 public/img/<name>.png -o public/img/<name>-<width>.webp        # native width
+sips -s format png --resampleWidth 640 public/img/<name>.png --out /tmp/x.png && cwebp -q 80 /tmp/x.png -o public/img/<name>-640.webp
+```
+Use real pixel widths in `srcset` descriptors (e.g. `1184w`, not a rounded number).
 
 **CSS design conventions:**
-- Icons use `--color-primary-light` background / `--color-primary` stroke — never `--color-accent`. Amber (`--color-accent`) is reserved for secondary CTA buttons (`btn-accent`) and footer headings only.
-- Accordion open/close is animated via `max-height: 0 → 1000px` + `padding-bottom` transition (not `display: none/block`, which cannot be transitioned).
-- Scroll reveal: `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` class via IntersectionObserver at 8% threshold; CSS handles the staggered delays.
+- Icons use `--color-primary-light` background / `--color-primary` stroke — never `--color-accent`. Amber (`--color-accent`) is reserved for secondary CTA buttons (`btn-accent`), footer headings, and the hospice accent tiles. Aim for at most one amber element per viewport.
+- **Arch motif** (the site signature — a doorway/threshold): `border-radius: 999px 999px <base> <base>` on the hero photo, icon tiles (`.feature-icon-wrap`, `.service-icon`, `.persona-icon`, `.quality-icon`, `.step-number`), and softened to `96px 96px` shoulders on `.section-photo` banners. The 999px radii scale down proportionally to a true semicircle.
+- **Motion tokens** (base.css): `--ease-out: cubic-bezier(0.22,1,0.36,1)`, `--ease-in-out`, and duration tokens `--dur-fast/base/slow/reveal` (140/220/450/600ms). `--transition`/`--transition-slow` are shorthand aliases built on them. Animate transform/opacity only. Buttons have a `:active { scale(0.97) }` press state. The hero has a one-time entrance animation gated by `prefers-reduced-motion: no-preference`.
+- Accordion open/close is animated via `grid-template-rows: 0fr → 1fr` on `.accordion-content` with an `.accordion-content-inner` wrapper (`overflow: hidden; min-height: 0`) — smooth at any content height. The FAQ question text must remain a bare text node inside `.accordion-header` (analytics extracts direct text nodes).
+- Scroll reveal: `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` class via IntersectionObserver at 8% threshold; CSS handles the staggered delays (60ms steps, covers 8+ children). `initScrollReveal` reveals everything immediately under `prefers-reduced-motion`.
 
 **Adding a new page** — register it in `vite.config.js` `rollupOptions.input`, then copy the following blocks from `index.html` into the new page's `<head>` (order matters):
 1. The GA consent `<script>` block (must precede the async gtag.js tag)
