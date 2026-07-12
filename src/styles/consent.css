@@ -93,3 +93,10 @@
 :root[data-theme="dark"] .cookie-banner {
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.40);
 }
+
+/* ── Print — the banner must never appear on the Care Planning Worksheet ── */
+@media print {
+  .cookie-banner {
+    display: none !important;
+  }
+}
