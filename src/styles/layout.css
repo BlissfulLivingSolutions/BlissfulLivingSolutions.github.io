@@ -40,14 +40,27 @@
 }
 
 .section-heading h2 {
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .section-sub {
   font-size: var(--text-lg);
   color: var(--color-mid);
-  max-width: 600px;
+  max-width: 620px;
   margin-inline: auto;
+  line-height: 1.65;
+}
+
+/* Eyebrow — small teal label above section headings */
+.eyebrow {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
 }
 
 /* ── Grids ── */
@@ -100,10 +113,20 @@
   z-index: 100;
   background-color: var(--color-white);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition),
+              background-color var(--transition);
   height: var(--header-height);
   display: flex;
   align-items: center;
+}
+
+/* Frosted surface once the page scrolls; solid fallback above */
+@supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+  .site-header.scrolled {
+    background-color: color-mix(in srgb, var(--color-white) 86%, transparent);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    backdrop-filter: blur(12px) saturate(1.4);
+  }
 }
 
 .site-header.scrolled {
@@ -174,6 +197,7 @@
 }
 
 .nav-list a {
+  position: relative;
   display: block;
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm);
@@ -191,9 +215,29 @@
   text-decoration: none;
 }
 
+/* Active link: teal text + small underline dot that fades/slides in */
+.nav-list a:not(.nav-cta-link)::after {
+  content: '';
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: 2px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+/* Weight stays 500 — a bolder active state would shift link widths */
 .nav-list a.active {
   color: var(--color-primary);
-  font-weight: 600;
+}
+
+.nav-list a.active:not(.nav-cta-link)::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .nav-cta-link {
@@ -275,6 +319,13 @@
   background-color: var(--color-primary-light);
 }
 
+.nav-toggle:focus-visible,
+.mobile-nav-close:focus-visible,
+.mobile-theme-btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .hamburger-bar {
   display: block;
   width: 22px;
@@ -315,13 +366,49 @@
   display: flex;
   flex-direction: column;
   padding: var(--space-6) var(--space-5);
+  padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
   transform: translateX(100%);
-  transition: transform var(--transition-slow);
+  transition: transform var(--dur-slow) var(--ease-out), visibility 0s var(--dur-slow);
   overflow-y: auto;
+  visibility: hidden;
 }
 
 .mobile-nav-overlay.open {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+/* Links settle in a beat after the panel — quiet stagger, transform/opacity only */
+.mobile-nav-overlay .mobile-nav-list a,
+.mobile-nav-overlay .mobile-nav-footer {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out),
+              background-color var(--transition), color var(--transition);
+}
+
+.mobile-nav-overlay.open .mobile-nav-list a,
+.mobile-nav-overlay.open .mobile-nav-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(1) a { transition-delay: 60ms; }
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(2) a { transition-delay: 90ms; }
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(3) a { transition-delay: 120ms; }
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(4) a { transition-delay: 150ms; }
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(5) a { transition-delay: 180ms; }
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(6) a { transition-delay: 210ms; }
+.mobile-nav-overlay.open .mobile-nav-list li:nth-child(7) a { transition-delay: 240ms; }
+.mobile-nav-overlay.open .mobile-nav-footer { transition-delay: 280ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav-overlay .mobile-nav-list a,
+  .mobile-nav-overlay .mobile-nav-footer {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (min-width: 900px) {
@@ -429,8 +516,8 @@
 /* ── Footer ── */
 .site-footer {
   background-color: var(--color-dark);
-  color: rgba(255,255,255,0.75);
-  padding-block: var(--space-16);
+  color: rgba(255,255,255,0.78);
+  padding-block: var(--space-20) var(--space-16);
   margin-top: var(--space-12);
 }
 
