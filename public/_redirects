@@ -1,0 +1,3 @@
+# Cloudflare only (GitHub Pages ignores this file). The sitemap moved to
+# sitemap-index.xml with the Astro build; keep the old address working.
+/sitemap.xml /sitemap-index.xml 301

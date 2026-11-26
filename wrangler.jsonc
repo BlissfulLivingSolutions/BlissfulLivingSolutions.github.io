@@ -1,12 +1,15 @@
 {
   // Cloudflare Workers static-assets config. Workers Builds runs `bun run build`
-  // then `npx wrangler deploy`, which uploads dist/ — there is no Worker script.
+  // (astro build → dist/) then `npx wrangler deploy`, which uploads dist/ — there
+  // is no Worker script. Redirects live in public/_redirects.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "blissful-living-solutions",
   "compatibility_date": "2026-11-26",
   "assets": {
     "directory": "./dist",
     // /privacy-policy.html → /privacy-policy (canonical URLs already use the clean form)
-    "html_handling": "auto-trailing-slash"
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs get dist/404.html (src/pages/404.astro) with a 404 status
+    "not_found_handling": "404-page"
   }
 }

@@ -3,7 +3,9 @@
  * All events sanitize URLs (origin + pathname only) before sending.
  */
 
-const MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+import { PUBLIC_GA_MEASUREMENT_ID } from 'astro:env/client'
+
+const MEASUREMENT_ID = PUBLIC_GA_MEASUREMENT_ID
 
 let ready = false
 

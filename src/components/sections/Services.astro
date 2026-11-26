@@ -1,0 +1,80 @@
+---
+import Icon from '../Icon.astro'
+import type { IconName } from '../../data/icons'
+
+// Non-medical services only — never list anything clinical here.
+const services: { icon: IconName; title: string; tasks: string[] }[] = [
+  {
+    icon: 'user',
+    title: 'Personal care & daily activities',
+    tasks: [
+      'Bathing, dressing, and grooming assistance',
+      'Toileting and incontinence care',
+      'Mobility assistance and safe transfers',
+      'Feeding assistance (non-medical)',
+    ],
+  },
+  {
+    icon: 'home',
+    title: 'Homemaker & household',
+    tasks: [
+      'Light housekeeping and laundry',
+      'Bed-making and linen changes',
+      'Meal planning and preparation',
+      'Home organization and tidying',
+    ],
+  },
+  {
+    icon: 'heart',
+    title: 'Companionship & respite',
+    tasks: [
+      'Friendly conversation and activities',
+      'Emotional support and supervision',
+      'Respite care to give family caregivers a break',
+      'Medication reminders (cueing only)',
+    ],
+  },
+  {
+    icon: 'cart',
+    title: 'Errands & transportation',
+    tasks: [
+      'Grocery shopping and pharmacy runs',
+      'Escort to non-emergency appointments',
+      'Assistance with errands',
+    ],
+  },
+]
+---
+<section id="services" class="section section--surface">
+    <div class="container split split--sticky">
+        <div class="split-intro">
+            <h2>Help with the everyday, done with care.</h2>
+            <p class="lede">Comprehensive non-medical support, tailored to exactly what your loved one needs — nothing more, nothing less.</p>
+            <p class="split-aside">Not sure what you need yet? <a href="#who-we-help" class="text-link">Start with your situation</a></p>
+        </div>
+        <div class="service-index">
+            {services.map((service) => (
+                <article class="service">
+                    <div class="service-head">
+                        <span class="icon-arch" aria-hidden="true">
+                            <Icon name={service.icon} decorative={false} />
+                        </span>
+                        <h3>{service.title}</h3>
+                    </div>
+                    <ul class="check-list">
+                        {service.tasks.map((task) => <li>{task}</li>)}
+                    </ul>
+                </article>
+            ))}
+            <article class="service service--hospice">
+                <div class="service-head">
+                    <span class="icon-arch icon-arch--accent" aria-hidden="true">
+                        <Icon name="moon" decorative={false} />
+                    </span>
+                    <h3>Hospice support</h3>
+                </div>
+                <p>We provide compassionate non-medical support for clients on hospice, coordinating seamlessly with your hospice provider to offer extra comfort, presence, and practical help at home.</p>
+            </article>
+        </div>
+    </div>
+</section>

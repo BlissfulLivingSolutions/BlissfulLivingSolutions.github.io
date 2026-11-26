@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site'
+
+interface Props {
+  href: string
+  lazy?: boolean
+}
+
+const { href, lazy = false } = Astro.props
+---
+<a href={href} class="logo" aria-label={`${site.name} home`}>
+    <img src="/img/logo-96.png" alt="" width="46" height="46" class="logo-img" loading={lazy ? 'lazy' : undefined}>
+    <span class="logo-text">
+        <span class="logo-name">{site.name}</span>
+        <span class="logo-sub">{site.tagline}</span>
+    </span>
+</a>

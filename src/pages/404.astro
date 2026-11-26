@@ -1,0 +1,23 @@
+---
+/**
+ * Served for unknown URLs by both hosts: GitHub Pages picks up dist/404.html
+ * automatically, and Cloudflare uses it via `not_found_handling: "404-page"`
+ * in wrangler.jsonc. Kept out of the sitemap and out of search results.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { site } from '../data/site'
+---
+<BaseLayout title="Page not found | Blissful Living Solutions" description="We couldn't find that page." noindex>
+    <section class="section">
+        <div class="container">
+            <div class="prose">
+                <h1>We couldn't find that page.</h1>
+                <p>The link may be old, or the address may have a typo. Everything about our care, our caregivers and how to reach us is on our home page.</p>
+                <p>If you were looking for something specific, email us at <a href={`mailto:${site.email}`}>{site.email}</a> and we'll point you to it.</p>
+                <div class="prose-back">
+                    <a href="/" class="btn btn-primary">Go to the home page</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</BaseLayout>

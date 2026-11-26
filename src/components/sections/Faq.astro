@@ -1,0 +1,44 @@
+---
+/**
+ * Questions & answers. Content lives in src/data/faq.ts (it also feeds the
+ * FAQPage structured data). The question must stay a bare text node directly
+ * inside .accordion-header — analytics reads it from there for `faq_open`.
+ */
+import { faqGroups } from '../../data/faq'
+---
+<section id="resources" class="section section--surface">
+    <div class="container split split--sticky">
+        <div class="split-intro">
+            <h2>The questions every family should ask.</h2>
+            <p class="lede">Everything you need to make an informed decision — about any agency, including us.</p>
+            <p class="split-aside">Have a question that isn't here? <a href="#contact" class="text-link">Ask us directly</a></p>
+        </div>
+        <div class="accordion" id="faq-accordion">
+            {faqGroups.map((group) => (
+                <>
+                    <h3 class="accordion-section-title">{group.title}</h3>
+                    {group.items.map((item) => (
+                        <div class="accordion-item">
+                            <button class="accordion-header" type="button" aria-expanded="false" aria-controls={item.id}>
+                                {item.question}
+                                <span class="accordion-icon" aria-hidden="true">+</span>
+                            </button>
+                            <div class="accordion-content" id={item.id}>
+                                <div class="accordion-content-inner">
+                                    {item.askThem ? (
+                                        <>
+                                            <p class="ask-them"><strong>Ask them:</strong> {item.askThem}</p>
+                                            <p class="bls-answer"><strong>Blissful Living:</strong> {item.answer}</p>
+                                        </>
+                                    ) : (
+                                        <p>{item.answer}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </>
+            ))}
+        </div>
+    </div>
+</section>

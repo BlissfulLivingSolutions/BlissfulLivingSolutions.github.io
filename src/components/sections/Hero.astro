@@ -1,0 +1,61 @@
+---
+import { Picture } from 'astro:assets'
+import Icon from '../Icon.astro'
+import type { IconName } from '../../data/icons'
+import heroImage from '../../assets/images/hero_image.png'
+
+// Plain facts only — each one is stated elsewhere on the page. Never add
+// "licensed", ratings, or client counts here.
+const trustFacts: { icon: IconName; strong: string; rest: string }[] = [
+  { icon: 'shield', strong: 'Fingerprint background checks', rest: 'and IDPH Registry clearance' },
+  { icon: 'academic', strong: 'Screened & trained caregivers/CNAs', rest: 'with 10+ hours of training' },
+  { icon: 'eye', strong: 'Supervisor visits', rest: 'in the home at least every 90 days' },
+  { icon: 'home', strong: 'Locally owned & operated', rest: 'in Lemont, serving five counties' },
+]
+---
+<section id="home" class="hero">
+    <div class="container">
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <p class="hero-kicker">
+                    <Icon name="location" decorative />
+                    Home care in Lemont and greater Chicagoland
+                </p>
+
+                <h1><span class="h1-line">Care that feels like family.</span> <span class="h1-line">Professionalism you can trust.</span></h1>
+                <p class="hero-sub">Non-medical home care for seniors across greater Chicagoland — helping your loved one stay safely in the home they love, and giving your family real peace of mind.</p>
+
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary btn-lg" data-cta-label="hero_consultation" data-cta-section="hero">Request a free care consultation</a>
+                    <a href="#services" class="text-link">See our services</a>
+                </div>
+                <p class="hero-note">No pressure — we'll simply listen and answer your questions.</p>
+            </div>
+
+            <div class="hero-media">
+                <div class="hero-arch">
+                    <Picture
+                        src={heroImage}
+                        alt="Caregiver and senior sharing a warm moment looking at photos together at home"
+                        formats={['avif', 'webp']}
+                        fallbackFormat="jpg"
+                        widths={[640, 1184]}
+                        sizes="(min-width: 1024px) 680px, (min-width: 640px) 700px, 120vw"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <ul class="trust-strip" aria-label="Our caregiver standards">
+            {trustFacts.map((fact) => (
+                <li>
+                    <Icon name={fact.icon} class="trust-icon" />
+                    <span><strong>{fact.strong}</strong> {fact.rest}</span>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>

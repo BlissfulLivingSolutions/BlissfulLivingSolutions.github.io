@@ -2,7 +2,6 @@
  * Blissful Living Solutions — Main Script
  */
 
-import './styles/main.css'
 import { initThemeToggle } from './theme.js'
 import { initConsentBanner, showCookiePreferences } from './consent-banner.js'
 import { trackLeadFormSubmit, trackPathwaySelect, trackEstimatorInteraction, trackAccordionOpen } from './analytics.js'

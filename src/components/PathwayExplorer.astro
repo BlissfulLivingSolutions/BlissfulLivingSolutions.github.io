@@ -1,0 +1,98 @@
+---
+/**
+ * "Not sure where to start?" — WAI-ARIA tabs. main.js (initPathwayExplorer)
+ * handles selection, roving tabindex and arrow/Home/End keys, and sends the
+ * panel id to analytics as `pathway_name` — keep the ids stable.
+ */
+
+interface Pathway {
+  id: string
+  tab: string
+  title: string
+  body: string
+  cta: string
+  plan: string
+  detail: string
+  /** Spoken summary of the sample week */
+  weekLabel: string
+  /** Mon→Sun: x = on, ? = maybe, . = off */
+  week: string
+}
+
+const pathways: Pathway[] = [
+  {
+    id: 'safety',
+    tab: 'Falls & safety',
+    title: 'Safety first',
+    body: 'Falls are a major risk. Our caregivers assist with transfers, walking, and keeping walkways clear — reducing the chance of injury at home.',
+    cta: 'Ask about safety support',
+    plan: '3 days a week',
+    detail: '4 hours a day, during peak activity times.',
+    weekLabel: 'Sample week: Monday, Wednesday, and Friday',
+    week: 'x.x.x..',
+  },
+  {
+    id: 'loneliness',
+    tab: 'Loneliness',
+    title: 'Connection & joy',
+    body: 'Isolation profoundly impacts health. We provide friendly conversation, games, and accompaniment on walks to keep your loved one engaged.',
+    cta: 'Ask about companionship care',
+    plan: '2 days a week',
+    detail: '4 hours a day for visits and activities.',
+    weekLabel: 'Sample week: Tuesday and Thursday',
+    week: '.x.x...',
+  },
+  {
+    id: 'burnout',
+    tab: 'Caregiver burnout',
+    title: 'Rest for you',
+    body: 'You cannot pour from an empty cup. Let us take over the daily caregiving so you can recharge, run errands, or simply sleep — guilt-free.',
+    cta: 'Ask about respite care',
+    plan: '1–2 days a week',
+    detail: '6–8 hours a day for respite.',
+    weekLabel: 'Sample week: Saturday, and Wednesday if needed',
+    week: '..?..x.',
+  },
+  {
+    id: 'hospice',
+    tab: 'Hospice support',
+    title: 'Comfort & presence',
+    body: 'We supplement medical hospice with continuous bedside presence, comfort care, and personal assistance at home.',
+    cta: 'Ask about hospice support',
+    plan: 'Every day or night',
+    detail: 'Overnight shifts or daily 4-hour comfort visits.',
+    weekLabel: 'Sample week: every day',
+    week: 'xxxxxxx',
+  },
+]
+
+const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+const dayClass = (mark: string) => (mark === 'x' ? 'on' : mark === '?' ? 'maybe' : undefined)
+---
+<div class="pathway" id="pathway-explorer">
+    <h3 class="pathway-title" id="pathway-title">Not sure where to start? Pick the concern that sounds most familiar.</h3>
+    <div class="pathway-buttons" role="tablist" aria-labelledby="pathway-title">
+        {pathways.map((p, i) => (
+            <button class:list={['pathway-btn', { active: i === 0 }]} type="button" role="tab" id={`tab-${p.id}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={p.id} data-target={p.id} tabindex={i === 0 ? undefined : '-1'}>{p.tab}</button>
+        ))}
+    </div>
+
+    {pathways.map((p, i) => (
+        <div class:list={['pathway-content', { active: i === 0 }]} id={p.id} role="tabpanel" aria-labelledby={`tab-${p.id}`}>
+            <div class="pathway-body">
+                <h3>{p.title}</h3>
+                <p>{p.body}</p>
+                <a href="#contact" class="btn btn-primary">{p.cta}</a>
+            </div>
+            <div class="pathway-plan">
+                <span class="pathway-plan-label">A sample plan</span>
+                <p class="pathway-plan-value">{p.plan}</p>
+                <p class="pathway-plan-detail">{p.detail}</p>
+                <ol class="week" aria-label={p.weekLabel}>
+                    {DAYS.map((day, d) => <li class={dayClass(p.week[d])} aria-hidden="true">{day}</li>)}
+                </ol>
+            </div>
+        </div>
+    ))}
+    <p class="pathway-note">All plans are fully personalized to your specific needs and schedule.</p>
+</div>

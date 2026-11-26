@@ -1,0 +1,116 @@
+---
+/**
+ * Shared page shell: <head> (consent-mode GA, pre-paint theme, SEO basics,
+ * fonts), the header, <main id="main-content">, and the footer.
+ *
+ * Slots:
+ *   default      — page content, rendered inside <main>
+ *   head         — extra <head> tags right after the canonical link (OG, etc.)
+ *   schema       — JSON-LD blocks, at the end of <head>
+ *   before-header — e.g. the menu sheet on the home page
+ *   after-main   — e.g. the phone-only sticky CTA bar
+ */
+import '../styles/main.css'
+import { PUBLIC_GA_MEASUREMENT_ID } from 'astro:env/client'
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+
+interface Props {
+  title: string
+  description: string
+  /** `full` = home page header with section nav; `simple` = logo + back link */
+  header?: 'full' | 'simple'
+  /** Keep the page out of search results (e.g. the 404 page) */
+  noindex?: boolean
+}
+
+const { title, description, header = 'simple', noindex = false } = Astro.props
+const isHome = header === 'full'
+
+// With build.format 'file', Astro.url ends in .html during the build.
+const path = Astro.url.pathname.replace(/(index)?\.html$/, '')
+const canonical = new URL(path, Astro.site).href
+const gaId = PUBLIC_GA_MEASUREMENT_ID
+---
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Google Analytics — consent defaults must be set before gtag.js loads -->
+        <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('consent', 'default', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+            });
+        </script>
+        {gaId && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>}
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Theme color for mobile browser chrome -->
+        <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#141C1F" media="(prefers-color-scheme: dark)">
+
+        <!-- Pre-paint theme detection — prevents flash of wrong theme -->
+        <script is:inline>
+            (function () {
+                try {
+                    var stored = localStorage.getItem('bls_theme');
+                    var theme;
+                    if (stored === 'light' || stored === 'dark') {
+                        theme = stored;
+                    } else {
+                        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        var h = new Date().getHours();
+                        theme = (prefersDark || h >= 19 || h < 7) ? 'dark' : 'light';
+                    }
+                    document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            })();
+        </script>
+
+        <title>{title}</title>
+        <meta name="description" content={description}>
+        {noindex ? <meta name="robots" content="noindex"> : <link rel="canonical" href={canonical}>}
+        <slot name="head" />
+
+        <link rel="icon" href="/favicon.ico" sizes="any">
+
+        <!-- Google Fonts (non-blocking) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..700&family=Fraunces:opsz,wght,SOFT@9..144,350..500,0..100&display=swap" rel="stylesheet">
+
+        <slot name="schema" />
+
+        <script>
+            import '../scripts/main.js'
+        </script>
+    </head>
+
+    <body>
+
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+
+        <slot name="before-header" />
+
+        <SiteHeader variant={header} />
+
+        <main id="main-content">
+            <slot />
+        </main>
+
+        <slot name="after-main" />
+
+        <SiteFooter home={isHome} />
+
+    </body>
+
+</html>

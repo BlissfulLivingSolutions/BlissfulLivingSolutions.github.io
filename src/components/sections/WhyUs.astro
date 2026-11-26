@@ -1,0 +1,43 @@
+---
+import Icon from '../Icon.astro'
+import type { IconName } from '../../data/icons'
+
+const reasons: { icon: IconName; title: string; body: string }[] = [
+  {
+    icon: 'home',
+    title: 'Stay in your own home',
+    body: 'Maintain your routines and comfort in familiar surroundings with just the right amount of help — no move necessary.',
+  },
+  {
+    icon: 'heart',
+    title: 'Support for the whole family',
+    body: 'We provide respite and peace of mind for spouses and adult children, so you can be family again — not just a caregiver.',
+  },
+  {
+    icon: 'clock',
+    title: 'Flexible and local',
+    body: 'From a few hours a week to around-the-clock support. A local, owner-operated agency serving families across greater Chicagoland.',
+  },
+]
+---
+<section id="why-us" class="section">
+    <div class="container split">
+        <div class="split-intro">
+            <h2>We know this decision is hard.</h2>
+            <p class="lede">Inviting someone into your parent's home takes trust. Here is what we build that trust on — a gentle path to staying home safely, with the support your family needs.</p>
+        </div>
+        <ul class="reason-list">
+            {reasons.map((reason) => (
+                <li class="reason">
+                    <span class="icon-arch" aria-hidden="true">
+                        <Icon name={reason.icon} decorative={false} />
+                    </span>
+                    <div>
+                        <h3>{reason.title}</h3>
+                        <p>{reason.body}</p>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section>

@@ -89,3 +89,6 @@ lerna-debug.log
 Thumbs.db
 # Cloudflare Wrangler
 .wrangler/
+
+# Astro generated types
+.astro/

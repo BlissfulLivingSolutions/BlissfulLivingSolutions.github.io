@@ -1,0 +1,21 @@
+---
+/**
+ * Inline outline icon. Decorative by default (aria-hidden); pass
+ * `decorative={false}` when the icon sits inside an element that is already
+ * hidden from assistive tech (e.g. an aria-hidden tile), to avoid doubling up.
+ */
+import { icons, type IconName } from '../data/icons'
+
+interface Props {
+  name: IconName
+  class?: string
+  strokeWidth?: number | string
+  decorative?: boolean
+}
+
+const { name, class: className, strokeWidth = 1.75, decorative = true } = Astro.props
+const paths = icons[name]
+---
+<svg class={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width={strokeWidth} aria-hidden={decorative ? 'true' : undefined}>
+    {paths.map((d) => <path stroke-linecap="round" stroke-linejoin="round" d={d} />)}
+</svg>

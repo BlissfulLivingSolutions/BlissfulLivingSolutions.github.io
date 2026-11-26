@@ -1,0 +1,92 @@
+---
+/**
+ * Contact section. The form has no backend: main.js (initContactForm) builds a
+ * mailto: link and fires `lead_form_submit` first.
+ *
+ * Phone and street address come from src/data/site.ts and stay hidden while
+ * they are null (waiting on the IDPH license number).
+ */
+import Icon from '../Icon.astro'
+import { site } from '../../data/site'
+
+const cityLine = `${site.city}, ${site.region} ${site.postalCode}`
+---
+<section id="contact" class="section section--surface">
+    <div class="container contact-layout">
+        <div class="contact-info">
+            <h2>Let's talk about care for your loved one.</h2>
+            <p class="lede">We know this is a big decision. There's no pressure and no sales pitch — we'll simply listen, answer your questions, and help you figure out if we're the right fit.</p>
+
+            <ul class="contact-details">
+                <li class="contact-detail">
+                    <span class="contact-icon" aria-hidden="true">
+                        <Icon name="mail" decorative={false} />
+                    </span>
+                    <div>
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value"><a href={`mailto:${site.email}`}>{site.email}</a></span>
+                    </div>
+                </li>
+                {site.phone && (
+                    <li class="contact-detail">
+                        <span class="contact-icon" aria-hidden="true">
+                            <Icon name="phone" decorative={false} />
+                        </span>
+                        <div>
+                            <span class="contact-label">Phone</span>
+                            <span class="contact-value"><a href={`tel:${site.phone.tel}`}>{site.phone.display}</a></span>
+                        </div>
+                    </li>
+                )}
+                <li class="contact-detail">
+                    <span class="contact-icon" aria-hidden="true">
+                        <Icon name="location" decorative={false} />
+                    </span>
+                    <div>
+                        <span class="contact-label">Office</span>
+                        {site.streetAddress
+                            ? <span class="contact-value">{site.streetAddress}<br>{cityLine}</span>
+                            : <span class="contact-value">{cityLine}</span>}
+                    </div>
+                </li>
+                <li class="contact-detail">
+                    <span class="contact-icon" aria-hidden="true">
+                        <Icon name="clock" decorative={false} />
+                    </span>
+                    <div>
+                        <span class="contact-label">Office hours</span>
+                        <span class="contact-value">Monday–Friday, 9:00 am – 5:00 pm</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="contact-card">
+            <h3>Send us a message</h3>
+            <p class="contact-card-sub">Tell us a little about your loved one and what's on your mind.</p>
+            <form id="contact-form" class="contact-form" novalidate>
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input type="text" id="name" name="name" autocomplete="name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone number</label>
+                        <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">How can we help?</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Send your message</button>
+                <p class="form-hint">This opens your email app with your message ready to send.</p>
+                <div id="form-feedback" class="form-feedback" aria-live="polite" role="status"></div>
+            </form>
+        </div>
+    </div>
+</section>

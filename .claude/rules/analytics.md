@@ -12,14 +12,16 @@ GA4 is implemented using **Advanced Consent Mode** (direct gtag.js, no GTM). The
 
 | File | Role |
 |---|---|
-| `src/analytics.js` | Core GA4 module: consent update, config, and all event tracking |
-| `src/consent-banner.js` | Cookie banner UI, localStorage persistence, wires Accept/Decline to `initGA()` |
+| `src/layouts/BaseLayout.astro` | Consent-default `<script is:inline>` + the gtag.js tag (rendered only when the ID is set) at the top of every page's `<head>` |
+| `src/scripts/analytics.js` | Core GA4 module: consent update, config, and all event tracking |
+| `src/scripts/consent-banner.js` | Cookie banner UI, localStorage persistence, wires Accept/Decline to `initGA()` |
 | `src/styles/consent.css` | Banner styles (z-index 150, above sticky header at 100) |
-| `.env` / `.env.example` | `VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX` — baked in at build time |
+| `astro.config.mjs` | `env.schema` declares `PUBLIC_GA_MEASUREMENT_ID` (optional, client, public) |
+| `.env` / `.env.example` | `PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX` — baked in at build time |
 
 ## Consent Flow
 
-1. **Every page load** — inline `<script>` in `<head>` calls `gtag('consent', 'default', {...all denied})` before the gtag.js script loads. This is required by Google; it must appear before the `<script async src="gtag/js?id=...">` tag.
+1. **Every page load** — `is:inline` `<script>` in `<head>` (BaseLayout) calls `gtag('consent', 'default', {...all denied})` before the gtag.js script loads. This is required by Google; it must appear before the `<script async src="gtag/js?id=...">` tag.
 
 2. **`initConsentBanner()`** (called from `main.js` on `DOMContentLoaded`):
    - `consent === 'granted'` → calls `initGA()` immediately (returning visitor who accepted)
@@ -33,12 +35,15 @@ GA4 is implemented using **Advanced Consent Mode** (direct gtag.js, no GTM). The
 
 ## Environment Variable
 
-`VITE_GA_MEASUREMENT_ID` is injected at **build time** (not runtime) via Vite. It is referenced two ways:
+`PUBLIC_GA_MEASUREMENT_ID` is injected at **build time** (not runtime) through Astro's typed env (`astro:env`). Astro only exposes `PUBLIC_`-prefixed variables to the browser. Everywhere — `.astro` frontmatter and client scripts — it is read the same way:
 
-- In HTML: `%VITE_GA_MEASUREMENT_ID%` — Vite replaces this in the `<script async src="...">` tag during build.
-- In JS modules: `import.meta.env.VITE_GA_MEASUREMENT_ID` — replaced by Vite's bundler.
+```js
+import { PUBLIC_GA_MEASUREMENT_ID } from 'astro:env/client'
+```
 
-**GitHub Actions**: The variable must be added as a repository secret (`VITE_GA_MEASUREMENT_ID`) and passed to the build step via `env:` in `.github/workflows/deploy.yml`. Without it, all analytics and the banner are silently disabled.
+`BaseLayout.astro` uses it to render the `<script async src="https://www.googletagmanager.com/gtag/js?id=…">` tag (omitted entirely when unset); `analytics.js` and `consent-banner.js` use it to configure GA and decide whether to show the banner.
+
+**GitHub Actions**: the repository secret is still named `VITE_GA_MEASUREMENT_ID`; `.github/workflows/deploy.yml` passes it to the build step as `PUBLIC_GA_MEASUREMENT_ID`. **Cloudflare Workers Builds**: set `PUBLIC_GA_MEASUREMENT_ID` as a *build* variable on the Worker (Settings → Build → Variables and secrets). On either host, without it all analytics and the banner are silently disabled.
 
 ## Events Tracked
 
@@ -97,11 +102,8 @@ All events that include a URL use `sanitizeUrl()` from `analytics.js`, which ret
 
 ## Cookie Preferences Reopener
 
-Any element with `data-cookie-prefs` attribute in the DOM will reopen the banner when clicked. Currently wired in the footer of both `index.html` and `privacy-policy.html`. `initCookiePrefsButtons()` in `main.js` handles this via a delegated querySelectorAll at `DOMContentLoaded`.
+Any element with `data-cookie-prefs` attribute in the DOM will reopen the banner when clicked. Currently wired in the shared footer (`SiteFooter.astro`), so it is on every page. `initCookiePrefsButtons()` in `src/scripts/main.js` handles this via a delegated querySelectorAll at `DOMContentLoaded`.
 
 ## Adding a New Page
 
-If a new HTML entry point is added to `vite.config.js`:
-1. Add the same gtag consent block to the new file's `<head>` (copy from `index.html` lines 5–15)
-2. Import `src/main.js` as a module so the consent banner and cookie prefs wiring are active
-3. Add a `data-cookie-prefs` button to the new page's footer if it has one
+Build the page on `BaseLayout.astro` (`src/pages/<name>.astro`). The layout already provides the consent-default block, the gtag tag, `main.js` (banner + cookie-prefs wiring) and the footer's `data-cookie-prefs` button — nothing to copy. If a page ever needs its own `<head>`, the consent-default block must still come before the gtag tag.

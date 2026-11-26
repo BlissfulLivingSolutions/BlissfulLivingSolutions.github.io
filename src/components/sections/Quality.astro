@@ -1,0 +1,51 @@
+---
+import Icon from '../Icon.astro'
+import type { IconName } from '../../data/icons'
+
+const vettingSteps: { icon: IconName; title: string; body: string }[] = [
+  {
+    icon: 'shield',
+    title: 'Background checked',
+    body: 'Fingerprint-based criminal background checks and IDPH Registry clearance for every single caregiver — no exceptions.',
+  },
+  {
+    icon: 'clipboard',
+    title: 'Health screened',
+    body: 'Pre-employment TB screening and ongoing infection control monitoring to protect clients and families.',
+  },
+  {
+    icon: 'academic',
+    title: 'Thoroughly trained',
+    body: '10+ hours of initial training within the first 30 days, plus 10+ hours of annual continuing education on safety, dementia care, and caregiving skills.',
+  },
+  {
+    icon: 'eye',
+    title: 'Actively supervised',
+    body: 'On-site supervisory visits at least every 90 days to ensure quality, safety, and client satisfaction.',
+  },
+]
+---
+<section id="quality" class="section section--deep">
+    <div class="container">
+        <div class="quality-head">
+            <h2>Every caregiver, vetted like family.</h2>
+            <p class="lede">Before anyone crosses your loved one's threshold, they pass every step below. We take the worry out of bringing someone into your home.</p>
+        </div>
+        <ol class="vetting">
+            {vettingSteps.map((step) => (
+                <li class="vetting-step">
+                    <span class="vetting-mark" aria-hidden="true">
+                        <Icon name={step.icon} strokeWidth={1.5} decorative={false} />
+                    </span>
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                </li>
+            ))}
+        </ol>
+        <div class="section-cta">
+            {/* Label kept as "how_it_works_consultation" for GA history continuity */}
+            <a href="#contact" class="btn btn-on-deep" data-cta-label="how_it_works_consultation" data-cta-section="how-it-works">Request a free care consultation</a>
+            <p>Ask us anything about our screening, training, or how we match caregivers to clients.</p>
+        </div>
+    </div>
+</section>

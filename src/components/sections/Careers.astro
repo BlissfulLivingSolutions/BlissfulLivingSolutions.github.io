@@ -1,0 +1,25 @@
+---
+import Icon from '../Icon.astro'
+import { site } from '../../data/site'
+
+const applySubject = encodeURIComponent(`Caregiver Application - ${site.name}`)
+---
+<section id="careers" class="section section--tight">
+    <div class="container">
+        <div class="careers-panel">
+            <div class="careers-copy">
+                <h2>Join our caregiving team.</h2>
+                <p>Compassionate people wanted. We offer paid training and a supportive, respectful work environment.</p>
+                <ul class="check-list careers-reqs" aria-label="Requirements">
+                    <li>18 or older</li>
+                    <li>Able to pass a background check</li>
+                    <li>Reliable transportation</li>
+                </ul>
+            </div>
+            <a href={`mailto:${site.email}?subject=${applySubject}`} class="btn btn-accent btn-lg careers-callout-btn" data-cta-label="careers_apply" data-cta-section="careers">
+                <Icon name="mail" />
+                Apply by email
+            </a>
+        </div>
+    </div>
+</section>

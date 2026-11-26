@@ -1,0 +1,59 @@
+---
+/**
+ * `full`   — home page: section nav (≥1180px), theme toggle, "Contact us" and the
+ *            Menu pill that opens <MenuSheet />.
+ * `simple` — secondary pages: logo, an always-visible theme toggle and
+ *            "Back to home".
+ */
+import Logo from './Logo.astro'
+import ThemeIcons from './ThemeIcons.astro'
+import { navLinks } from '../data/site'
+
+interface Props {
+  variant?: 'full' | 'simple'
+}
+
+const { variant = 'full' } = Astro.props
+---
+<header class="site-header" id="site-header">
+    <div class="container header-inner">
+        {variant === 'full' ? (
+            <>
+                <Logo href="#home" />
+
+                <nav class="main-nav" id="main-nav" aria-label="Primary navigation">
+                    <ul class="nav-list">
+                        {navLinks.map((link) => <li><a href={`#${link.hash}`}>{link.headerLabel ?? link.label}</a></li>)}
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+                        <ThemeIcons />
+                    </button>
+
+                    <a href="#contact" class="btn btn-primary btn-sm header-cta">Contact us</a>
+
+                    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav-overlay">
+                        Menu
+                        <span class="hamburger" aria-hidden="true">
+                            <span class="hamburger-bar"></span>
+                            <span class="hamburger-bar"></span>
+                        </span>
+                    </button>
+                </div>
+            </>
+        ) : (
+            <>
+                <Logo href="/" />
+
+                <div class="header-actions">
+                    <button class="theme-toggle theme-toggle--always" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+                        <ThemeIcons />
+                    </button>
+                    <a href="/" class="btn btn-outline btn-sm header-back">Back to home</a>
+                </div>
+            </>
+        )}
+    </div>
+</header>

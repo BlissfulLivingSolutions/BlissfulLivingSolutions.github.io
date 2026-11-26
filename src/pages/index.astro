@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import MenuSheet from '../components/MenuSheet.astro'
+import MobileCtaBar from '../components/MobileCtaBar.astro'
+import Hero from '../components/sections/Hero.astro'
+import WhyUs from '../components/sections/WhyUs.astro'
+import Services from '../components/sections/Services.astro'
+import WhoWeHelp from '../components/sections/WhoWeHelp.astro'
+import Quality from '../components/sections/Quality.astro'
+import ServiceArea from '../components/sections/ServiceArea.astro'
+import HowItWorks from '../components/sections/HowItWorks.astro'
+import Features from '../components/sections/Features.astro'
+import Faq from '../components/sections/Faq.astro'
+import Careers from '../components/sections/Careers.astro'
+import Contact from '../components/sections/Contact.astro'
+import { site } from '../data/site'
+import { faqGroups } from '../data/faq'
+
+const title = 'Non-Medical Home Care in Greater Chicagoland | Blissful Living Solutions'
+const description = 'Compassionate non-medical home care across the greater Chicagoland area. Based in Lemont, IL — serving seniors in Cook, Will, Kane, Lake, and DuPage counties.'
+const ogImage = `${site.url}/img/logo.png`
+
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  additionalType: 'https://schema.org/HomeAndConstructionBusiness',
+  name: site.legalName,
+  description: 'Non-medical home care agency providing personal care, companionship, and homemaker services for seniors across the greater Chicagoland area. Based in Lemont, IL — serving Cook, Will, Kane, Lake, and DuPage counties.',
+  url: site.url,
+  '@id': `${site.url}/#organization`,
+  image: ogImage,
+  email: site.email,
+  ...(site.phone && { telephone: site.phone.tel }),
+  address: {
+    '@type': 'PostalAddress',
+    ...(site.streetAddress && { streetAddress: site.streetAddress }),
+    addressLocality: site.city,
+    addressRegion: site.region,
+    postalCode: site.postalCode,
+    addressCountry: 'US',
+  },
+  geo: { '@type': 'GeoCoordinates', ...site.geo },
+  areaServed: site.counties.map((county) => ({ '@type': 'AdministrativeArea', name: `${county} County, IL` })),
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '09:00',
+    closes: '17:00',
+  },
+  priceRange: '$$',
+  sameAs: [],
+}
+
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqGroups
+    .flatMap((group) => group.items)
+    .filter((item) => item.schema)
+    .map((item) => ({
+      '@type': 'Question',
+      name: item.schema!.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.schema!.answer },
+    })),
+}
+---
+<BaseLayout title={title} description={description} header="full">
+    <Fragment slot="head">
+        <!-- Open Graph (Facebook, LinkedIn) -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content={`${site.url}/`}>
+        <meta property="og:title" content={title}>
+        <meta property="og:description" content="Compassionate, professional home care for seniors across the greater Chicagoland area. Based in Lemont, IL. Screened and trained caregivers/CNAs.">
+        <meta property="og:image" content={ogImage}>
+        <meta property="og:site_name" content={site.legalName}>
+        <meta property="og:locale" content="en_US">
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content={title}>
+        <meta name="twitter:description" content="Compassionate, professional home care for seniors across the greater Chicagoland area. Based in Lemont, IL.">
+        <meta name="twitter:image" content={ogImage}>
+
+        <!-- Geo / Local SEO -->
+        <meta name="geo.region" content="US-IL">
+        <meta name="geo.placename" content="Lemont, Illinois">
+        <meta name="geo.position" content={`${site.geo.latitude};${site.geo.longitude}`}>
+        <meta name="ICBM" content={`${site.geo.latitude}, ${site.geo.longitude}`}>
+    </Fragment>
+
+    <Fragment slot="schema">
+        <!-- Schema.org Structured Data -->
+        <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+        <!-- FAQPage Structured Data -->
+        <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />
+    </Fragment>
+
+    <MenuSheet slot="before-header" />
+
+    <Hero />
+    <WhyUs />
+    <Services />
+    <WhoWeHelp />
+    <Quality />
+    <ServiceArea />
+    <HowItWorks />
+    <Features />
+    <Faq />
+
+    {/*
+      TODO: Add client testimonials here once real quotes are collected — never
+      fabricate. The component is pre-styled in sections.css under "Testimonials":
+
+      <section id="testimonials" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>What families are saying.</h2>
+          </div>
+          <div class="testimonial-grid">
+            <blockquote class="testimonial">
+              <p>"[Real testimonial text]"</p>
+              <footer><span class="testimonial-name">[First name L.]</span><span class="testimonial-meta">[City], [Relationship, e.g. Daughter of client]</span></footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+    */}
+
+    <Careers />
+    <Contact />
+
+    <MobileCtaBar slot="after-main" />
+</BaseLayout>

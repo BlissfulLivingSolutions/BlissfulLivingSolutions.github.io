@@ -1,0 +1,52 @@
+---
+import { Picture } from 'astro:assets'
+import kitchenImage from '../../assets/images/work_for_us_image.png'
+
+const steps = [
+  {
+    title: 'Reach out to us',
+    body: 'We listen to your needs, answer your questions, and get to know your situation — no pressure, no obligation.',
+  },
+  {
+    title: 'Build a personalized plan',
+    body: 'Together, we design a non-medical service plan that fits your schedule, preferences, and budget.',
+  },
+  {
+    title: 'Meet your caregiver',
+    body: 'Start care with a caregiver matched to your needs, plus ongoing 90-day supervisory check-ins.',
+  },
+]
+---
+<section id="how-it-works" class="section section--surface">
+    <div class="container steps-layout">
+        <figure class="steps-media reveal">
+            <div class="arch-frame">
+                <Picture
+                    src={kitchenImage}
+                    alt="Caregiver helping a senior with meal preparation in a warm kitchen"
+                    formats={['avif', 'webp']}
+                    fallbackFormat="jpg"
+                    widths={[640, 1248]}
+                    sizes="(min-width: 1024px) 640px, 94vw"
+                    loading="lazy"
+                    decoding="async"
+                />
+            </div>
+        </figure>
+        <div class="steps-copy">
+            <h2>Three gentle steps to getting help.</h2>
+            <p class="lede">Getting started is simple. We will guide you every step of the way.</p>
+            <ol class="steps">
+                {steps.map((step, i) => (
+                    <li class="step">
+                        <span class="step-num" aria-hidden="true">{i + 1}</span>
+                        <div>
+                            <h3>{step.title}</h3>
+                            <p>{step.body}</p>
+                        </div>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    </div>
+</section>

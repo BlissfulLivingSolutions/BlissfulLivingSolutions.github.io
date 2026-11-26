@@ -3,10 +3,11 @@
  * No GA script loads until the visitor explicitly accepts.
  */
 
+import { PUBLIC_GA_MEASUREMENT_ID } from 'astro:env/client'
 import { initGA } from './analytics.js'
 
 const STORAGE_KEY = 'bls_cookie_consent'
-const MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+const MEASUREMENT_ID = PUBLIC_GA_MEASUREMENT_ID
 
 export function getConsent() {
   return localStorage.getItem(STORAGE_KEY) // 'granted' | 'denied' | null

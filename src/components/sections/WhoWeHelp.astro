@@ -1,0 +1,69 @@
+---
+import { Picture } from 'astro:assets'
+import Icon from '../Icon.astro'
+import PathwayExplorer from '../PathwayExplorer.astro'
+import type { IconName } from '../../data/icons'
+import parkImage from '../../assets/images/enjoying_the_park_image.png'
+
+const personas: { icon: IconName; accent?: boolean; title: string; body: string }[] = [
+  {
+    icon: 'user',
+    title: 'Living alone but needs a hand',
+    body: 'For the senior who values independence but struggles with daily tasks like cooking or bathing. We provide the safety net that allows them to stay home.',
+  },
+  {
+    icon: 'users',
+    title: 'The spouse caregiver',
+    body: 'Caring for a partner can be exhausting. We step in to handle the physical tasks or sit with your loved one so you can rest, run errands, or simply sleep.',
+  },
+  {
+    icon: 'phone',
+    title: 'The worried family member',
+    body: 'You live miles away or work full time. We are your eyes and ears — providing professional care and keeping you informed so you can stop worrying.',
+  },
+  {
+    icon: 'moon',
+    accent: true,
+    title: 'Hospice support at home',
+    body: "When medical hospice care doesn't provide enough coverage, we fill the gaps with presence, comfort measures, and personal care throughout the day or night.",
+  },
+]
+---
+<section id="who-we-help" class="section">
+    <div class="container">
+        <div class="section-head">
+            <h2>Every situation is different. We meet you where you are.</h2>
+        </div>
+        <figure class="photo-banner reveal">
+            <Picture
+                src={parkImage}
+                alt="Senior and caregiver enjoying a walk together in the park"
+                formats={['avif', 'webp']}
+                fallbackFormat="jpg"
+                widths={[640, 1184]}
+                sizes="(min-width: 1320px) 1240px, 94vw"
+                loading="lazy"
+                decoding="async"
+            />
+        </figure>
+
+        <ul class="persona-grid">
+            {personas.map((persona) => (
+                <li class="persona">
+                    <span class:list={['icon-arch', { 'icon-arch--accent': persona.accent }]} aria-hidden="true">
+                        <Icon name={persona.icon} decorative={false} />
+                    </span>
+                    <h3>{persona.title}</h3>
+                    <p>{persona.body}</p>
+                </li>
+            ))}
+        </ul>
+
+        <PathwayExplorer />
+
+        <div class="section-cta">
+            <a href="#contact" class="btn btn-primary" data-cta-label="who_we_help_contact" data-cta-section="who-we-help">Talk to us about your situation</a>
+            <p>We'll help you figure out what level of support makes sense — no commitment required.</p>
+        </div>
+    </div>
+</section>

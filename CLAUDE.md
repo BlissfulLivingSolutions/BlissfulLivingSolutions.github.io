@@ -4,56 +4,80 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Static multi-page website for **Blissful Living Solutions LLC**, a non-medical home care agency based in Lemont, IL. Deployed via GitHub Pages at `www.blissfullivingsolutions.com` using a Bun + Vite build system with GitHub Actions.
+Static website for **Blissful Living Solutions LLC**, a non-medical home care agency based in Lemont, IL, at `www.blissfullivingsolutions.com`. Built with **Astro 7** (static output, Bun as package manager). Every push to `main` deploys to **both** GitHub Pages (GitHub Actions) and Cloudflare Workers static assets (Workers Builds) while the domain moves to Cloudflare.
 
 ## Development Commands
 
 ```bash
-bun run dev      # Start local dev server with HMR (localhost:5173)
+bun run dev      # Astro dev server with HMR (localhost:4321)
 bun run build    # Production build → dist/
 bun run preview  # Preview the production build locally
 ```
 
-There is no linting or test runner configured — do not attempt `bun run lint` or `bun run test`.
+Requires **Node ≥ 22.23.4** (Astro's CLI runs on Node even under `bun run`); `.node-version` pins 24 for both CI hosts. There is no linting or test runner configured — do not attempt `bun run lint` or `bun run test`.
 
 ## Build System
 
-**Bun + Vite 5** — `vite.config.js` sets `base: '/'` and defines two HTML entry points (`index.html` and `privacy-policy.html`) via `rollupOptions.input`. All pages must be registered here for Vite to bundle them.
+**Astro 7** — `astro.config.mjs` holds the whole config. Key choices (don't change without checking output):
+- `build.format: 'file'` + `trailingSlash: 'never'` — pages build to `dist/<name>.html` and are linked as `/privacy-policy` (no `.html`, no trailing slash). Canonical URLs, the sitemap and in-page links all use that form.
+- `compressHTML: false` — Astro 7's default (`'jsx'`) strips whitespace between inline elements, which changes rendering. Keep it off.
+- `env.schema` — `PUBLIC_GA_MEASUREMENT_ID` via `astro:env` (see below).
+- `@astrojs/sitemap` — writes `sitemap-index.xml` + `sitemap-0.xml`; `<lastmod>` comes from the `LASTMOD` map at the top of the config. 404 is filtered out.
+- Every file in `src/pages/` becomes a page automatically — there is no entry-point list to register.
 
-GitHub Actions (`.github/workflows/deploy.yml`) handles CI/CD:
-- Trigger: push to `main` or manual dispatch
-- Build flow: checkout → configure Pages → setup Bun → `bun install` → `bun run build` → verify `dist/` → upload Pages artifact → deploy to GitHub Pages
-
-**⚠️ One-time manual step**: GitHub repo Settings → Pages → Source must be set to **"GitHub Actions"** (not "Deploy from a branch") for the workflow to succeed.
+**Deploys** (both run on push to `main`):
+- **GitHub Pages** — `.github/workflows/deploy.yml`: checkout → configure Pages → setup Node (`.node-version`) → setup Bun → `bun install --frozen-lockfile` → `bun run build` → verify `dist/` → upload artifact → deploy. **⚠️ One-time manual step**: repo Settings → Pages → Source must be **"GitHub Actions"**.
+- **Cloudflare Workers Builds** — Worker `blissful-living-solutions`; build `bun run build`, deploy `npx wrangler deploy` (reads `wrangler.jsonc`: serves `dist/` as static assets, `auto-trailing-slash`, `404-page`). Redirects for Cloudflare live in `public/_redirects` (GitHub Pages ignores that file). Preview: `blissful-living-solutions.frosty-limit-ab7d.workers.dev`.
 
 ## Environment Variables
 
-`VITE_GA_MEASUREMENT_ID` is the only env var. Copy `.env.example` to `.env` and fill in the GA4 Measurement ID. Vite bakes it into the bundle at build time — it is **not** a runtime variable.
+`PUBLIC_GA_MEASUREMENT_ID` is the only env var (Astro only exposes `PUBLIC_`-prefixed vars to the browser). Declared in `astro.config.mjs` `env.schema` as an optional client/public string. Copy `.env.example` to `.env` for local builds. It is baked in at build time — **not** a runtime variable.
 
-- In JS modules: `import.meta.env.VITE_GA_MEASUREMENT_ID`
-- In HTML files: `%VITE_GA_MEASUREMENT_ID%` (Vite replaces this in the `<script src>` tag)
-- In GitHub Actions: stored as a repository secret and passed via `env:` on the build step
+- In `.astro` files and client scripts: `import { PUBLIC_GA_MEASUREMENT_ID } from 'astro:env/client'`
+- GitHub Actions: the repository secret is still named `VITE_GA_MEASUREMENT_ID`; the workflow maps it to `PUBLIC_GA_MEASUREMENT_ID` on the build step
+- Cloudflare: a **build** variable (Worker → Settings → Build → Variables and secrets), not a runtime variable
 
-If the variable is absent, all analytics and the cookie banner are silently disabled — safe to deploy without it.
+If the variable is absent, the gtag tag is not rendered and all analytics and the cookie banner are silently disabled — safe to deploy without it.
 
 ## Project Structure
 
 ```
 /
-├── index.html             # Main single-page entry (Vite reads this)
-├── privacy-policy.html    # Second Vite entry point — imports src/main.js for CSS
-├── vite.config.js
-├── .env.example           # Copy to .env; only VITE_GA_MEASUREMENT_ID needed
-├── public/                # Copied verbatim to dist/ — do NOT put src assets here
-│   ├── CNAME              # Custom domain — critical, must stay here
-│   ├── robots.txt         # Allows all crawlers; references sitemap URL
-│   ├── sitemap.xml        # All indexable pages; update <lastmod> on content changes
-│   └── img/
+├── astro.config.mjs       # Astro config: site URL, file-format pages, env schema, sitemap + LASTMOD map
+├── wrangler.jsonc         # Cloudflare Workers static-assets config (dist/)
+├── .node-version          # Node major for GitHub Actions + Cloudflare builds
+├── .env.example           # Copy to .env; only PUBLIC_GA_MEASUREMENT_ID needed
+├── public/                # Copied verbatim to dist/ — do NOT put source images here
+│   ├── CNAME              # Custom domain for GitHub Pages — critical, must stay here
+│   ├── _redirects         # Cloudflare redirects (/sitemap.xml → /sitemap-index.xml)
+│   ├── robots.txt         # Allows all crawlers; references sitemap-index.xml
+│   └── img/               # logo.png (OG/schema), logo-96.png (header/footer)
 ├── src/
-│   ├── main.js            # JS entry; imports CSS and initialises all features
-│   ├── theme.js           # Dark/night mode — detection, persistence, toggle wiring
-│   ├── analytics.js       # GA4 module — loads only after consent
-│   ├── consent-banner.js  # Cookie banner UI and localStorage persistence
+│   ├── pages/
+│   │   ├── index.astro          # Home page: composes the sections; OG/Twitter/Geo meta; LocalBusiness + FAQPage JSON-LD
+│   │   ├── privacy-policy.astro # Privacy policy (simple header)
+│   │   └── 404.astro            # Not-found page (noindex; used by both hosts)
+│   ├── layouts/
+│   │   └── BaseLayout.astro     # <head> (GA consent, pre-paint theme, SEO, fonts), header, <main>, footer; imports main.css + main.js
+│   ├── components/
+│   │   ├── SiteHeader.astro     # variant 'full' (home: nav, toggle, Contact us, Menu pill) | 'simple' (logo, toggle, Back to home)
+│   │   ├── MenuSheet.astro      # Full-screen menu sheet (<1180px)
+│   │   ├── SiteFooter.astro     # Four-column footer + legal row; `home` prop switches #links ↔ /#links
+│   │   ├── MobileCtaBar.astro   # Phone-only sticky consultation bar
+│   │   ├── Logo.astro, ThemeIcons.astro, Icon.astro
+│   │   ├── PathwayExplorer.astro, CostEstimator.astro
+│   │   ├── CarePlanningWorksheet.astro  # Printable worksheet — see below; edit surgically
+│   │   └── sections/            # One component per home-page section (Hero, WhyUs, Services, WhoWeHelp, Quality, ServiceArea, HowItWorks, Features, Faq, Careers, Contact)
+│   ├── data/
+│   │   ├── site.ts              # Business facts, nav links, social links, pending license items
+│   │   ├── faq.ts               # FAQ items — feeds the accordion AND the FAQPage JSON-LD
+│   │   └── icons.ts             # Outline icon paths for <Icon name="…" />
+│   ├── assets/images/           # Source photos, optimized at build time by <Picture>
+│   ├── scripts/
+│   │   ├── main.js              # Client entry; initialises all features
+│   │   ├── theme.js             # Dark/night mode — detection, persistence, toggle wiring
+│   │   ├── analytics.js         # GA4 module — loads only after consent
+│   │   └── consent-banner.js    # Cookie banner UI and localStorage persistence
 │   └── styles/
 │       ├── main.css       # Imports only (no styles here)
 │       ├── base.css       # Design tokens, reset, typography, motion, print styles
@@ -68,11 +92,19 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 
 ## Architecture
 
-All content is in `index.html` as a single scrollable page with anchor-linked sections: `#home`, `#why-us`, `#services`, `#who-we-help`, `#quality`, `#service-area`, `#how-it-works`, `#features`, `#resources`, `#careers`, `#contact`.
+The home page (`src/pages/index.astro`) is a single scrollable page with anchor-linked sections, one component each in `src/components/sections/`: `#home`, `#why-us`, `#services`, `#who-we-help`, `#quality`, `#service-area`, `#how-it-works`, `#features`, `#resources`, `#careers`, `#contact`.
 
-**`src/main.js`** — `init*` functions called on `DOMContentLoaded` (in order): `initThemeToggle` (wires all `[data-theme-toggle]` elements via `querySelectorAll` — header button on desktop ≥1180px, `.mobile-theme-btn` in the menu sheet below that; see Dark Mode below), `initMobileNav` (full-screen menu sheet, body scroll lock, Escape key, focus moves to Close on open / back to the Menu button on close, Tab is trapped inside the sheet), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (WAI-ARIA tabs — `aria-selected`, roving `tabindex`, arrow/Home/End keys; calls `trackPathwaySelect` on select), `initCostEstimator` (`HOURLY_RATE = 32`, slider min 4 = the 4-hour visit minimum, updates `--range-pct` CSS var and a spoken `aria-valuetext`; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initMobileCtaBar` (phone-only sticky "Request a free consultation" bar — `.visible` once the hero has scrolled away, hidden from `#contact` onward), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
+**Astro conventions in this repo:**
+- Repeated items (reasons, services, personas, pathways, vetting steps, steps, trust facts) are arrays in the component's frontmatter, rendered with `.map()`. Facts used in more than one place live in `src/data/`.
+- **CSS is global**, imported once in `BaseLayout.astro` (`import '../styles/main.css'`). Do **not** add scoped `<style>` blocks to components — Astro's scoping attributes raise specificity and break the cascade the stylesheets rely on.
+- Client JS is one processed `<script>` in `BaseLayout.astro` that imports `src/scripts/main.js` (bundled, `type="module"`). Every `init*` runs once on `DOMContentLoaded` and null-checks its elements, so the same bundle serves every page. Don't add `<ClientRouter />` (view transitions) without reworking that — swapped pages would never re-initialise.
+- Head scripts that must run before paint or before gtag.js — the consent-default block, the gtag tag, the pre-paint theme script — and the footer's `document.write` year are `is:inline`. Never let Astro process them.
+- Photos use `<Picture>` from `astro:assets` with `formats={['avif', 'webp']}`, `fallbackFormat="jpg"`, real pixel `widths` and the original `sizes`. Hero is `loading="eager" fetchpriority="high"`.
+- JSON-LD is built from data in `index.astro` frontmatter and emitted with `set:html={JSON.stringify(…)}`.
 
-**Analytics** (Advanced Consent Mode) — see `.claude/rules/analytics.md` for full detail. The static gtag.js `<script>` block lives at the top of `<head>` in both HTML files so GA's validator can detect it. `analytics_storage` is denied by default; `src/analytics.js:initGA()` upgrades consent and activates event tracking only after the user accepts.
+**`src/scripts/main.js`** — `init*` functions called on `DOMContentLoaded` (in order): `initThemeToggle` (wires all `[data-theme-toggle]` elements via `querySelectorAll` — header button on desktop ≥1180px, `.mobile-theme-btn` in the menu sheet below that; see Dark Mode below), `initMobileNav` (full-screen menu sheet, body scroll lock, Escape key, focus moves to Close on open / back to the Menu button on close, Tab is trapped inside the sheet), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (WAI-ARIA tabs — `aria-selected`, roving `tabindex`, arrow/Home/End keys; calls `trackPathwaySelect` on select), `initCostEstimator` (`HOURLY_RATE = 32`, slider min 4 = the 4-hour visit minimum, updates `--range-pct` CSS var and a spoken `aria-valuetext`; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initMobileCtaBar` (phone-only sticky "Request a free consultation" bar — `.visible` once the hero has scrolled away, hidden from `#contact` onward), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
+
+**Analytics** (Advanced Consent Mode) — see `.claude/rules/analytics.md` for full detail. The static gtag.js `<script>` block lives at the top of `<head>` in `BaseLayout.astro` (so every page has it and GA's validator can detect it). `analytics_storage` is denied by default; `src/scripts/analytics.js:initGA()` upgrades consent and activates event tracking only after the user accepts.
 
 **Layout patterns** (Nov 2026 redesign — "A home, kept."):
 - Headings are **left-aligned and editorial** — no centered section headers, no all-caps eyebrows. `.split` (layout.css) is the 5/7 two-column pattern (heading column | content column) used by Why Us, Services and FAQ; `.split--sticky` pins the heading column on ≥1024px.
@@ -81,12 +113,7 @@ All content is in `index.html` as a single scrollable page with anchor-linked se
 - `.photo-banner` — full-width arched banner (Who We Help); `.arch-frame` — tall arched photo (How It Works); `.area-map` — the OpenStreetMap embed in a soft arch, bbox covers all five counties.
 - The pathway explorer lives inside `#who-we-help`; each panel shows a sample plan with a `.week` strip (seven small arches, `.on` / `.maybe`). `#features` holds the cost estimator and the Care Planning Worksheet.
 
-**Image pipeline** — photos are served as pre-committed WebP via `<picture>` with the original PNG as fallback; headers use `/img/logo-96.png` while OG/schema keep `/img/logo.png`. Regenerate variants with:
-```bash
-cwebp -q 80 public/img/<name>.png -o public/img/<name>-<width>.webp        # native width
-sips -s format png --resampleWidth 640 public/img/<name>.png --out /tmp/x.png && cwebp -q 80 /tmp/x.png -o public/img/<name>-640.webp
-```
-Use real pixel widths in `srcset` descriptors (e.g. `1184w`, not a rounded number).
+**Image pipeline** — source photos live in `src/assets/images/` (full-size PNG) and are optimized at build time by `<Picture>`: AVIF + WebP sources at the listed `widths`, JPEG fallback, hashed filenames under `/_astro/`. To swap a photo, replace the file (or import a new one) — no manual `cwebp` step. Use real pixel widths in `widths` (e.g. `1184`, not a rounded number). The logo is **not** optimized: headers use `/img/logo-96.png` and OG/schema use the absolute `/img/logo.png` URL, both in `public/img/`.
 
 **CSS design conventions:**
 - Breakpoints (min-width): 480 / 640 / 768 / 1024 / **1180** (full desktop nav + header theme toggle). Below 1180 the header shows a labelled **Menu** pill (clearer for older visitors than a bare hamburger); "Contact us" shows in the header from 768.
@@ -98,22 +125,17 @@ Use real pixel widths in `srcset` descriptors (e.g. `1184w`, not a rounded numbe
 - Scroll reveal is used **sparingly** (photos only): `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` via IntersectionObserver at 8% threshold. `initScrollReveal` reveals everything immediately under `prefers-reduced-motion`.
 - **Never style bare `input`, `h2`, or `strong` globally** — the printed worksheet uses `h2.spt-section-title`, raw checkboxes and `<strong>` that must keep their hard-coded print colors. Form styles are scoped to `.form-group`.
 
-**Adding a new page** — register it in `vite.config.js` `rollupOptions.input`, then copy the following blocks from `index.html` into the new page's `<head>` (order matters; also copy the Google Fonts `<link>` — Atkinson Hyperlegible Next + Fraunces with the SOFT axis):
-1. The GA consent `<script>` block (must precede the async gtag.js tag)
-2. The `theme-color` meta pair
-3. The pre-paint theme detection `<script>` (synchronous; prevents flash of wrong theme)
+**Adding a new page** — create `src/pages/<name>.astro` and wrap the content in `<BaseLayout title="…" description="…">`. The layout supplies everything every page needs (GA consent block + gtag, theme-color pair, pre-paint theme script, canonical URL, fonts, CSS, `main.js`, header, footer). It defaults to the simple header (`.theme-toggle--always` + "Back to home"); pass `header="full"` only for the one-page home layout. Page-specific `<head>` tags go in `<Fragment slot="head">`, JSON-LD in `slot="schema"`. The sitemap picks the page up automatically — add its path to the `LASTMOD` map in `astro.config.mjs` with today's date. Link to it as `/<name>` (no `.html`).
 
-Import `src/main.js` so it gets the bundled CSS, theme toggle, and consent banner wiring. Either copy the full header and menu sheet from `index.html` (both the `.theme-toggle` header button and the `.mobile-nav-footer` `.mobile-theme-btn` carry `[data-theme-toggle]` and must both be present), or — like `privacy-policy.html` — use the simple header with `.theme-toggle.theme-toggle--always` (visible at every width) plus a `.header-back` link. Copy the footer from `index.html` with `#section` links rewritten to `/#section`. Then add a `<url>` entry to `public/sitemap.xml` with the canonical production URL and today's date as `<lastmod>`.
+**Updating page content** — whenever substantive content changes are made to any existing page, update that page's date in the `LASTMOD` map in `astro.config.mjs` to today's date (ISO 8601: `YYYY-MM-DD`). This keeps Google's crawl scheduling accurate.
 
-**Updating page content** — whenever substantive content changes are made to any existing page, update the corresponding `<lastmod>` date in `public/sitemap.xml` to today's date (ISO 8601 format: `YYYY-MM-DD`). This keeps Google's crawl scheduling accurate.
+**`public/CNAME`** — Must contain `www.blissfullivingsolutions.com` while GitHub Pages serves the site. If this file disappears from `dist/`, the custom domain breaks on the next GitHub deploy. (Remove it, and the GitHub workflow, only after the domain is attached to the Cloudflare Worker and GitHub Pages is turned off.)
 
-**`public/CNAME`** — Must contain `www.blissfullivingsolutions.com`. If this file disappears from `dist/`, the custom domain breaks on the next deploy.
-
-**Footer** — four columns in `.footer-top` (`.footer-brand`, `.footer-nav` "Explore", `.footer-contact` "Get in touch", `.footer-social` "Follow along") and a `.footer-bottom` legal row (copyright, Privacy policy, `[data-cookie-prefs]` button). Column headings are small `h2`s styled in layout.css. Facebook, Instagram, X, and LinkedIn are `.social-link` anchors (inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`) — identical on both pages.
+**Footer** — `SiteFooter.astro`: four columns in `.footer-top` (`.footer-brand`, `.footer-nav` "Explore", `.footer-contact` "Get in touch", `.footer-social` "Follow along") and a `.footer-bottom` legal row (copyright, Privacy policy, `[data-cookie-prefs]` button). Column headings are small `h2`s styled in layout.css. Links come from `navLinks` / `socialLinks` in `src/data/site.ts` (Facebook, Instagram, X, LinkedIn — inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`). The same component renders on every page; `home` switches `#section` ↔ `/#section`.
 
 ## Care Planning Worksheet (Print Feature)
 
-The `#features` section (`#service-plan-section` feature-block) contains a printable Care Planning Worksheet triggered by `onclick="window.print()"`. On screen it is introduced by the `.worksheet.screen-only` callout (a CSS-drawn paper illustration + print button). The worksheet markup itself (`.print-only` header, `.spt-body`, footer) was deliberately left untouched in the Nov 2026 redesign — edit it surgically, never by retyping.
+The `#features` section (`#service-plan-section` feature-block, `src/components/CarePlanningWorksheet.astro`) contains a printable Care Planning Worksheet triggered by `onclick="window.print()"`. On screen it is introduced by the `.worksheet.screen-only` callout (a CSS-drawn paper illustration + print button). The worksheet markup itself (`.print-only` header, `.spt-body`, footer) was deliberately left untouched in the Nov 2026 redesign and moved into the component byte-for-byte in the Astro migration — edit it surgically, never by retyping. It must contain no `{`/`}` characters (Astro would treat them as expressions).
 
 **Screen/print separation pattern:**
 - `.screen-only` — visible on screen, hidden in print (`display: none !important` in `@media print`)
@@ -134,9 +156,9 @@ The worksheet has 12 sections (A–L): Client Information, Emergency Contacts, A
 
 ## Dark / Night Mode
 
-Theme is applied via `data-theme="light|dark"` on `<html>`. A synchronous inline `<script>` in `<head>` sets this attribute before paint (no FOUC). Resolution order: `localStorage.bls_theme` (`'light'`|`'dark'`) → OS `prefers-color-scheme: dark` → local clock (night = hour ≥ 19 or < 7).
+Theme is applied via `data-theme="light|dark"` on `<html>`. A synchronous `is:inline` `<script>` in `BaseLayout.astro`'s `<head>` sets this attribute before paint (no FOUC). Resolution order: `localStorage.bls_theme` (`'light'`|`'dark'`) → OS `prefers-color-scheme: dark` → local clock (night = hour ≥ 19 or < 7).
 
-**`src/theme.js`** — exports `initThemeToggle()`. Uses `querySelectorAll('[data-theme-toggle]')` to wire **all** toggle buttons — the `.theme-toggle` in the header (visible on desktop ≥900px only; hidden on mobile via CSS) and the `.mobile-theme-btn` inside `.mobile-nav-footer` at the bottom of the mobile nav overlay (visible on mobile only). Both call `applyTheme()`, which updates `data-theme` on `<html>` and syncs the `aria-label` on every `[data-theme-toggle]` element. Also listens to `matchMedia('(prefers-color-scheme: dark)')` change events to repaint when the user has no stored preference.
+**`src/scripts/theme.js`** — exports `initThemeToggle()`. Uses `querySelectorAll('[data-theme-toggle]')` to wire **all** toggle buttons — the `.theme-toggle` in the header (visible at ≥1180px; `.theme-toggle--always` on secondary pages shows at every width) and the `.mobile-theme-btn` inside `.mobile-nav-footer` at the bottom of the menu sheet. All of them render the same `ThemeIcons.astro` pair. Both call `applyTheme()`, which updates `data-theme` on `<html>` and syncs the `aria-label` on every `[data-theme-toggle]` element. Also listens to `matchMedia('(prefers-color-scheme: dark)')` change events to repaint when the user has no stored preference.
 
 **CSS token overrides** live in `src/styles/base.css` under `:root[data-theme="dark"]`. All `--color-*` and `--shadow-*` tokens are redefined there, including the Nov 2026 supporting tones (`--color-body`, `--color-muted`, `--color-linen`, `--color-line`, `--color-deep`, `--color-on-deep*`, `--color-accent-on-deep`, `--color-on-primary`, `--color-footer`). Hard-coded `rgba(...)`/hex values in other CSS files get a companion `:root[data-theme="dark"]` override next to the rule.
 
@@ -162,18 +184,18 @@ See `.claude/rules/brand.md` for the full brand identity. Key tokens:
 
 ## Deployment Notes / Troubleshooting
 
-- GitHub Pages must remain configured as **Settings → Pages → Source → GitHub Actions**
-- `public/CNAME` must remain present so the custom domain persists after deploys
-- `VITE_GA_MEASUREMENT_ID` must be set as a GitHub Actions secret or GA will be silently disabled in production
+- GitHub Pages must remain configured as **Settings → Pages → Source → GitHub Actions** (until the Cloudflare cutover)
+- `public/CNAME` must remain present so the custom domain persists after GitHub deploys
+- The `VITE_GA_MEASUREMENT_ID` GitHub secret (mapped to `PUBLIC_GA_MEASUREMENT_ID` in the workflow) and the `PUBLIC_GA_MEASUREMENT_ID` Cloudflare build variable must both be set, or GA is silently disabled on that host
+- A build that fails on "Node.js vXX is not supported by Astro" means a host ignored `.node-version` — set `NODE_VERSION=24` (Cloudflare) or check the `actions/setup-node` step (GitHub)
 - If Pages deploy fails with a misleading `404`, verify the workflow still includes `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`, and top-level permissions for `contents: read`, `pages: write`, and `id-token: write`
+- Search Console: the sitemap is `https://www.blissfullivingsolutions.com/sitemap-index.xml` (the old `/sitemap.xml` 301s there on Cloudflare only)
 
-## Pending Items (commented out in code)
+## Pending Items (waiting on the IDPH license number)
 
-Several blocks are commented out awaiting the IDPH license **number** (approval received, number pending):
-- Phone number in hero, contact section, footer, and schema.org structured data
-- Physical street address (city/ZIP shown only)
-- IDPH license number in quality section and footer
-- Meta description update from "licensing pending" to "licensed"
-- Trust signal update in hero
+Approval is received; the license **number** is pending. Everything that depends on it is driven by three `null` fields in `src/data/site.ts` — nothing renders while they are null:
+- `phone` → contact-details list (with phone icon) and schema.org `telephone`
+- `streetAddress` → contact "Office" line and schema.org `streetAddress`
+- `licenseNumber` → footer "Get in touch" column
 
-When license number arrives: search for `<!-- ` comments containing `tel:` (contact details list in `#contact`), `License No.` (footer "Get in touch" column), and the street address placeholder (`123 Street Name`). The phone `<li>` placeholder needs a phone icon SVG added. Consider also adding the phone to the menu sheet and the trust strip once it's live.
+When the number arrives, fill those in (formats are in the comment above them). Then consider: adding the phone to the menu sheet and the trust strip, marking `phone_click` as a conversion in GA4, and updating the `LASTMOD` date for `/`.

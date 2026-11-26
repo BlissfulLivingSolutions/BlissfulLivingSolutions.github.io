@@ -1,0 +1,58 @@
+---
+/**
+ * Four-column footer (brand, Explore, Get in touch, Follow along) plus the legal
+ * row. On the home page links are in-page (#services); elsewhere they point back
+ * to the home page (/#services).
+ */
+import Logo from './Logo.astro'
+import { navLinks, site, socialLinks } from '../data/site'
+
+interface Props {
+  home?: boolean
+}
+
+const { home = false } = Astro.props
+const base = home ? '' : '/'
+---
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <Logo href={home ? '#home' : '/'} lazy />
+                <p class="footer-statement">Non-medical home care for seniors, from our home in Lemont to families across greater Chicagoland.</p>
+            </div>
+            <nav class="footer-nav" aria-label="Footer">
+                <h2>Explore</h2>
+                <ul class="footer-links">
+                    {navLinks.map((link) => <li><a href={`${base}#${link.hash}`}>{link.label}</a></li>)}
+                </ul>
+            </nav>
+            <div class="footer-contact">
+                <h2>Get in touch</h2>
+                <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+                <p>{site.city}, {site.region} {site.postalCode}</p>
+                <p>Monday–Friday, 9 am – 5 pm</p>
+                {site.licenseNumber && <p>IDPH License No. {site.licenseNumber}</p>}
+            </div>
+            <div class="footer-social">
+                <h2>Follow along</h2>
+                <div class="social-links">
+                    {socialLinks.map((social) => (
+                        <a href={social.href} class="social-link" target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on ${social.name}`}>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d={social.path} />
+                            </svg>
+                        </a>
+                    ))}
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <script is:inline>document.write(new Date().getFullYear())</script> {site.legalName}. All rights reserved. We provide non-medical services only.</p>
+            <div class="footer-legal">
+                <a href="/privacy-policy">Privacy policy</a>
+                <button class="footer-cookie-btn" data-cookie-prefs type="button">Cookie preferences</button>
+            </div>
+        </div>
+    </div>
+</footer>

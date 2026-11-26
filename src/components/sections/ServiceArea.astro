@@ -1,0 +1,23 @@
+---
+import { site } from '../../data/site'
+
+// The bbox covers all five counties; the marker sits on Lemont.
+const { latitude, longitude } = site.geo
+const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=-88.70%2C41.22%2C-87.45%2C42.50&layer=mapnik&marker=${latitude}%2C${longitude}`
+---
+<section id="service-area" class="section">
+    <div class="container area">
+        <div class="area-copy">
+            <h2>Serving greater Chicagoland</h2>
+            <p>We are proudly based in <strong>{site.city}, {site.region}</strong>, and serve clients throughout the greater Chicagoland area — across five counties:</p>
+            <ul class="county-list" aria-label="Counties we serve">
+                {site.counties.map((county) => <li>{county}</li>)}
+            </ul>
+            <p>If your loved one is anywhere within those five counties, we can help. Not sure? Reach out and we'll confirm — no commitment required.</p>
+            <a href="#contact" class="btn btn-outline" data-cta-label="service_area_check" data-cta-section="service-area">Check your area</a>
+        </div>
+        <div class="area-map">
+            <iframe src={mapSrc} title="Map of the greater Chicagoland service area, centered on Lemont, Illinois" loading="lazy"></iframe>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,43 @@
+---
+/**
+ * Cost estimator. main.js (initCostEstimator) owns the math: HOURLY_RATE = 32,
+ * slider min 4 = the 4-hour visit minimum. The starting values below must match
+ * what the script would compute for value="10".
+ */
+---
+<div class="feature-block">
+    <div class="estimator-layout">
+        <div class="estimator-copy">
+            <h2>Know what to expect, before you call.</h2>
+            <p class="lede">No hidden fees, no surprises. Move the slider to see what care might cost for your family.</p>
+            <ul class="check-list estimator-facts">
+                <li>A detailed rate sheet before care begins</li>
+                <li>A 4-hour minimum per visit</li>
+                <li>Private pay and many long-term care insurance policies accepted</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline" data-cta-label="estimator_contact" data-cta-section="features">Get a personalized estimate</a>
+        </div>
+        <div class="cost-estimator">
+            <div class="estimator-hours">
+                <label for="hours-range">Hours of care<br>per week</label>
+                <span class="hours-readout"><output id="hours-display" for="hours-range">10</output> hrs</span>
+            </div>
+            <input type="range" id="hours-range" min="4" max="60" value="10" step="1">
+            <div class="range-scale" aria-hidden="true">
+                <span>4 hrs</span>
+                <span>60 hrs</span>
+            </div>
+            <div class="cost-results">
+                <div class="cost-item">
+                    <span class="cost-label">Weekly estimate</span>
+                    <span class="cost-value" id="weekly-cost">$320</span>
+                </div>
+                <div class="cost-item">
+                    <span class="cost-label">Monthly estimate</span>
+                    <span class="cost-value" id="monthly-cost">$1,280</span>
+                </div>
+            </div>
+            <p class="cost-disclaimer">Estimates based on standard rates. A detailed rate sheet is provided before the start of care. A 4-hour minimum per visit applies.</p>
+        </div>
+    </div>
+</div>

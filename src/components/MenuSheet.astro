@@ -1,0 +1,34 @@
+---
+/**
+ * Full-screen menu sheet for widths below 1180px. Opened by the header's Menu
+ * pill; main.js (initMobileNav) handles open/close, scroll lock, Escape, focus
+ * and the Tab trap. Its theme button carries [data-theme-toggle] too.
+ */
+import Logo from './Logo.astro'
+import Icon from './Icon.astro'
+import ThemeIcons from './ThemeIcons.astro'
+import { navLinks, site } from '../data/site'
+---
+<div id="mobile-nav-overlay" class="mobile-nav-overlay" aria-label="Site menu" role="dialog" aria-modal="true">
+    <div class="mobile-nav-header">
+        <Logo href="#home" />
+        <button id="mobile-nav-close" class="mobile-nav-close" type="button">
+            Close
+            <Icon name="close" strokeWidth={2} />
+        </button>
+    </div>
+    <nav aria-label="Mobile primary navigation">
+        <ul class="mobile-nav-list">
+            {navLinks.map((link) => <li><a href={`#${link.hash}`}>{link.menuLabel ?? link.label}</a></li>)}
+        </ul>
+    </nav>
+    <div class="mobile-nav-footer">
+        <a href="#contact" class="btn btn-primary btn-lg">Request a free consultation</a>
+        <p class="mobile-nav-note">Or email us at <a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <button class="mobile-theme-btn" type="button" aria-label="Switch to dark mode" data-theme-toggle>
+            <ThemeIcons />
+            <span class="mobile-theme-label-light">Light mode</span>
+            <span class="mobile-theme-label-dark">Dark mode</span>
+        </button>
+    </div>
+</div>
