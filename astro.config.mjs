@@ -23,6 +23,18 @@ export default defineConfig({
   // strips whitespace between inline elements, which would change the layout.
   compressHTML: false,
 
+  vite: {
+    build: {
+      // Vite 8 defaults to Safari/iOS 16.4+, which lets the CSS minifier emit
+      // media-query range syntax (width>=1024px) and drop -webkit- prefixes.
+      // Older iPhones/iPads — common with our audience — would then lose the
+      // whole responsive layout. These are the targets the site was built for
+      // before (Vite 5's defaults).
+      target: ['chrome87', 'edge88', 'firefox78', 'safari14', 'ios14'],
+      cssTarget: ['chrome87', 'edge88', 'firefox78', 'safari14', 'ios14'],
+    },
+  },
+
   env: {
     schema: {
       // GA4 Measurement ID (G-XXXXXXXXXX). Optional: when it is absent, the gtag

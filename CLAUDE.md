@@ -21,6 +21,7 @@ Requires **Node ≥ 22.23.4** (Astro's CLI runs on Node even under `bun run`); `
 **Astro 7** — `astro.config.mjs` holds the whole config. Key choices (don't change without checking output):
 - `build.format: 'file'` + `trailingSlash: 'never'` — pages build to `dist/<name>.html` and are linked as `/privacy-policy` (no `.html`, no trailing slash). Canonical URLs, the sitemap and in-page links all use that form.
 - `compressHTML: false` — Astro 7's default (`'jsx'`) strips whitespace between inline elements, which changes rendering. Keep it off.
+- `vite.build.target` / `cssTarget` pinned to Safari/iOS 14, Chrome 87, Firefox 78 (the pre-Astro defaults). Vite 8 otherwise targets Safari/iOS 16.4+, and its CSS minifier then rewrites media queries to range syntax (`width>=1024px`) and drops `-webkit-` prefixes — older iPhones/iPads would lose the entire responsive layout. Don't raise these without checking the audience's devices.
 - `env.schema` — `PUBLIC_GA_MEASUREMENT_ID` via `astro:env` (see below).
 - `@astrojs/sitemap` — writes `sitemap-index.xml` + `sitemap-0.xml`; `<lastmod>` comes from the `LASTMOD` map at the top of the config. 404 is filtered out.
 - Every file in `src/pages/` becomes a page automatically — there is no entry-point list to register.
