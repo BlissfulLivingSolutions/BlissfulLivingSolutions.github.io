@@ -54,7 +54,7 @@ function showBanner() {
     <div class="cookie-banner-inner">
       <p class="cookie-banner-text">
         We use optional analytics cookies to understand how visitors use this site and improve it over time.
-        See our <a href="/privacy-policy.html" class="cookie-banner-link">Privacy Policy</a>.
+        See our <a href="/privacy-policy" class="cookie-banner-link">Privacy Policy</a>.
       </p>
       <div class="cookie-banner-actions">
         <button class="btn btn-primary cookie-banner-accept">Accept Analytics</button>
