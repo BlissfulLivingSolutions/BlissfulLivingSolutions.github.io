@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCostEstimator()
   initAccordion()
   initContactForm()
+  initMobileCtaBar()
   initConsentBanner()
   initCookiePrefsButtons()
 })
@@ -39,21 +40,44 @@ function initMobileNav() {
     overlay.classList.add('open')
     toggle.setAttribute('aria-expanded', 'true')
     document.body.style.overflow = 'hidden'
+    // Move focus into the sheet once it is visible
+    requestAnimationFrame(() => closeBtn?.focus())
   }
 
-  const close = () => {
+  const close = ({ restoreFocus = true } = {}) => {
+    if (!overlay.classList.contains('open')) return
     overlay.classList.remove('open')
     toggle.setAttribute('aria-expanded', 'false')
     document.body.style.overflow = ''
+    if (restoreFocus) toggle.focus()
   }
+
+  // Keep Tab inside the sheet while it is open
+  overlay.addEventListener('keydown', e => {
+    if (e.key !== 'Tab' || !overlay.classList.contains('open')) return
+    const focusables = overlay.querySelectorAll('a[href], button:not([disabled])')
+    if (!focusables.length) return
+    const first = focusables[0]
+    const last  = focusables[focusables.length - 1]
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault()
+      first.focus()
+    }
+  })
 
   toggle.addEventListener('click', () => {
     overlay.classList.contains('open') ? close() : open()
   })
 
-  if (closeBtn) closeBtn.addEventListener('click', close)
+  if (closeBtn) closeBtn.addEventListener('click', () => close())
 
-  overlay.querySelectorAll('a').forEach(link => link.addEventListener('click', close))
+  // Following a link scrolls the page — don't yank focus back to the toggle
+  overlay.querySelectorAll('a').forEach(link =>
+    link.addEventListener('click', () => close({ restoreFocus: false }))
+  )
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && overlay.classList.contains('open')) close()
@@ -136,16 +160,33 @@ function initPathwayExplorer() {
   const contents = document.querySelectorAll('.pathway-content')
   if (!buttons.length || !contents.length) return
 
-  buttons.forEach(btn => {
+  const select = btn => {
+    buttons.forEach(b => {
+      const on = b === btn
+      b.classList.toggle('active', on)
+      b.setAttribute('aria-selected', String(on))
+      b.tabIndex = on ? 0 : -1
+    })
+    contents.forEach(c => c.classList.toggle('active', c.id === btn.dataset.target))
+  }
+
+  buttons.forEach((btn, i) => {
     btn.addEventListener('click', () => {
-      buttons.forEach(b  => b.classList.remove('active'))
-      contents.forEach(c => c.classList.remove('active'))
-
-      btn.classList.add('active')
-      const target = document.getElementById(btn.dataset.target)
-      if (target) target.classList.add('active')
-
+      select(btn)
       trackPathwaySelect(btn.dataset.target || btn.textContent.trim())
+    })
+
+    // Arrow keys move between tabs (WAI-ARIA tabs pattern)
+    btn.addEventListener('keydown', e => {
+      let next = null
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = buttons[(i + 1) % buttons.length]
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   next = buttons[(i - 1 + buttons.length) % buttons.length]
+      if (e.key === 'Home') next = buttons[0]
+      if (e.key === 'End')  next = buttons[buttons.length - 1]
+      if (!next) return
+      e.preventDefault()
+      next.focus()
+      next.click()
     })
   })
 }
@@ -168,6 +209,10 @@ function initCostEstimator() {
     if (hoursDisplay) hoursDisplay.textContent = hours
     if (weeklyEl)     weeklyEl.textContent  = `$${weekly.toLocaleString()}`
     if (monthlyEl)    monthlyEl.textContent = `$${monthly.toLocaleString()}`
+
+    // Screen readers hear the result, not just the raw number
+    slider.setAttribute('aria-valuetext',
+      `${hours} hours per week, about $${weekly.toLocaleString()} a week or $${monthly.toLocaleString()} a month`)
 
     // Update the CSS custom property for the track fill
     const pct = ((hours - parseInt(slider.min, 10)) / (parseInt(slider.max, 10) - parseInt(slider.min, 10))) * 100
@@ -207,6 +252,37 @@ function initAccordion() {
       }
     })
   })
+}
+
+/* ── Mobile sticky consultation bar ──────────────────────────
+   Shows once the hero has scrolled away; hides from the contact
+   section onward (the form is right there, then the footer). CSS
+   limits it to phones and hides it while the cookie banner is open. */
+function initMobileCtaBar() {
+  const bar     = document.getElementById('mobile-cta-bar')
+  const hero    = document.getElementById('home')
+  const contact = document.getElementById('contact')
+  if (!bar || !hero || !contact || !('IntersectionObserver' in window)) return
+
+  let pastHero = false
+  let atContact = false
+  const render = () => {
+    const show = pastHero && !atContact
+    bar.classList.toggle('visible', show)
+    bar.toggleAttribute('inert', !show)
+  }
+
+  new IntersectionObserver(([entry]) => {
+    pastHero = !entry.isIntersecting && entry.boundingClientRect.top < 0
+    render()
+  }).observe(hero)
+
+  new IntersectionObserver(([entry]) => {
+    atContact = entry.isIntersecting || entry.boundingClientRect.top < 0
+    render()
+  }, { rootMargin: '0px 0px -20% 0px' }).observe(contact)
+
+  render()
 }
 
 /* ── Contact Form (mailto) ───────────────────────────────── */

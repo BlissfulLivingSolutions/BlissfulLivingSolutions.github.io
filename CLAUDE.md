@@ -56,10 +56,10 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 │   ├── consent-banner.js  # Cookie banner UI and localStorage persistence
 │   └── styles/
 │       ├── main.css       # Imports only (no styles here)
-│       ├── base.css       # Design tokens, reset, typography, print styles
-│       ├── layout.css     # Header, footer, nav, grids, containers
-│       ├── components.css # Buttons, cards, forms, accordion, pathway explorer, cost estimator
-│       ├── sections.css   # Section-specific styles (hero, services, quality, etc.)
+│       ├── base.css       # Design tokens, reset, typography, motion, print styles
+│       ├── layout.css     # Container, section rhythm, split layout, header, menu sheet, sticky phone CTA, footer
+│       ├── components.css # Buttons, text links, arch icon tiles, check lists, forms, accordion, pathway tabs, cost estimator
+│       ├── sections.css   # Section-specific styles (hero, trust strip, services index, vetting band, worksheet, careers, contact, privacy prose)
 │       └── consent.css    # Cookie banner styles (z-index 150)
 └── .claude/rules/
     ├── brand.md           # Full brand identity guide — read before any design work
@@ -70,14 +70,16 @@ If the variable is absent, all analytics and the cookie banner are silently disa
 
 All content is in `index.html` as a single scrollable page with anchor-linked sections: `#home`, `#why-us`, `#services`, `#who-we-help`, `#quality`, `#service-area`, `#how-it-works`, `#features`, `#resources`, `#careers`, `#contact`.
 
-**`src/main.js`** — `init*` functions called on `DOMContentLoaded` (in order): `initThemeToggle` (wires all `[data-theme-toggle]` elements via `querySelectorAll` — header button on desktop, `.mobile-theme-btn` in the mobile nav overlay footer on mobile; see Dark Mode below), `initMobileNav` (full-screen overlay, body scroll lock, Escape key), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (tab switcher — calls `trackPathwaySelect` on click), `initCostEstimator` (`HOURLY_RATE = 32`, updates `--range-pct` CSS var; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
+**`src/main.js`** — `init*` functions called on `DOMContentLoaded` (in order): `initThemeToggle` (wires all `[data-theme-toggle]` elements via `querySelectorAll` — header button on desktop ≥1180px, `.mobile-theme-btn` in the menu sheet below that; see Dark Mode below), `initMobileNav` (full-screen menu sheet, body scroll lock, Escape key, focus moves to Close on open / back to the Menu button on close, Tab is trapped inside the sheet), `initScrollHeader` (`.scrolled` class at 60px), `initSmoothScroll` (header-offset anchor scroll), `initActiveNav` (IntersectionObserver, rootMargin `-15% 0px -75% 0px`), `initScrollReveal` (`.reveal` / `.reveal-stagger` → `.revealed`), `initPathwayExplorer` (WAI-ARIA tabs — `aria-selected`, roving `tabindex`, arrow/Home/End keys; calls `trackPathwaySelect` on select), `initCostEstimator` (`HOURLY_RATE = 32`, slider min 4 = the 4-hour visit minimum, updates `--range-pct` CSS var and a spoken `aria-valuetext`; calls `trackEstimatorInteraction` via 1.5s debounce), `initAccordion` (uses `aria-expanded` + `.active` class; calls `trackAccordionOpen` on expand), `initContactForm` (redirects to `mailto:` URI via `window.location.href` — no backend; calls `trackLeadFormSubmit` before redirect), `initMobileCtaBar` (phone-only sticky "Request a free consultation" bar — `.visible` once the hero has scrolled away, hidden from `#contact` onward), `initConsentBanner` (shows cookie banner on first visit; auto-loads GA if previously accepted), `initCookiePrefsButtons` (wires `[data-cookie-prefs]` elements to reopen the banner).
 
 **Analytics** (Advanced Consent Mode) — see `.claude/rules/analytics.md` for full detail. The static gtag.js `<script>` block lives at the top of `<head>` in both HTML files so GA's validator can detect it. `analytics_storage` is denied by default; `src/analytics.js:initGA()` upgrades consent and activates event tracking only after the user accepts.
 
-**Image layout patterns** (in `sections.css`):
-- `.hero-layout` — 2-col grid on ≥900px (text | arch-masked photo); the photo is also shown on mobile below the text
-- `.section-photo` — full-width banner photo with `object-fit: cover` and arched shoulders; used in Who We Help and How It Works
-- The pathway explorer lives inside `#who-we-help` (moved out of `#features`); `#features` holds the cost estimator and the Care Planning Worksheet
+**Layout patterns** (Nov 2026 redesign — "A home, kept."):
+- Headings are **left-aligned and editorial** — no centered section headers, no all-caps eyebrows. `.split` (layout.css) is the 5/7 two-column pattern (heading column | content column) used by Why Us, Services and FAQ; `.split--sticky` pins the heading column on ≥1024px.
+- `.hero-grid` — 2-col on ≥1024px (copy | `.hero-arch` tall arched photo with a second outline arch drawn behind via `.hero-media::before`); stacks on smaller screens. `.trust-strip` below it lists four plain facts (only facts stated elsewhere on the page — never "licensed", ratings, or counts).
+- Background rhythm: ivory page → `.section--surface` (white) → one `.section--deep` evergreen band (`#quality`). Footer uses `--color-footer`.
+- `.photo-banner` — full-width arched banner (Who We Help); `.arch-frame` — tall arched photo (How It Works); `.area-map` — the OpenStreetMap embed in a soft arch, bbox covers all five counties.
+- The pathway explorer lives inside `#who-we-help`; each panel shows a sample plan with a `.week` strip (seven small arches, `.on` / `.maybe`). `#features` holds the cost estimator and the Care Planning Worksheet.
 
 **Image pipeline** — photos are served as pre-committed WebP via `<picture>` with the original PNG as fallback; headers use `/img/logo-96.png` while OG/schema keep `/img/logo.png`. Regenerate variants with:
 ```bash
@@ -87,28 +89,31 @@ sips -s format png --resampleWidth 640 public/img/<name>.png --out /tmp/x.png &&
 Use real pixel widths in `srcset` descriptors (e.g. `1184w`, not a rounded number).
 
 **CSS design conventions:**
-- Icons use `--color-primary-light` background / `--color-primary` stroke — never `--color-accent`. Amber (`--color-accent`) is reserved for secondary CTA buttons (`btn-accent`), footer headings, and the hospice accent tiles. Aim for at most one amber element per viewport.
-- **Arch motif** (the site signature — a doorway/threshold): `border-radius: 999px 999px <base> <base>` on the hero photo, icon tiles (`.feature-icon-wrap`, `.service-icon`, `.persona-icon`, `.quality-icon`, `.step-number`), and softened to `96px 96px` shoulders on `.section-photo` banners. The 999px radii scale down proportionally to a true semicircle.
-- **Motion tokens** (base.css): `--ease-out: cubic-bezier(0.22,1,0.36,1)`, `--ease-in-out`, and duration tokens `--dur-fast/base/slow/reveal` (140/220/450/600ms). `--transition`/`--transition-slow` are shorthand aliases built on them. Animate transform/opacity only. Buttons have a `:active { scale(0.97) }` press state. The hero has a one-time entrance animation gated by `prefers-reduced-motion: no-preference`.
-- Accordion open/close is animated via `grid-template-rows: 0fr → 1fr` on `.accordion-content` with an `.accordion-content-inner` wrapper (`overflow: hidden; min-height: 0`) — smooth at any content height. The FAQ question text must remain a bare text node inside `.accordion-header` (analytics extracts direct text nodes).
-- Scroll reveal: `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` class via IntersectionObserver at 8% threshold; CSS handles the staggered delays (60ms steps, covers 8+ children). `initScrollReveal` reveals everything immediately under `prefers-reduced-motion`.
+- Breakpoints (min-width): 480 / 640 / 768 / 1024 / **1180** (full desktop nav + header theme toggle). Below 1180 the header shows a labelled **Menu** pill (clearer for older visitors than a bare hamburger); "Contact us" shows in the header from 768.
+- **Specificity gotcha**: `components.css` loads after `layout.css`, so `.btn { display: inline-flex }` beats a same-specificity `display: none` in layout.css. Scope such rules (e.g. `.header-actions .header-cta`).
+- Icons sit in `.icon-arch` tiles (`--color-primary-light` background / `--color-primary` stroke) — never `--color-accent`. `.icon-arch--accent` is reserved for hospice. Amber (`--color-accent`) is otherwise reserved for `btn-accent` (Careers) and footer headings (`--color-accent-on-deep`). Aim for at most one amber element per viewport. **`btn-accent` uses dark ink text in both themes** — white on amber fails contrast.
+- **Arch motif** (the site signature — a doorway/threshold): tokens `--arch` (`999px 999px 20px 20px`) and `--arch-soft` (160px shoulders). Used on the hero photo, `.arch-frame`, `.photo-banner`, `.area-map`, `.icon-arch`, `.vetting-mark`, `.step-num`, the `.week` day tiles, and county list markers. Use it consistently; everything around it stays quiet.
+- **Motion tokens** (base.css): `--ease-out: cubic-bezier(0.22,1,0.36,1)`, `--ease-in-out`, and duration tokens `--dur-fast/base/slow/reveal` (140/220/450/700ms). `--transition`/`--transition-slow` are shorthand aliases built on them. Animate transform/opacity only (the hero door reveal's one-time `clip-path` is the single exception). Buttons have a `:active { scale(0.97) }` press state. The hero has a one-time entrance — copy rises in and the arched photo opens upward like a door (`hero-door` keyframes) — gated by `prefers-reduced-motion: no-preference`.
+- Accordion open/close is animated via `grid-template-rows: 0fr → 1fr` on `.accordion-content` with an `.accordion-content-inner` wrapper (`overflow: hidden; min-height: 0`) — smooth at any content height. The FAQ question text must remain a bare text node inside `.accordion-header` (analytics extracts direct text nodes). JS still writes `+`/`−` into `.accordion-icon`; CSS hides that glyph (`font-size: 0`) and draws the plus/minus with pseudo-elements.
+- Scroll reveal is used **sparingly** (photos only): `.reveal` for single elements, `.reveal-stagger` for grids — JS adds `.revealed` via IntersectionObserver at 8% threshold. `initScrollReveal` reveals everything immediately under `prefers-reduced-motion`.
+- **Never style bare `input`, `h2`, or `strong` globally** — the printed worksheet uses `h2.spt-section-title`, raw checkboxes and `<strong>` that must keep their hard-coded print colors. Form styles are scoped to `.form-group`.
 
-**Adding a new page** — register it in `vite.config.js` `rollupOptions.input`, then copy the following blocks from `index.html` into the new page's `<head>` (order matters):
+**Adding a new page** — register it in `vite.config.js` `rollupOptions.input`, then copy the following blocks from `index.html` into the new page's `<head>` (order matters; also copy the Google Fonts `<link>` — Atkinson Hyperlegible Next + Fraunces with the SOFT axis):
 1. The GA consent `<script>` block (must precede the async gtag.js tag)
 2. The `theme-color` meta pair
 3. The pre-paint theme detection `<script>` (synchronous; prevents flash of wrong theme)
 
-Import `src/main.js` so it gets the bundled CSS, theme toggle, and consent banner wiring. Copy the full header and mobile nav overlay from `index.html` — both the `.theme-toggle` header button (desktop) and the `.mobile-nav-footer` with `.mobile-theme-btn` (mobile) carry `[data-theme-toggle]` and must both be present for the toggle to work on all screen sizes. Then add a `<url>` entry to `public/sitemap.xml` with the canonical production URL and today's date as `<lastmod>`.
+Import `src/main.js` so it gets the bundled CSS, theme toggle, and consent banner wiring. Either copy the full header and menu sheet from `index.html` (both the `.theme-toggle` header button and the `.mobile-nav-footer` `.mobile-theme-btn` carry `[data-theme-toggle]` and must both be present), or — like `privacy-policy.html` — use the simple header with `.theme-toggle.theme-toggle--always` (visible at every width) plus a `.header-back` link. Copy the footer from `index.html` with `#section` links rewritten to `/#section`. Then add a `<url>` entry to `public/sitemap.xml` with the canonical production URL and today's date as `<lastmod>`.
 
 **Updating page content** — whenever substantive content changes are made to any existing page, update the corresponding `<lastmod>` date in `public/sitemap.xml` to today's date (ISO 8601 format: `YYYY-MM-DD`). This keeps Google's crawl scheduling accurate.
 
 **`public/CNAME`** — Must contain `www.blissfullivingsolutions.com`. If this file disappears from `dist/`, the custom domain breaks on the next deploy.
 
-**Footer social links** — Facebook, Instagram, X, and LinkedIn icons live in `.footer-social` inside `.footer-inner`. Each is a `.social-link` anchor (inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`). Styles are in `src/styles/layout.css` under `.footer-social` / `.social-links` / `.social-link`.
+**Footer** — four columns in `.footer-top` (`.footer-brand`, `.footer-nav` "Explore", `.footer-contact` "Get in touch", `.footer-social` "Follow along") and a `.footer-bottom` legal row (copyright, Privacy policy, `[data-cookie-prefs]` button). Column headings are small `h2`s styled in layout.css. Facebook, Instagram, X, and LinkedIn are `.social-link` anchors (inline SVG, `target="_blank" rel="noopener noreferrer"`, `aria-label`) — identical on both pages.
 
 ## Care Planning Worksheet (Print Feature)
 
-The `#features` section (`#service-plan-section` feature-block) contains a printable Care Planning Worksheet triggered by `onclick="window.print()"`.
+The `#features` section (`#service-plan-section` feature-block) contains a printable Care Planning Worksheet triggered by `onclick="window.print()"`. On screen it is introduced by the `.worksheet.screen-only` callout (a CSS-drawn paper illustration + print button). The worksheet markup itself (`.print-only` header, `.spt-body`, footer) was deliberately left untouched in the Nov 2026 redesign — edit it surgically, never by retyping.
 
 **Screen/print separation pattern:**
 - `.screen-only` — visible on screen, hidden in print (`display: none !important` in `@media print`)
@@ -133,17 +138,17 @@ Theme is applied via `data-theme="light|dark"` on `<html>`. A synchronous inline
 
 **`src/theme.js`** — exports `initThemeToggle()`. Uses `querySelectorAll('[data-theme-toggle]')` to wire **all** toggle buttons — the `.theme-toggle` in the header (visible on desktop ≥900px only; hidden on mobile via CSS) and the `.mobile-theme-btn` inside `.mobile-nav-footer` at the bottom of the mobile nav overlay (visible on mobile only). Both call `applyTheme()`, which updates `data-theme` on `<html>` and syncs the `aria-label` on every `[data-theme-toggle]` element. Also listens to `matchMedia('(prefers-color-scheme: dark)')` change events to repaint when the user has no stored preference.
 
-**CSS token overrides** live in `src/styles/base.css` under `:root[data-theme="dark"]`. All `--color-*` and `--shadow-*` tokens are redefined there. Hard-coded `rgba(...)` values in other CSS files get companion overrides at the bottom of their respective files under the same selector.
+**CSS token overrides** live in `src/styles/base.css` under `:root[data-theme="dark"]`. All `--color-*` and `--shadow-*` tokens are redefined there, including the Nov 2026 supporting tones (`--color-body`, `--color-muted`, `--color-linen`, `--color-line`, `--color-deep`, `--color-on-deep*`, `--color-accent-on-deep`, `--color-on-primary`, `--color-footer`). Hard-coded `rgba(...)`/hex values in other CSS files get a companion `:root[data-theme="dark"]` override next to the rule.
 
-**Critical caveat — footer background**: `--color-dark` (the footer's `background-color` in light mode) is repurposed as warm off-white body text in dark mode. The footer therefore has an explicit hard-coded override in `src/styles/layout.css`:
+**Critical caveat — footer background**: the footer uses `--color-footer` (evergreen `#173A3A`) in light mode. `--color-dark` must never be used as a background — it becomes warm off-white body text in dark mode. The footer keeps its explicit hard-coded dark override in `src/styles/layout.css`:
 ```css
 :root[data-theme="dark"] .site-footer { background-color: #0D1517; }
 ```
 Do not convert this to a token — it would create the same inversion problem.
 
-**Print styles are immune**: `@media print` in `base.css` hard-codes hex values and is unaffected by `data-theme`, so the Care Planning Worksheet always prints on white paper regardless of screen theme.
+**Print styles are immune**: `@media print` in `base.css` hard-codes hex values and is unaffected by `data-theme`. A separate small print block forces `color-scheme: light` and a white `html` background — without it, printing while the site is in night mode painted the page margins near-black. The sticky phone CTA and cookie banner both carry their own `@media print { display: none }`.
 
-**Toggle icon convention**: sun icon = shown in dark mode (click → go light); moon icon = shown in light mode (click → go dark). CSS controls visibility via `:root[data-theme="dark"] .theme-toggle-sun { display: block }` etc. in `src/styles/layout.css`. The `.mobile-theme-btn` reuses these same icon classes, and adds `.mobile-theme-label-light` / `.mobile-theme-label-dark` text labels that flip with the same `data-theme` selectors.
+**Toggle icon convention**: sun icon = shown in dark mode (click → go light); moon icon = shown in light mode (click → go dark). CSS controls visibility via `:root[data-theme="dark"] .theme-toggle-sun { display: block }` etc. in `src/styles/layout.css`. The `.mobile-theme-btn` reuses these same icon classes, and adds `.mobile-theme-label-light` / `.mobile-theme-label-dark` text labels that flip with the same `data-theme` selectors. The header toggle shows at ≥1180px; below that the toggle lives in the menu sheet.
 
 ## Brand
 
@@ -151,6 +156,8 @@ See `.claude/rules/brand.md` for the full brand identity. Key tokens:
 - Primary: `#2D6A6A` (Deep Slate Teal)
 - Accent: `#D4923A` (Warm Amber)
 - Background: `#FAF7F0` (Warm Ivory)
+- Evergreen: `#1B4444` (`--color-deep`, the Quality band) / footer `#173A3A`
+- Type: **Fraunces** (display, SOFT axis 70) + **Atkinson Hyperlegible Next** (everything else, 18px body)
 - All defined as CSS custom properties in `src/styles/base.css`
 
 ## Deployment Notes / Troubleshooting
@@ -169,4 +176,4 @@ Several blocks are commented out awaiting the IDPH license **number** (approval 
 - Meta description update from "licensing pending" to "licensed"
 - Trust signal update in hero
 
-When license number arrives: search for `<!-- ` comments containing `tel:`, `License No.`, and the street address placeholder.
+When license number arrives: search for `<!-- ` comments containing `tel:` (contact details list in `#contact`), `License No.` (footer "Get in touch" column), and the street address placeholder (`123 Street Name`). The phone `<li>` placeholder needs a phone icon SVG added. Consider also adding the phone to the menu sheet and the trust strip once it's live.

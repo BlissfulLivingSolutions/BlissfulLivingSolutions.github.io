@@ -66,7 +66,7 @@ CTA clicks are tracked via a delegated listener (`initCtaTracking` in `analytics
    data-cta-section="hero">Request a Free Care Consultation</a>
 ```
 
-Currently labeled CTAs: `hero_consultation`, `who_we_help_contact`, `how_it_works_consultation`, `service_area_check`, `estimator_contact`, `careers_apply`.
+Currently labeled CTAs: `hero_consultation`, `who_we_help_contact`, `how_it_works_consultation` (note: this one sits in `#quality` — the label is kept for GA history continuity), `service_area_check`, `estimator_contact`, `careers_apply`, `mobile_sticky_consultation` (phone-only sticky bar, section `sticky-bar`, added Nov 2026).
 
 ## GA4 Property Setup Status
 

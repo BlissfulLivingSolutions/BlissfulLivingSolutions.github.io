@@ -1,43 +1,65 @@
 /* ============================================================
    BASE — Design Tokens, Reset, Typography
-   Blissful Living Solutions | Theme: Compassionate Warmth + Professional Authority
+   Blissful Living Solutions | "A home, kept."
+   Compassionate warmth + professional authority.
 
-   Canonical breakpoints (min-width unless noted): 480 / 640 / 768 / 900 / 1024
+   Canonical breakpoints (min-width): 480 / 640 / 768 / 1024 / 1180
+   (1180 = full desktop nav)
    ============================================================ */
 
 :root {
-  /* === Brand Colors === */
+  /* === Brand Colors (see .claude/rules/brand.md) === */
   --color-primary:       #2D6A6A;
   --color-primary-dark:  #1F4D4D;
-  --color-primary-light: #E8F4F4;
+  --color-primary-light: #E6F0EE;
   --color-secondary:     #FAF7F0;
   --color-accent:        #D4923A;
   --color-accent-dark:   #B87730;
-  --color-accent-light:  #FDF3E3;
+  --color-accent-light:  #FBF1E1;
   --color-dark:          #1E2B3A;
   --color-mid:           #6B7E8F;
   --color-green:         #7DB87D;
   --color-card-bg:       #F0EDE6;
   --color-white:         #FFFFFF;
-  --color-border:        #E2DDD5;
-  --color-error:         #C0392B;
-  --color-success:       #27AE60;
+  --color-border:        #E4DED3;
+  --color-error:         #B73A2A;
+  --color-success:       #23824F;
+
+  /* === Supporting tones (2026-11 redesign) === */
+  --color-body:          #3A4756;   /* paragraph text — ~8:1 on ivory */
+  --color-muted:         #5A6B7B;   /* secondary text — AA (≥5:1) on ivory & white */
+  --color-linen:         #F3EEE4;   /* alternate section surface */
+  --color-line:          #DCD4C6;   /* hairlines that need a touch more presence */
+  --color-deep:          #1B4444;   /* evergreen band (Quality) */
+  --color-on-deep:       #F4EFE6;   /* text on evergreen */
+  --color-on-deep-muted: #B9CBC8;   /* secondary text on evergreen — 6.4:1 */
+  --color-accent-on-deep:#E8B36E;   /* amber that passes AA on evergreen — 5.7:1 */
+  --color-on-primary:    #FFFFFF;   /* text on teal buttons */
+  --color-footer:        #173A3A;   /* footer background */
 
   /* === Typography === */
-  /* Display serif carries h1/h2 and pull-quotes only; --font-heading is the
-     sans used for component headings, buttons, and UI emphasis. */
+  /* Fraunces (soft, optical-size serif) carries display type only: h1/h2,
+     service names, step titles, and large numerals (≥ 24px).
+     Atkinson Hyperlegible Next (Braille Institute) carries everything else —
+     it was drawn for low-vision readers, which suits our senior audience. */
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-heading: 'Inter', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  --font-body:    'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: var(--font-body);
 
-  --text-xs:   0.75rem;
-  --text-sm:   0.875rem;
-  --text-base: 1.0625rem;
-  --text-lg:   1.25rem;
-  --text-xl:   1.5rem;
-  --text-2xl:  2.25rem;
-  --text-3xl:  3rem;
-  --text-4xl:  3.75rem;
+  --text-xs:   0.8125rem;  /* 13 */
+  --text-sm:   0.9375rem;  /* 15 */
+  --text-base: 1.125rem;   /* 18 — body */
+  --text-md:   1.25rem;    /* 20 */
+  --text-lg:   1.375rem;   /* 22 */
+  --text-xl:   1.75rem;    /* 28 */
+  --text-2xl:  2.25rem;    /* 36 */
+  --text-3xl:  3rem;       /* 48 */
+  --text-4xl:  4rem;       /* 64 */
+
+  --display-h1: clamp(2.5rem, 1.55rem + 3.9vw, 4.75rem);
+  --display-h2: clamp(2rem, 1.45rem + 2.3vw, 3.25rem);
+  --display-h3: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  --soft: "SOFT" 70;      /* Fraunces softness axis — rounded, warm terminals */
 
   /* === Spacing === */
   --space-1:  0.25rem;
@@ -52,6 +74,7 @@
   --space-16: 4rem;
   --space-20: 5rem;
   --space-24: 6rem;
+  --section-y: clamp(4.5rem, 2.75rem + 6.5vw, 8.5rem);
 
   /* === Border Radius === */
   --radius-sm:   6px;
@@ -59,11 +82,14 @@
   --radius-lg:   20px;
   --radius-xl:   32px;
   --radius-full: 9999px;
+  /* The arch — a doorway, the threshold of home. Our one signature shape. */
+  --arch:      999px 999px var(--radius-lg) var(--radius-lg);
+  --arch-soft: 160px 160px var(--radius-lg) var(--radius-lg);
 
-  /* === Shadows === */
-  --shadow-sm: 0 1px 3px rgba(30,43,58,0.06), 0 1px 2px rgba(30,43,58,0.04);
-  --shadow-md: 0 4px 12px rgba(30,43,58,0.08), 0 2px 4px rgba(30,43,58,0.05);
-  --shadow-lg: 0 12px 32px rgba(30,43,58,0.10), 0 4px 8px rgba(30,43,58,0.06);
+  /* === Shadows (warm ink, never harsh) === */
+  --shadow-sm: 0 1px 2px rgba(30,43,58,0.05), 0 1px 1px rgba(30,43,58,0.03);
+  --shadow-md: 0 10px 30px -12px rgba(30,43,58,0.16), 0 2px 6px rgba(30,43,58,0.05);
+  --shadow-lg: 0 30px 60px -24px rgba(30,43,58,0.28), 0 8px 20px -8px rgba(30,43,58,0.10);
 
   /* === Motion === */
   /* Transform/opacity only. Ease-out for anything responding to the user;
@@ -73,13 +99,14 @@
   --dur-fast:    140ms;   /* presses, small state flips */
   --dur-base:    220ms;   /* hovers, most UI transitions */
   --dur-slow:    450ms;   /* panels, overlays */
-  --dur-reveal:  600ms;   /* scroll reveals, entrances */
+  --dur-reveal:  700ms;   /* scroll reveals, entrances */
   --transition:      var(--dur-base) var(--ease-out);
   --transition-slow: var(--dur-slow) var(--ease-out);
 
   /* === Layout === */
-  --container-max: 1200px;
-  --header-height: 72px;
+  --container-max: 1240px;
+  --gutter: clamp(1.25rem, 0.6rem + 3vw, 2.75rem);
+  --header-height: 80px;
 
   color-scheme: light dark;
 }
@@ -97,13 +124,25 @@
   --color-primary-light: #1A3A3A;
   --color-accent:        #E5A659;
   --color-accent-dark:   #F0BB78;
-  --color-accent-light:  #3A2D1B;
+  --color-accent-light:  #33291B;
   --color-green:         #9BD09B;
   --color-error:         #E8624E;
   --color-success:       #4FD187;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.25);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.45), 0 2px 4px rgba(0,0,0,0.30);
-  --shadow-lg: 0 12px 32px rgba(0,0,0,0.55), 0 4px 8px rgba(0,0,0,0.35);
+
+  --color-body:          #D3CBBD;
+  --color-muted:         #A5B1BC;
+  --color-linen:         #182226;
+  --color-line:          #33413F;
+  --color-deep:          #0F2627;
+  --color-on-deep:       #ECE4D4;
+  --color-on-deep-muted: #A9BDBA;
+  --color-accent-on-deep:#E8B36E;
+  --color-on-primary:    #0F1B1C;
+  --color-footer:        #0D1517;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.35), 0 1px 1px rgba(0,0,0,0.25);
+  --shadow-md: 0 12px 30px -12px rgba(0,0,0,0.6), 0 2px 6px rgba(0,0,0,0.3);
+  --shadow-lg: 0 30px 60px -24px rgba(0,0,0,0.7), 0 8px 20px -8px rgba(0,0,0,0.4);
   color-scheme: dark;
 }
 
@@ -117,6 +156,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 ul, ol {
@@ -137,65 +177,81 @@ button {
   border: none;
   background: none;
   font-family: inherit;
+  font-size: inherit;
   color: inherit;
 }
 
 a {
   color: var(--color-primary);
-  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
   transition: color var(--transition);
 }
 
 a:hover {
   color: var(--color-primary-dark);
-  text-decoration: underline;
 }
 
-a:focus-visible {
+:focus-visible {
   outline: 3px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-dark);
 }
 
 /* ── Base Typography ── */
 body {
   font-family: var(--font-body);
   font-size: var(--text-base);
-  line-height: 1.7;
-  color: var(--color-dark);
+  line-height: 1.65;
+  color: var(--color-body);
   background-color: var(--color-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   line-height: 1.25;
   color: var(--color-dark);
+  font-weight: 700;
 }
 
-/* Editorial display voice — h1/h2 only */
+/* Display voice — Fraunces, soft & optically sized */
 h1, h2 {
   font-family: var(--font-display);
-  font-weight: 540;
-  letter-spacing: -0.015em;
-  line-height: 1.12;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-variation-settings: var(--soft);
+  letter-spacing: -0.022em;
+  line-height: 1.06;
   text-wrap: balance;
 }
 
-h1 { font-size: clamp(2.125rem, 5.5vw, 3.5rem); }
-h2 { font-size: clamp(1.625rem, 4vw, 2.375rem); }
-h3 { font-size: var(--text-xl);  font-weight: 600; letter-spacing: -0.01em; }
-h4 { font-size: var(--text-lg);  font-weight: 600; }
+h1 { font-size: var(--display-h1); }
+h2 { font-size: var(--display-h2); line-height: 1.1; }
+h3 { font-size: var(--text-lg); letter-spacing: -0.005em; }
+h4 { font-size: var(--text-md); }
 
 p {
   margin-bottom: var(--space-4);
+  text-wrap: pretty;
 }
 
 p:last-child {
   margin-bottom: 0;
 }
 
+/* No color here — <strong> inside the printed worksheet must inherit its
+   hard-coded print colors, whatever the screen theme. */
 strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ── Accessibility ── */
@@ -208,10 +264,22 @@ strong {
   }
 }
 
-/* ── Scroll Reveal ── */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Scroll Reveal — used sparingly (photos and a few key blocks) ── */
 .reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(18px);
   transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
 }
 
@@ -223,7 +291,7 @@ strong {
 /* Stagger siblings inside a grid */
 .reveal-stagger > * {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(14px);
   transition: opacity var(--dur-reveal) var(--ease-out), transform var(--dur-reveal) var(--ease-out);
 }
 
@@ -233,13 +301,12 @@ strong {
 }
 
 .reveal-stagger.revealed > *:nth-child(1) { transition-delay: 60ms; }
-.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 120ms; }
-.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 180ms; }
-.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 240ms; }
-.reveal-stagger.revealed > *:nth-child(5) { transition-delay: 300ms; }
-.reveal-stagger.revealed > *:nth-child(6) { transition-delay: 360ms; }
-.reveal-stagger.revealed > *:nth-child(7) { transition-delay: 420ms; }
-.reveal-stagger.revealed > *:nth-child(n+8) { transition-delay: 480ms; }
+.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 140ms; }
+.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 220ms; }
+.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 300ms; }
+.reveal-stagger.revealed > *:nth-child(5) { transition-delay: 380ms; }
+.reveal-stagger.revealed > *:nth-child(6) { transition-delay: 440ms; }
+.reveal-stagger.revealed > *:nth-child(n+7) { transition-delay: 500ms; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal-stagger > * {
@@ -249,48 +316,48 @@ strong {
   }
 }
 
-/* ── Hero Entrance — the page's one orchestrated moment (plays once) ── */
+/* ── Hero Entrance — the page's one orchestrated moment (plays once) ──
+   Copy rises in; the arched photo opens upward like light through a doorway. */
 @keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes hero-arch {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+@keyframes hero-door {
+  from { clip-path: inset(100% 0 0 0 round 999px 999px 20px 20px); }
+  to   { clip-path: inset(0 0 0 0 round 999px 999px 20px 20px); }
+}
+
+@keyframes hero-frame {
+  from { opacity: 0; transform: translate(0, 12px); }
+  to   { opacity: 1; transform: translate(0, 0); }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-badge,
+  .hero-kicker,
   .hero h1,
   .hero-sub,
-  .hero-ctas,
-  .hero-microcopy,
-  .trust-bar {
+  .hero-actions,
+  .hero-note,
+  .trust-strip {
     animation: hero-rise var(--dur-reveal) var(--ease-out) both;
   }
 
-  .hero h1           { animation-delay: 60ms; }
-  .hero-sub          { animation-delay: 140ms; }
-  .hero-ctas         { animation-delay: 220ms; }
-  .hero-microcopy    { animation-delay: 280ms; }
-  .trust-bar         { animation-delay: 360ms; }
+  .hero h1        { animation-delay: 80ms; }
+  .hero-sub       { animation-delay: 180ms; }
+  .hero-actions   { animation-delay: 260ms; }
+  .hero-note      { animation-delay: 320ms; }
+  .trust-strip    { animation-delay: 520ms; }
 
-  .hero-image-wrap {
-    animation: hero-arch 700ms var(--ease-out) 180ms both;
-    transform-origin: 50% 80%;
+  /* fill-mode backwards (not both): a lingering clip-path would clip the
+     photo's own box-shadow once the animation ends. overflow + radius
+     already give the arch shape at rest. */
+  .hero-arch {
+    animation: hero-door 1100ms var(--ease-out) 120ms backwards;
+  }
+
+  .hero-media::before {
+    animation: hero-frame 900ms var(--ease-out) 500ms both;
   }
 }
 
@@ -302,15 +369,28 @@ strong {
   z-index: 9999;
   padding: var(--space-3) var(--space-6);
   background: var(--color-primary);
-  color: var(--color-white);
-  border-radius: var(--radius-md);
-  font-weight: 600;
+  color: var(--color-on-primary);
+  border-radius: var(--radius-full);
+  font-weight: 700;
   text-decoration: none;
   transition: top var(--transition);
 }
 
 .skip-link:focus {
   top: var(--space-4);
+}
+
+/* Printing at night (dark theme) must still produce white paper:
+   color-scheme: dark otherwise paints the page canvas and margins near-black. */
+@media print {
+  :root,
+  :root[data-theme="dark"] {
+    color-scheme: light !important;
+  }
+
+  html {
+    background: #FFFFFF !important;
+  }
 }
 
 /* Screen-only / print-only utility classes */
@@ -392,7 +472,7 @@ strong {
   }
 
   .print-brand-name {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Atkinson Hyperlegible Next', 'Inter', sans-serif;
     font-size: 13pt;
     font-weight: 700;
     color: #fff;
@@ -415,7 +495,7 @@ strong {
   }
 
   .print-doc-title h1 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Atkinson Hyperlegible Next', 'Inter', sans-serif;
     font-size: 16pt;
     font-weight: 700;
     color: #1E2B3A;
@@ -447,7 +527,7 @@ strong {
 
   /* ── Service Plan Template Body ── */
   .spt-body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Atkinson Hyperlegible Next', 'Inter', sans-serif;
     font-size: 10pt;
     color: #1E2B3A;
     line-height: 1.4;
@@ -465,7 +545,7 @@ strong {
 
   /* Section title bleeds to edges, creating a full-width teal header bar */
   .spt-section-title {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Atkinson Hyperlegible Next', 'Inter', sans-serif;
     font-size: 10pt;
     font-weight: 700;
     color: #1E2B3A;
@@ -677,7 +757,7 @@ strong {
   }
 
   .spt-table th {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Atkinson Hyperlegible Next', 'Inter', sans-serif;
     font-size: 7.5pt;
     font-weight: 700;
     color: #2D6A6A;
@@ -720,7 +800,7 @@ strong {
   }
 
   .spt-sub-label {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Atkinson Hyperlegible Next', 'Inter', sans-serif;
     font-size: 7.5pt;
     font-weight: 700;
     color: #6B7E8F;
