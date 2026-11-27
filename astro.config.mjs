@@ -7,7 +7,7 @@ const SITE = 'https://www.blissfullivingsolutions.com'
 // Sitemap <lastmod> per page. Bump a page's date (YYYY-MM-DD) whenever its
 // content changes — this keeps Google's crawl scheduling accurate.
 const LASTMOD = {
-  '/': '2026-11-25',
+  '/': '2026-11-27',
   '/privacy-policy': '2026-11-26',
 }
 

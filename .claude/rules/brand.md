@@ -10,7 +10,7 @@ description: Brand identity, color palette, typography, and tone of voice for Bl
 - **Location**: Lemont, IL 60439
 - **Service area**: Cook, Will, Kane, Lake, and DuPage counties
 - **Email**: contact@blissfullivingsolutions.com
-- **IDPH status**: License approved.
+- **IDPH status**: Licensed — IDPH License No. 3003159 (shown in the site footer).
 
 ## Primary Audiences
 1. **Adult children (40–65)** — anxious, time-pressed, researching care for an aging parent; often on mobile; guilt-prone; need reassurance and professionalism
@@ -110,7 +110,7 @@ Warm charcoal base with a faint teal undertone — preserves "compassionate warm
 - Use clinical or hospital imagery
 - Use the word "elderly"
 - Represent or imply medical services
-- Add phone number to live site until IDPH license NUMBER is received (approval is done; number pending)
+- Add a phone number or street address to the live site until the owner says to (the license number is in; the owner is holding these back)
 - Use emoji as UI/design elements (only in prose if absolutely needed)
 - Use the old color palette (navy #1A3A5A, gold #E6B800, sky #87CEEB)
 - Use pure black (`#000000`) or pure white (`#FFFFFF`) as dark-mode backgrounds or text — the palette uses warm near-blacks and warm off-whites to stay on-brand

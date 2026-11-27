@@ -16,17 +16,16 @@ export const site = {
   counties: ['Cook', 'Will', 'Kane', 'Lake', 'DuPage'],
 
   /*
-   * Waiting on the IDPH license NUMBER (approval is done). Leave these as null
-   * until it arrives — nothing renders while they are null. When it arrives,
-   * fill them in and each one appears in the contact section, the footer and
-   * the schema.org data automatically:
+   * Nothing renders while a field is null. Fill one in and it appears in the
+   * contact section, the footer and the schema.org data automatically.
+   * The IDPH license number arrived Nov 2026 (footer). Phone and street address
+   * stay null until the owner decides to publish them:
    *   phone:         { display: '(630) 555-0100', tel: '+16305550100' }
    *   streetAddress: '123 Street Name'
-   *   licenseNumber: '1234567'
    */
   phone: null as { display: string; tel: string } | null,
   streetAddress: null as string | null,
-  licenseNumber: null as string | null,
+  licenseNumber: '3003159' as string | null,
 } as const
 
 /** One-page section links. `label` is the footer wording; the header and the

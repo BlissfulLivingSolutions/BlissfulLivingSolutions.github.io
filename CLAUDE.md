@@ -70,7 +70,7 @@ If the variable is absent, the gtag tag is not rendered and all analytics and th
 │   │   ├── CarePlanningWorksheet.astro  # Printable worksheet — see below; edit surgically
 │   │   └── sections/            # One component per home-page section (Hero, WhyUs, Services, WhoWeHelp, Quality, ServiceArea, HowItWorks, Features, Faq, Careers, Contact)
 │   ├── data/
-│   │   ├── site.ts              # Business facts, nav links, social links, pending license items
+│   │   ├── site.ts              # Business facts (incl. IDPH license no.), nav links, social links, held-back phone/address
 │   │   ├── faq.ts               # FAQ items — feeds the accordion AND the FAQPage JSON-LD
 │   │   └── icons.ts             # Outline icon paths for <Icon name="…" />
 │   ├── assets/images/           # Source photos, optimized at build time by <Picture>
@@ -192,11 +192,10 @@ See `.claude/rules/brand.md` for the full brand identity. Key tokens:
 - If Pages deploy fails with a misleading `404`, verify the workflow still includes `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`, and top-level permissions for `contents: read`, `pages: write`, and `id-token: write`
 - Search Console: the sitemap is `https://www.blissfullivingsolutions.com/sitemap-index.xml` (the old `/sitemap.xml` 301s there on Cloudflare only)
 
-## Pending Items (waiting on the IDPH license number)
+## Pending Items (phone number and street address)
 
-Approval is received; the license **number** is pending. Everything that depends on it is driven by three `null` fields in `src/data/site.ts` — nothing renders while they are null:
+The IDPH license number is in: `licenseNumber` in `src/data/site.ts` renders "IDPH License No. …" in the footer "Get in touch" column on every page. The phone number and street address are **held back at the owner's request — do not add them until the owner says so**. Both are `null` fields in `src/data/site.ts`, and nothing renders while they are null:
 - `phone` → contact-details list (with phone icon) and schema.org `telephone`
 - `streetAddress` → contact "Office" line and schema.org `streetAddress`
-- `licenseNumber` → footer "Get in touch" column
 
-When the number arrives, fill those in (formats are in the comment above them). Then consider: adding the phone to the menu sheet and the trust strip, marking `phone_click` as a conversion in GA4, and updating the `LASTMOD` date for `/`.
+When the owner is ready, fill them in (formats are in the comment above them). Then consider: adding the phone to the menu sheet and the trust strip, marking `phone_click` as a conversion in GA4, and updating the `LASTMOD` date for `/`.
